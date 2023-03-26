@@ -57,7 +57,7 @@
 
                     <button class="inscriptionLink btn">
 
-                        <a href="<?= PATH_APPLICATION_EXTRANET ?>inscriptionForm.php" class="nav-link">Inscription</a>
+                        <a href="<?= PATH_SITE ?>inscription" class="nav-link">Inscription</a>
 
                     </button>
 
