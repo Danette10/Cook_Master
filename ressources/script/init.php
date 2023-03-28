@@ -3,7 +3,7 @@
 /*
  * TODO: Link Local
  */
-define('PATH_SITE', 'http://localhost/Cook_Master/');
+define('PATH_SITE', 'http://localhost:8888/Cook_Master/');
 
 define('PATH_RESSOURCES', PATH_SITE . 'ressources/');
 define('PATH_CSS', PATH_RESSOURCES . 'css/');
