@@ -1,0 +1,5 @@
+RewriteEngine on
+
+RewriteCond %{REQUEST_URI} ^/Cook_Master/inscription$ [NC]
+RewriteRule ^(.*)$ /Cook_Master/application/extranet/inscriptionForm.php [L]
+
