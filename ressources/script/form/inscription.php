@@ -75,6 +75,17 @@ if (isset($_POST['name']) && isset($_POST['firstname']) && isset($_POST['email']
             ]
         );
 
+        $messageMail = "<h1>Thank you for your registration !</h1>";
+        $messageMail .= "<p>Click on the link below to activate your account</p>";
+        $messageMail .= "<a href='" . PATH_VALIDATE_INSCRIPTION . "?token=" . $token . "'>Activate your account</a>";
+        $messageMail .= "<p>We hope you will enjoy our services !</p>";
+        $messageMail .= "<p>Cook Master Team</p>";
+
+        $subject = "Cook Master - Activate your account";
+        $header = "Cook Master < " . MAIL . " >";
+        
+        mailHtml($email, $subject, $messageMail, $header);
+
         header("Location: " . PATH_SITE . '?type=success&message=You have been registered successfully ! Please check your email to activate your account.');
         exit();
 
