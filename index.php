@@ -24,7 +24,10 @@ echo '<div id="infoPanel">';
       echo '</div>';
       unset($_SESSION['errors']);
    }
-echo '</div>';
+echo '</div>'; ?>
+
+
+<?php
 include PATH_SCRIPT . 'functionsJs.php';
 include PATH_SCRIPT . 'footer.php';
 ?>
