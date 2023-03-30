@@ -1,7 +1,6 @@
 <?php
 include "../init.php";
 include "../functions.php";
-
 $db = connectToDatabase();
 
 if (isset($_POST['name']) && isset($_POST['firstname']) && isset($_POST['email']) && isset($_POST['password']) && isset($_POST['passwordConf']) && isset($_POST['birthday'])) {
@@ -15,13 +14,17 @@ if (isset($_POST['name']) && isset($_POST['firstname']) && isset($_POST['email']
 
     $email = htmlspecialchars(strtolower(trim($email)));
     $firstname = htmlspecialchars(ucwords(strtolower(trim($firstname))));
-    $name = htmlspecialchars(strtoupper(trim($lastname)));
+    $name = htmlspecialchars(strtoupper(trim($name)));
 
 
     $errors = [];
     //PASSWORDS CHECK
     if($password != $passwordConf){
         $errors[] = "Passwords do not match";
+    }
+
+    if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = "Email is not valid";
     }
 
     if( preg_match("#\d#",$password)== 0 ||
@@ -40,11 +43,45 @@ if (isset($_POST['name']) && isset($_POST['firstname']) && isset($_POST['email']
         $errors[] = "Lastname has to have more than 1 character";
     }
 
-}
+    $selectUser = $db->prepare("SELECT COUNT(*) FROM user WHERE email = :email");
+    $selectUser->execute(['email' => $email]);
+    $user = $selectUser->fetchColumn();
 
-if (count($errors) == 0 ) {
-    echo "YOUPI";
-}else {
-    $_SESSION['errors'] = $errors;
-    header("Location: ../../../index.php");
+    if ($user > 0) {
+        $errors[] = "Email already exists";
+    }
+
+    if (count($errors) == 0 ) {
+
+        $password = hash('sha512', $password);
+
+        $token = bin2hex(random_bytes(64));
+
+        $creation = date('Y-m-d H:i:s');
+
+        $insertUser = $db->prepare("INSERT INTO user (lastname, firstname, email, password, role, token, fidelityCounter, birthdate, creation) VALUES (:lastname, :firstname, :email, :password, :role, :token, :fidelityCounter, :birthdate, :creation)");
+
+        $insertUser->execute(
+            [
+            'lastname' => $name,
+            'firstname' => $firstname,
+            'email' => $email,
+            'password' => $password,
+            'role' => 0,
+            'token' => $token,
+            'fidelityCounter' => 0,
+            'birthdate' => $birthday,
+            'creation' => $creation
+            ]
+        );
+
+        header("Location: " . PATH_SITE . '?type=success&message=You have been registered successfully ! Please check your email to activate your account.');
+        exit();
+
+    }else {
+        $_SESSION['errors'] = $errors;
+        header("Location: " . PATH_SITE);
+        exit();
+    }
+
 }

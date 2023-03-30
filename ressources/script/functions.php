@@ -7,7 +7,7 @@ use PHPMailer\PHPMailer\Exception;
  * TODO: Function to connect to the database
  */
 
-function connectToDatabase() {
+function connectToDatabase(){
 
     $username = 'root';
     $password = '';
@@ -15,11 +15,9 @@ function connectToDatabase() {
     $dbname = 'cookMaster';
 
     try {
-        $db = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-        return $db;
+        return new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
     } catch (PDOException $e) {
-        echo "Erreur : " . $e->getMessage();
-        return null;
+        die('Erreur : ' . $e->getMessage());
     }
 }
 

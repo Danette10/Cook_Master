@@ -10,15 +10,9 @@ include PATH_SCRIPT . 'header.php';
 
 <body>
 
-
+<?php include 'ressources/script/messages.php'; ?>
 
 <?php
-// if (!empty($_SESSION['errors'])) {
-//     for($i = 0; $i < count($_SESSION['errors']); $i++) {
-//         $error = $_SESSION['errors'][$i];
-//         echo $error;
-//     }
-// }
 echo '<div id="infoPanel">';
    if (!empty($_SESSION['errors']) && isset($_SESSION['errors'])) {
       echo '<div class="alert alert-danger mt-4 pb-1" role="alert">';
