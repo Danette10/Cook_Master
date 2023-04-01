@@ -1,8 +1,8 @@
 <?php
 session_start();
-require_once '../init.php';
-require_once '../functions.php';
-$db = connectToDatabase();
+include '../init.php';
+include PATH_SCRIPT . 'functions.php';
+include PATH_SCRIPT . 'connectDB.php';
 
 $token = htmlspecialchars($_GET['token']);
 

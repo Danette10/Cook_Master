@@ -54,18 +54,41 @@ if (isset($_POST['name']) && isset($_POST['firstname']) && isset($_POST['email']
 
     if (count($errors) == 0 ) {
 
+        $profilePicture = "";
+
+        if(isset($_FILES['profilePicture']) && $_FILES['profilePicture']['error'] == 0){
+
+            $file = uploadProfilePicture($_FILES['profilePicture']);
+
+            // Si file retourne un entier, c'est qu'il y a une erreur
+            if(is_int($file)){
+                $errors[] = "Error while uploading the profile picture";
+            }else{
+                $profilePicture = $file;
+            }
+        }
+
+        if (count($errors) > 0) {
+            $_SESSION['errors'] = $errors;
+            header("Location: " . ADDRESS_SITE . '?type=error&message=Please check your informations');
+            exit();
+        }
+
+
+
         $password = hash('sha512', $password);
 
         $token = bin2hex(random_bytes(64));
 
         $creation = date('Y-m-d H:i:s');
 
-        $insertUser = $db->prepare("INSERT INTO user (lastname, firstname, email, password, role, token, fidelityCounter, birthdate, creation) VALUES (:lastname, :firstname, :email, :password, :role, :token, :fidelityCounter, :birthdate, :creation)");
+        $insertUser = $db->prepare("INSERT INTO user (lastname, firstname, profilePicture, email, password, role, token, fidelityCounter, birthdate, creation) VALUES (:lastname, :firstname, :profilePicture, :email, :password, :role, :token, :fidelityCounter, :birthdate, :creation)");
 
         $insertUser->execute(
             [
             'lastname' => $name,
             'firstname' => $firstname,
+            'profilePicture' => $profilePicture,
             'email' => $email,
             'password' => $password,
             'role' => 0,

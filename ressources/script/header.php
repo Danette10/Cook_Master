@@ -30,11 +30,17 @@
 
                 <div class="connexionInscriptionLinks">
 
+                    <?php if (!isset($_SESSION['role']) || ($_SESSION['role'] == 1 || $_SESSION['role'] == 0)) { ?>
+
                     <button class="pricingLink btn">
 
                         <a href="<?= ADDRESS_SITE ?>pricing" class="nav-link">Pricing</a>
 
                     </button>
+
+                    <?php } ?>
+
+                    <?php if (!isset($_SESSION['role']) || $_SESSION['role'] == 0) { ?>
 
                     <li>
 
@@ -64,9 +70,38 @@
 
                     </button>
 
+                    <?php } ?>
+
                 </div>
 
             </div>
+
+            <?php if (isset($_SESSION['email'])){
+
+                if($_SESSION['profilePicture'] != ''){
+                    $profilePicture = $_SESSION['profilePicture'];
+                }else{
+                    $profilePicture = 'defaultProfilePicture.png';
+                }
+                ?>
+
+            <div class="dropdown" style="margin-right: 80px;">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="<?= ADDRESS_IMG ?>profilePicture/<?= $profilePicture ?>" alt="Profile picture" width="50" height="50" style="margin-left: 10px;" class="rounded-circle">
+                </button>
+
+                <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+                    <li><a class="dropdown-item" href="<?= ADDRESS_SITE ?>profil">Profil</a></li>
+
+                    <hr class="dropdown-divider">
+
+                    <li><a class="dropdown-item" href="<?= ADDRESS_SCRIPT ?>logout.php">Logout</a></li>
+
+                </ul>
+            </div>
+
+            <?php } ?>
+
 
         </div>
 
