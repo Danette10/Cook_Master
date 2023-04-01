@@ -13,26 +13,26 @@ include PATH_SCRIPT . 'header.php';
 
 <h2 class="text-center mt-4">Inscription</h2>
 
-<form action="<?= ADDRESS_FORM ?>inscription.php" method="post" class="col-md-6" style="margin: 0 auto; padding: 15px;">
+<form action="<?= ADDRESS_FORM ?>inscription.php" method="post" class="col-md-6" enctype="multipart/form-data" style="margin: 0 auto; padding: 15px;">
 
     <div class="mb-3">
         <label for="name" class="form-label">Name *</label>
-        <input type="text" class="form-control" id="name" name="name">
+        <input type="text" class="form-control" id="name" name="name" required>
     </div>
 
     <div class="mb-3">
         <label for="surname" class="form-label">First name *</label>
-        <input type="text" class="form-control" id="firstname" name="firstname">
+        <input type="text" class="form-control" id="firstname" name="firstname" required>
     </div>
 
     <div class="mb-3">
         <label for="email" class="form-label">Email *</label>
-        <input type="email" class="form-control" id="emailInscription" name="email">
+        <input type="email" class="form-control" id="emailInscription" name="email" required>
     </div>
 
     <div class="mb-3">
         <label for="password" class="form-label">Password *</label>
-        <input type="password" class="form-control" id="passwordInscription" name="password">
+        <input type="password" class="form-control" id="passwordInscription" name="password" required>
 
         <div id="viewPassword" class="form-text">
 
@@ -45,7 +45,7 @@ include PATH_SCRIPT . 'header.php';
 
     <div class="mb-3">
         <label for="passwordConf" class="form-label">Confirm password *</label>
-        <input type="password" class="form-control" id="passwordInscriptionConf" name="passwordConf">
+        <input type="password" class="form-control" id="passwordInscriptionConf" name="passwordConf" required>
 
         <div id="viewPassword" class="form-text">
 
@@ -57,7 +57,12 @@ include PATH_SCRIPT . 'header.php';
 
     <div class="mb-3">
         <label for="birthday" class="form-label">Birthday *</label>
-        <input type="date" class="form-control" id="birthday" name="birthday">
+        <input type="date" class="form-control" id="birthday" name="birthday" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="profilePicture" class="form-label">Profile picture</label>
+        <input type="file" class="form-control" id="profilePicture" name="profilePicture" accept="image/jpeg, image/png, image/jpg">
     </div>
 
     <input type="submit" class="btn" value="Submit">

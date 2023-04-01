@@ -59,6 +59,14 @@ nav ul li a:hover{
     border-radius: 15px;
 }
 
+.connexionInscriptionLinks .logoutLink{
+    width: 122px;
+    border-radius: 15px;
+    color: white;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
 .connexionInscriptionLinks .pricingLink:hover{
     color: #1C7832;
     font-weight: bold;
@@ -106,4 +114,15 @@ form input[type="submit"]:hover{
     border: 2px solid #FF9B90;
     color: white;
     font-weight: bold;
+}
+
+/* PROFIL DROPDOWN */
+
+#profileDropdown{
+    background: transparent;
+    border: none;
+}
+
+#profileDropdown::after{
+    display: none;
 }
