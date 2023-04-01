@@ -1,11 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
 
+* {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
 html, body {
     font-family: 'Roboto', sans-serif !important;
     font-size: 16px !important;
     margin: 0 !important;
     padding: 0 !important;
     background-color: #f0f0f0 !important;
+}
+
+footer {
+    background-color: #FF9B90;
+}
+
+#footer {
+    margin-top: auto;
+    color: white;
 }
 
 nav{
@@ -36,12 +50,29 @@ nav ul li a:hover{
     padding: 0 10px;
 }
 
+.connexionInscriptionLinks .pricingLink{
+    width: 122px;
+    color: white;
+    font-weight: bold;
+    background-color: #1C7832;
+    border: 2px solid #1C7832;
+    border-radius: 15px;
+}
+
+.connexionInscriptionLinks .pricingLink:hover{
+    color: #1C7832;
+    font-weight: bold;
+    background-color: white;
+    border: 2px solid #1C7832;
+}
+
 .connexionInscriptionLinks li .connexionLink, .connexionInscriptionLinks .inscriptionLink{
     background-color: white;
     border: 2px solid #FF9B90;
     color: #FF9B90;
     font-weight: bold;
     border-radius: 15px;
+    width: 122px;
 }
 
 .connexionInscriptionLinks li .connexionLink:hover, .connexionInscriptionLinks .inscriptionLink:hover{

@@ -1,5 +1,3 @@
-<?php include "../../ressources/script/init.php"; ?>
-
 <form action="<?= PATH_FORM ?>connexion.php" method="post">
     <div class="mb-3">
         <label for="email" class="form-label">Email</label>

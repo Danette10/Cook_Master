@@ -1,5 +1,9 @@
 RewriteEngine on
 
+# INSCRIPTION
 RewriteCond %{REQUEST_URI} ^/Cook_Master/inscription$ [NC]
 RewriteRule ^(.*)$ /Cook_Master/application/extranet/inscriptionForm.php [L]
 
+# PRICING
+RewriteCond %{REQUEST_URI} ^/Cook_Master/pricing [NC]
+RewriteRule ^(.*)$ /Cook_Master/application/extranet/pricingForm.php [L]

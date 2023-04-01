@@ -13,7 +13,7 @@ include PATH_SCRIPT . 'header.php';
 
 <h2 class="text-center mt-4">Inscription</h2>
 
-<form action="<?= PATH_FORM ?>inscription.php" method="post" class="col-md-6" style="margin: 0 auto; padding: 15px;">
+<form action="<?= ADDRESS_FORM ?>inscription.php" method="post" class="col-md-6" style="margin: 0 auto; padding: 15px;">
 
     <div class="mb-3">
         <label for="name" class="form-label">Name *</label>

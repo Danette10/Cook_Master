@@ -1,4 +1,3 @@
-<?php include "init.php"; ?>
 <header>
 
     <nav class="navbar navbar-expand-lg">
@@ -13,7 +12,7 @@
 
             <li class="nav-item">
 
-                <a href="<?= PATH_SITE ?>"><img src="<?= PATH_IMG ?>logo.png" alt="Cook Master Logo" width="100" class="nav-link"></a>
+                <a href="<?= ADDRESS_SITE ?>"><img src="<?= ADDRESS_IMG ?>logo.png" alt="Cook Master Logo" width="100" class="nav-link"></a>
 
             </li>
 
@@ -23,7 +22,7 @@
 
                     <li>
 
-                        <a href="<?= PATH_SITE ?>" class="nav-link">Home</a>
+                        <a href="<?= ADDRESS_SITE ?>" class="nav-link">Home</a>
 
                     </li>
 
@@ -31,14 +30,18 @@
 
                 <div class="connexionInscriptionLinks">
 
+                    <button class="pricingLink btn">
+
+                        <a href="<?= ADDRESS_SITE ?>pricing" class="nav-link">Pricing</a>
+
+                    </button>
+
                     <li>
 
-                        <!-- Button trigger modal -->
                         <button type="button" class="connexionLink btn" data-bs-toggle="modal" data-bs-target="#connexionModal">
                             Connexion
                         </button>
 
-                        <!-- Starting modal connexion -->
                         <div class="modal fade" id="connexionModal" tabindex="-1" aria-labelledby="connexionModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -57,7 +60,7 @@
 
                     <button class="inscriptionLink btn">
 
-                        <a href="<?= PATH_SITE ?>inscription" class="nav-link">Inscription</a>
+                        <a href="<?= ADDRESS_SITE ?>inscription" class="nav-link">Inscription</a>
 
                     </button>
 

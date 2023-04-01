@@ -1,7 +1,8 @@
 <?php
 include "../init.php";
-include "../functions.php";
-$db = connectToDatabase();
+include PATH_SCRIPT . "functions.php";
+include PATH_SCRIPT . "connectDB.php";
+
 
 if (isset($_POST['name']) && isset($_POST['firstname']) && isset($_POST['email']) && isset($_POST['password']) && isset($_POST['passwordConf']) && isset($_POST['birthday'])) {
 
@@ -77,7 +78,7 @@ if (isset($_POST['name']) && isset($_POST['firstname']) && isset($_POST['email']
 
         $messageMail = "<h1>Thank you for your registration !</h1>";
         $messageMail .= "<p>Click on the link below to activate your account</p>";
-        $messageMail .= "<a href='" . PATH_VALIDATE_INSCRIPTION . "?token=" . $token . "'>Activate your account</a>";
+        $messageMail .= "<a href='" . ADDRESS_VALIDATE_INSCRIPTION . "?token=" . $token . "'>Activate your account</a>";
         $messageMail .= "<p>We hope you will enjoy our services !</p>";
         $messageMail .= "<p>Cook Master Team</p>";
 
@@ -86,12 +87,12 @@ if (isset($_POST['name']) && isset($_POST['firstname']) && isset($_POST['email']
         
         mailHtml($email, $subject, $messageMail, $header);
 
-        header("Location: " . PATH_SITE . '?type=success&message=You have been registered successfully ! Please check your email to activate your account.');
+        header("Location: " . ADDRESS_SITE . '?type=success&message=You have been registered successfully ! Please check your email to activate your account.');
         exit();
 
     }else {
         $_SESSION['errors'] = $errors;
-        header("Location: " . PATH_SITE);
+        header("Location: " . ADDRESS_SITE);
         exit();
     }
 

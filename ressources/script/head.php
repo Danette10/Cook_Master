@@ -3,8 +3,8 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="<?= PATH_CSS ?>style.css">
-    <link rel="icon" href="<?= PATH_IMG ?>logo_tab.png">
+    <link rel="stylesheet" href="<?= ADDRESS_CSS ?>style.css">
+    <link rel="icon" href="<?= ADDRESS_IMG ?>logo_tab.png">
 
     <title><?= $title ?></title>
 

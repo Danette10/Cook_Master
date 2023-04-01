@@ -4,24 +4,6 @@ use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 /*
- * TODO: Function to connect to the database
- */
-
-function connectToDatabase(){
-
-    $username = 'root';
-    $password = '';
-    $host = 'localhost';
-    $dbname = 'cookMaster';
-
-    try {
-        return new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-    } catch (PDOException $e) {
-        die('Erreur : ' . $e->getMessage());
-    }
-}
-
-/*
  * TODO: Function to send mail
  */
 

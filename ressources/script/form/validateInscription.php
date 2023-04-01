@@ -18,9 +18,9 @@ if($user) {
     $_SESSION['name'] = $user['lastname'];
     $_SESSION['firstname'] = $user['firstname'];
 
-    header('Location: ' . PATH_SITE . '?type=success&message=Your account has been validated');
+    header('Location: ' . ADDRESS_SITE . '?type=success&message=Your account has been validated');
     exit();
 } else {
-    header('Location: ' . PATH_SITE . '?type=error&message=Your account has not been validated');
+    header('Location: ' . ADDRESS_SITE . '?type=error&message=Your account has not been validated');
     exit();
 }
