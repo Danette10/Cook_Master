@@ -21,11 +21,11 @@ if (isset($_POST['name']) && isset($_POST['firstname']) && isset($_POST['email']
     $errors = [];
     //PASSWORDS CHECK
     if($password != $passwordConf){
-        $errors[] = "Passwords do not match";
+        $errors[] = "Les mots de passe ne correspondent pas";
     }
 
     if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors[] = "Email is not valid";
+        $errors[] = "L'adresse email n'est pas valide";
     }
 
     if( preg_match("#\d#",$password)== 0 ||
@@ -33,15 +33,15 @@ if (isset($_POST['name']) && isset($_POST['firstname']) && isset($_POST['email']
         preg_match("#[A-Z]#",$password)== 0 ||
         strlen($password) < 8
     ) {
-        $errors[] = "Password doesn't meet the requiered conditons";
+        $errors[] = "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre";
     }
 
     if (strlen($firstname)== 1 || strlen($firstname) > 40) {
-        $errors[] = "Firstname has to have between 2 and 40 characters";
+        $errors[] = "Le prénom doit se situer entre 1 et 40 caractères";
     }
 
     if (strlen($name) == 1 || strlen($name) > 100) {
-        $errors[] = "Lastname has to have more than 1 character";
+        $errors[] = "Le nom doit se situer entre 1 et 100 caractères";
     }
 
     $selectUser = $db->prepare("SELECT COUNT(*) FROM user WHERE email = :email");
@@ -49,7 +49,7 @@ if (isset($_POST['name']) && isset($_POST['firstname']) && isset($_POST['email']
     $user = $selectUser->fetchColumn();
 
     if ($user > 0) {
-        $errors[] = "Email already exists";
+        $errors[] = "L'adresse email est déjà utilisée";
     }
 
     if (count($errors) == 0 ) {
@@ -62,7 +62,7 @@ if (isset($_POST['name']) && isset($_POST['firstname']) && isset($_POST['email']
 
             // Si file retourne un entier, c'est qu'il y a une erreur
             if(is_int($file)){
-                $errors[] = "Error while uploading the profile picture";
+                $errors[] = "Erreur lors de l'upload de l'image";
             }else{
                 $profilePicture = $file;
             }
@@ -70,7 +70,7 @@ if (isset($_POST['name']) && isset($_POST['firstname']) && isset($_POST['email']
 
         if (count($errors) > 0) {
             $_SESSION['errors'] = $errors;
-            header("Location: " . ADDRESS_SITE . '?type=error&message=Please check your informations');
+            header("Location: " . ADDRESS_SITE . '?type=error&message=Une erreur est survenue lors de l\'inscription');
             exit();
         }
 
@@ -99,18 +99,18 @@ if (isset($_POST['name']) && isset($_POST['firstname']) && isset($_POST['email']
             ]
         );
 
-        $messageMail = "<h1>Thank you for your registration !</h1>";
-        $messageMail .= "<p>Click on the link below to activate your account</p>";
-        $messageMail .= "<a href='" . ADDRESS_VALIDATE_INSCRIPTION . "?token=" . $token . "'>Activate your account</a>";
-        $messageMail .= "<p>We hope you will enjoy our services !</p>";
-        $messageMail .= "<p>Cook Master Team</p>";
+        $messageMail = "<h1>Merci pour votre inscription !</h1>";
+        $messageMail .= "<p>Vous pouvez activer votre compte en cliquant sur le lien ci-dessous</p>";
+        $messageMail .= "<a href='" . ADDRESS_VALIDATE_INSCRIPTION . "?token=" . $token . "'>Activer mon compte</a>";
+        $messageMail .= "<p>Nous espérons que vous allez apprécier notre site !</p>";
+        $messageMail .= "<p>L'équipe Cook Master</p>";
 
-        $subject = "Cook Master - Activate your account";
+        $subject = "Cook Master - Activation de votre compte";
         $header = "Cook Master < " . MAIL . " >";
         
         mailHtml($email, $subject, $messageMail, $header);
 
-        header("Location: " . ADDRESS_SITE . '?type=success&message=You have been registered successfully ! Please check your email to activate your account.');
+        header("Location: " . ADDRESS_SITE . '?type=success&message=Votre inscription a bien été prise en compte, vous allez recevoir un mail pour activer votre compte');
         exit();
 
     }else {

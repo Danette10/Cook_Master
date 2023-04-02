@@ -5,12 +5,33 @@
     box-sizing: border-box;
 }
 
+/* SCROLLBAR */
+
+/* For Chrome, Safari */
+::-webkit-scrollbar {
+    width: 12px; /* Largeur de la scrollbar */
+}
+
+::-webkit-scrollbar-track {
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #D3665A;
+    border-radius: 10px;
+    border: 3px solid #F5F5F5;
+}
+
 html, body {
     font-family: 'Roboto', sans-serif !important;
     font-size: 16px !important;
     margin: 0 !important;
     padding: 0 !important;
     background-color: #f0f0f0 !important;
+}
+
+header{
+    top: 0;
 }
 
 footer {
@@ -125,4 +146,20 @@ form input[type="submit"]:hover{
 
 #profileDropdown::after{
     display: none;
+}
+
+/* CHOOSE PLAN */
+
+#choosePlan{
+    background-color: #FF9B90;
+    color: white;
+    font-weight: bold;
+    border-radius: 15px;
+}
+
+#choosePlan:hover{
+    background-color: white;
+    color: #FF9B90;
+    font-weight: bold;
+    border: 1px solid #FF9B90;
 }

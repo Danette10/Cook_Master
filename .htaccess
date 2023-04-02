@@ -5,5 +5,5 @@ RewriteCond %{REQUEST_URI} ^/Cook_Master/inscription$ [NC]
 RewriteRule ^(.*)$ /Cook_Master/application/extranet/inscriptionForm.php [L]
 
 # PRICING
-RewriteCond %{REQUEST_URI} ^/Cook_Master/pricing [NC]
+RewriteCond %{REQUEST_URI} ^/Cook_Master/abonnement [NC]
 RewriteRule ^(.*)$ /Cook_Master/application/extranet/pricingForm.php [L]

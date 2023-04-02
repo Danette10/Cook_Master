@@ -13,6 +13,7 @@ define('PATH_RESSOURCES', PATH_SITE . 'ressources/');
 define('PATH_CSS', PATH_RESSOURCES . 'css/');
 define('PATH_JS', PATH_RESSOURCES . 'js/');
 define('PATH_IMG', PATH_RESSOURCES . 'images/');
+define('PATH_PRICING_ICON', PATH_IMG . 'pricingIcon/');
 define('PATH_SCRIPT', PATH_RESSOURCES . 'script/');
 
 define('PATH_APPLICATION', PATH_SITE . 'application/');
@@ -34,10 +35,13 @@ $dotenv->load();
  */
 
 define('ADDRESS_SITE', 'http://' . $_SERVER['HTTP_HOST'] . '/Cook_Master/');
+
 define('ADDRESS_RESSOURCES', ADDRESS_SITE . 'ressources/');
 define('ADDRESS_CSS', ADDRESS_RESSOURCES . 'css/');
 define('ADDRESS_JS', ADDRESS_RESSOURCES . 'js/');
 define('ADDRESS_IMG', ADDRESS_RESSOURCES . 'images/');
+define('ADDRESS_PRICING_ICON', ADDRESS_IMG . 'pricingIcon/');
+
 define('ADDRESS_SCRIPT', ADDRESS_RESSOURCES . 'script/');
 define('ADDRESS_APPLICATION', ADDRESS_SITE . 'application/');
 define('ADDRESS_APPLICATION_EXTRANET', ADDRESS_APPLICATION . 'extranet/');
