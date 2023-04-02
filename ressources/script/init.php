@@ -18,9 +18,8 @@ define('PATH_SCRIPT', PATH_RESSOURCES . 'script/');
 
 define('PATH_APPLICATION', PATH_SITE . 'application/');
 define('PATH_APPLICATION_EXTRANET', PATH_APPLICATION . 'extranet/');
-define('PATH_VALIDATE_INSCRIPTION', PATH_SCRIPT . 'form/validateInscription.php');
-
 define('PATH_FORM', PATH_SCRIPT . 'form/');
+define('PATH_VALIDATE_INSCRIPTION', PATH_FORM . 'validateInscription.php');
 
 define('MAIL', 'cookmasterpa.2023@gmail.com');
 
@@ -46,4 +45,5 @@ define('ADDRESS_SCRIPT', ADDRESS_RESSOURCES . 'script/');
 define('ADDRESS_APPLICATION', ADDRESS_SITE . 'application/');
 define('ADDRESS_APPLICATION_EXTRANET', ADDRESS_APPLICATION . 'extranet/');
 define('ADDRESS_FORM', ADDRESS_SCRIPT . 'form/');
-define('ADDRESS_VALIDATE_INSCRIPTION', ADDRESS_SCRIPT . 'form/validateInscription.php');
+define('ADDRESS_VALIDATE_INSCRIPTION', ADDRESS_FORM . 'validateInscription.php');
+define('ADDRESS_RESET_PASSWORD', ADDRESS_SITE . 'resetPassword');

@@ -9,16 +9,18 @@ include PATH_SCRIPT . 'header.php';
 
 $linkToSubscription = '';
 
-switch ($_SESSION['subscriptionType']) {
-    case 'Free':
-        $linkToSubscription = '<a href="#" class="btn ms-1" id="choosePlan">Choisir cet abonnement</a>';
-        break;
-    case 'Starter':
-        $linkToSubscription = '<a href="#" class="btn ms-1" id="choosePlan">Choisir cet abonnement</a>';
-        break;
-    case 'Master':
-        $linkToSubscription = '<a href="#" class="btn ms-1" id="choosePlan">Choisir cet abonnement</a>';
-        break;
+if(isset($_SESSION['subscriptionType'])){
+    switch ($_SESSION['subscriptionType']) {
+        case 'Free':
+            $linkToSubscription = '<a href="#" class="btn ms-1" id="choosePlan">Choisir cet abonnement</a>';
+            break;
+        case 'Starter':
+            $linkToSubscription = '<a href="#" class="btn ms-1" id="choosePlan">Choisir cet abonnement</a>';
+            break;
+        case 'Master':
+            $linkToSubscription = '<a href="#" class="btn ms-1" id="choosePlan">Choisir cet abonnement</a>';
+            break;
+    }
 }
 
 ?>
@@ -39,12 +41,12 @@ switch ($_SESSION['subscriptionType']) {
 
                         <p class="text-center d-flex flex-column align-items-center">
                             <img src="<?= ADDRESS_PRICING_ICON . 'free.png'; ?>" alt="Free" class="img-fluid">
-                            <span>Free<?= $_SESSION['subscriptionType'] == 'Free' ? '<span class="badge text-bg-success ms-2">Abonnement actuel</span>' : ''; ?></span>
+                            <span>Free<?= isset($_SESSION['subscriptionType']) && $_SESSION['subscriptionType'] == 'Free' ? '<span class="badge text-bg-success ms-2">Abonnement actuel</span>' : ''; ?></span>
                         </p>
 
                         <p style="font-size: 13px;">
                             <em>Gratuit</em>
-                            <?= $_SESSION['subscriptionType'] == 'Free' ? '' : $linkToSubscription; ?>
+                            <?= isset($_SESSION['subscriptionType']) && $_SESSION['subscriptionType'] == 'Free' ? '' : $linkToSubscription; ?>
                         </p>
 
                     </th>
@@ -53,12 +55,12 @@ switch ($_SESSION['subscriptionType']) {
 
                         <p class="text-center d-flex flex-column align-items-center">
                             <img src="<?= ADDRESS_PRICING_ICON . 'starter.png'; ?>" alt="Starter" class="img-fluid">
-                            <span>Starter<?= $_SESSION['subscriptionType'] == 'Starter' ? '<span class="badge text-bg-success ms-2">Abonnement actuel</span>' : ''; ?></span>
+                            <span>Starter<?= isset($_SESSION['subscriptionType']) && $_SESSION['subscriptionType'] == 'Starter' ? '<span class="badge text-bg-success ms-2">Abonnement actuel</span>' : ''; ?></span>
                         </p>
 
                         <p style="font-size: 13px;">
                             <em>9,90€ / mois ou 113€/an</em>
-                            <?= $_SESSION['subscriptionType'] == 'Starter' ? '' : $linkToSubscription; ?>
+                            <?= isset($_SESSION['subscriptionType']) && $_SESSION['subscriptionType'] == 'Starter' ? '' : $linkToSubscription; ?>
                         </p>
 
                     </th>
@@ -67,12 +69,12 @@ switch ($_SESSION['subscriptionType']) {
 
                         <p class="text-center d-flex flex-column align-items-center">
                             <img src="<?= ADDRESS_PRICING_ICON . 'master.png'; ?>" alt="Master" class="img-fluid">
-                            <span>Master<?= $_SESSION['subscriptionType'] == 'Master' ? '<span class="badge text-bg-success ms-2">Abonnement actuel</span>' : ''; ?></span>
+                            <span>Master<?= isset($_SESSION['subscriptionType']) && $_SESSION['subscriptionType'] == 'Master' ? '<span class="badge text-bg-success ms-2">Abonnement actuel</span>' : ''; ?></span>
                         </p>
 
                         <p style="font-size: 13px;">
                             <em>19€ / mois ou 220€ / an</em>
-                            <?= $_SESSION['subscriptionType'] == 'Master' ? '' : $linkToSubscription; ?>
+                            <?= isset($_SESSION['subscriptionType']) && $_SESSION['subscriptionType'] == 'Master' ? '' : $linkToSubscription; ?>
                         </p>
 
                     </th>

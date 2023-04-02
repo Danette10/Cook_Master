@@ -28,6 +28,20 @@ if($userExist['role'] == 0){
     exit();
 }
 
+$password = hash('sha512', $password);
+
+$selectIfPasswordIsCorrect = $db->prepare('SELECT COUNT(*) AS passwordIsCorrect FROM user WHERE email = :email AND password = :password');
+$selectIfPasswordIsCorrect->execute(array(
+    'email' => $email,
+    'password' => $password
+));
+$passwordIsCorrect = $selectIfPasswordIsCorrect->fetch();
+
+if ($passwordIsCorrect['passwordIsCorrect'] == 0) {
+    header('Location: ' . ADDRESS_SITE . '?type=error&message=Mot de passe incorrect');
+    exit();
+}
+
 session_start();
 
 $_SESSION['lastname'] = $userExist['lastname'];
