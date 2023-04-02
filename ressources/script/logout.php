@@ -5,5 +5,5 @@ session_start();
 
 session_destroy();
 
-header('Location: ' . ADDRESS_SITE . '?type=success&message=You are been disconnected !');
+header('Location: ' . ADDRESS_SITE . '?type=success&message=Vous avez bien été déconnecté');
 exit();

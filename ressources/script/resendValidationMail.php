@@ -13,16 +13,16 @@ $updateUser->execute([
     'email' => $email
 ]);
 
-$messageMail = "<h1>Thank you for your registration !</h1>";
-$messageMail .= "<p>Click on the link below to activate your account</p>";
-$messageMail .= "<a href='" . ADDRESS_VALIDATE_INSCRIPTION . "?token=" . $token . "'>Activate your account</a>";
-$messageMail .= "<p>We hope you will enjoy our services !</p>";
-$messageMail .= "<p>Cook Master Team</p>";
+$messageMail = "<h1>Merci pour votre inscription !</h1>";
+$messageMail .= "<p>Vous pouvez activer votre compte en cliquant sur le lien ci-dessous</p>";
+$messageMail .= "<a href='" . ADDRESS_VALIDATE_INSCRIPTION . "?token=" . $token . "'>Activer mon compte</a>";
+$messageMail .= "<p>Nous espérons que vous allez apprécier notre site !</p>";
+$messageMail .= "<p>L'équipe Cook Master</p>";
 
-$subject = "Cook Master - Activate your account";
+$subject = "Cook Master - Activation de votre compte";
 $header = "Cook Master < " . MAIL . " >";
 
 mailHtml($email, $subject, $messageMail, $header);
 
-header('Location: ' . ADDRESS_SITE . '?type=success&message=An email has been sent to you to activate your account');
+header('Location: ' . ADDRESS_SITE . '?type=success&message=Un mail de validation vient de vous être envoyé');
 exit();

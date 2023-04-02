@@ -36,5 +36,5 @@ $_SESSION['email'] = $email;
 $_SESSION['role'] = $userExist['role'];
 $_SESSION['profilePicture'] = $userExist['profilePicture'];
 
-header('Location: ' . ADDRESS_SITE . '?type=success&message=You are been connected !');
+header('Location: ' . ADDRESS_SITE . '?type=success&message=Connexion réussie');
 exit();

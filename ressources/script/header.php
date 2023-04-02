@@ -22,7 +22,7 @@
 
                     <li>
 
-                        <a href="<?= ADDRESS_SITE ?>" class="nav-link">Home</a>
+                        <a href="<?= ADDRESS_SITE ?>" class="nav-link">Accueil</a>
 
                     </li>
 
@@ -34,7 +34,7 @@
 
                     <button class="pricingLink btn">
 
-                        <a href="<?= ADDRESS_SITE ?>pricing" class="nav-link">Pricing</a>
+                        <a href="<?= ADDRESS_SITE ?>pricing" class="nav-link">S'abonner</a>
 
                     </button>
 
@@ -95,7 +95,7 @@
 
                     <hr class="dropdown-divider">
 
-                    <li><a class="dropdown-item" href="<?= ADDRESS_SCRIPT ?>logout.php">Logout</a></li>
+                    <li><a class="dropdown-item" href="<?= ADDRESS_SCRIPT ?>logout.php">Décconnexion</a></li>
 
                 </ul>
             </div>
