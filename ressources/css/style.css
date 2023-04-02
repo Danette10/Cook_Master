@@ -1,11 +1,46 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
 
+* {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+/* SCROLLBAR */
+
+/* For Chrome, Safari */
+::-webkit-scrollbar {
+    width: 12px; /* Largeur de la scrollbar */
+}
+
+::-webkit-scrollbar-track {
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #D3665A;
+    border-radius: 10px;
+    border: 3px solid #F5F5F5;
+}
+
 html, body {
     font-family: 'Roboto', sans-serif !important;
     font-size: 16px !important;
     margin: 0 !important;
     padding: 0 !important;
     background-color: #f0f0f0 !important;
+}
+
+header{
+    top: 0;
+}
+
+footer {
+    background-color: #FF9B90;
+}
+
+#footer {
+    margin-top: auto;
+    color: white;
 }
 
 nav{
@@ -36,12 +71,37 @@ nav ul li a:hover{
     padding: 0 10px;
 }
 
+.connexionInscriptionLinks .pricingLink{
+    width: 122px;
+    color: white;
+    font-weight: bold;
+    background-color: #1C7832;
+    border: 2px solid #1C7832;
+    border-radius: 15px;
+}
+
+.connexionInscriptionLinks .logoutLink{
+    width: 122px;
+    border-radius: 15px;
+    color: white;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.connexionInscriptionLinks .pricingLink:hover{
+    color: #1C7832;
+    font-weight: bold;
+    background-color: white;
+    border: 2px solid #1C7832;
+}
+
 .connexionInscriptionLinks li .connexionLink, .connexionInscriptionLinks .inscriptionLink{
     background-color: white;
     border: 2px solid #FF9B90;
     color: #FF9B90;
     font-weight: bold;
     border-radius: 15px;
+    width: 122px;
 }
 
 .connexionInscriptionLinks li .connexionLink:hover, .connexionInscriptionLinks .inscriptionLink:hover{
@@ -75,4 +135,31 @@ form input[type="submit"]:hover{
     border: 2px solid #FF9B90;
     color: white;
     font-weight: bold;
+}
+
+/* PROFIL DROPDOWN */
+
+#profileDropdown{
+    background: transparent;
+    border: none;
+}
+
+#profileDropdown::after{
+    display: none;
+}
+
+/* CHOOSE PLAN */
+
+#choosePlan{
+    background-color: #FF9B90;
+    color: white;
+    font-weight: bold;
+    border-radius: 15px;
+}
+
+#choosePlan:hover{
+    background-color: white;
+    color: #FF9B90;
+    font-weight: bold;
+    border: 1px solid #FF9B90;
 }

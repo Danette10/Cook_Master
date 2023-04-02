@@ -1,4 +1,4 @@
 .git
 .idea
-
-ressources/script/init.php
+.env
+/ressources/images/profilePicture/
