@@ -14,25 +14,35 @@ include PATH_SCRIPT . 'header.php';
 <h2 class="text-center mt-4">Inscription</h2>
 
 <form action="<?= ADDRESS_FORM ?>inscription.php" method="post" id="inscriptionForm" class="col-md-6" enctype="multipart/form-data" style="margin: 0 auto; padding: 15px;">
-
+    <div class="mb-3" id="nameRules" hidden="hidden">
+        <div id="nameRule" style="color: red;">Minimum 2 caractères et maximum 40</div>
+    </div>
     <div class="mb-3">
         <label for="name" class="form-label">Nom *</label>
-        <input type="text" class="form-control" id="name" name="name" required>
+        <input type="text" class="form-control" id="name" name="name" required oninput="nameRules();" >
     </div>
-
+    <div class="mb-3" id="firstnameRules" hidden="hidden">
+        <div id="firstnameRule" style="color: red;">Minimum 2 caractères et maximum 40</div>
+    </div>
     <div class="mb-3">
         <label for="surname" class="form-label">Prénom *</label>
-        <input type="text" class="form-control" id="firstname" name="firstname" required>
+        <input type="text" class="form-control" id="firstname" name="firstname" required oninput="firstnameRules();">
     </div>
 
     <div class="mb-3">
         <label for="email" class="form-label">Email *</label>
         <input type="email" class="form-control" id="emailInscription" name="email" required>
     </div>
-
+    <div class="mb-3" id="pwdRules" hidden="hidden">
+        <div id="pwdRule1" style="color: red;">Minimum 8 caractères</div>
+        <div id="pwdRule2" style="color: red;">Minimum 2 minuscule</div>
+        <div id="pwdRule3" style="color: red;">Minimum 2 majuscule</div>
+        <div id="pwdRule4" style="color: red;">Minimum 2 chiffres</div>
+        <div id="pwdRule5" style="color: red;">Minimum 2 caractères spéciaux</div>
+    </div>
     <div class="mb-3">
         <label for="password" class="form-label">Mot de passe *</label>
-        <input type="password" class="form-control" id="passwordInscription" name="password" required>
+        <input type="password" class="form-control" id="passwordInscription" name="password" required oninput="pwdRules();">
 
         <div id="viewPassword" class="form-text">
 
