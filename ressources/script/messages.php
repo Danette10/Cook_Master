@@ -10,9 +10,7 @@ if($email != ''){
 if($type != '' && $message != ''){
     if($type == 'success') {
         echo '<div class="alert alert-success" role="alert">' . $message . '</div>';
-        exit();
     } else if($type == 'error') {
         echo '<div class="alert alert-danger" role="alert">' . $message . '</div>';
-        exit();
     }
 }
