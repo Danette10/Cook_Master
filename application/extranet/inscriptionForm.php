@@ -13,7 +13,7 @@ include PATH_SCRIPT . 'header.php';
 
 <h2 class="text-center mt-4">Inscription</h2>
 
-<form action="<?= ADDRESS_FORM ?>inscription.php" method="post" class="col-md-6" enctype="multipart/form-data" style="margin: 0 auto; padding: 15px;">
+<form action="<?= ADDRESS_FORM ?>inscription.php" method="post" id="inscriptionForm" class="col-md-6" enctype="multipart/form-data" style="margin: 0 auto; padding: 15px;">
 
     <div class="mb-3">
         <label for="name" class="form-label">Nom *</label>
@@ -65,7 +65,9 @@ include PATH_SCRIPT . 'header.php';
         <input type="file" class="form-control" id="profilePicture" name="profilePicture" accept="image/jpeg, image/png, image/jpg">
     </div>
 
-    <input type="submit" class="btn" value="Submit">
+    <div class="g-recaptcha mb-4" data-sitekey="<?= $_ENV['CAPTCHA_SITE_KEY'] ?>" data-callback="recaptchaCallback" data-expired-callback="recaptchaExpired"></div>
+
+    <input type="submit" class="btn" value="Submit" onclick="verifyRecaptcha()" style="display:none;" id="submitButton">
 
 </form>
 
@@ -76,7 +78,8 @@ include PATH_SCRIPT . 'footer.php';
 
 <script>
 
-    $('form').submit(function (e) {
+
+    $('#inscriptionForm').submit(function (e) {
 
         if(confirm("Voulez-vous vraiment soumettre le formulaire ?")) {
 
@@ -99,6 +102,7 @@ include PATH_SCRIPT . 'footer.php';
         } else {
             return false;
         }
+
     });
 
 </script>

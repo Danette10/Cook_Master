@@ -36,5 +36,17 @@ $_SESSION['email'] = $email;
 $_SESSION['role'] = $userExist['role'];
 $_SESSION['profilePicture'] = $userExist['profilePicture'];
 
+switch ($userExist['role']) {
+    case 1:
+        $_SESSION['subscriptionType'] = 'Free';
+        break;
+    case 2:
+        $_SESSION['subscriptionType'] = 'Starter';
+        break;
+    case 3:
+        $_SESSION['subscriptionType'] = 'Master';
+        break;
+}
+
 header('Location: ' . ADDRESS_SITE . '?type=success&message=Connexion réussie');
 exit();

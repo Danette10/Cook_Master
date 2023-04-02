@@ -34,7 +34,7 @@
 
                     <button class="pricingLink btn">
 
-                        <a href="<?= ADDRESS_SITE ?>pricing" class="nav-link">S'abonner</a>
+                        <a href="<?= ADDRESS_SITE ?>abonnement" class="nav-link">S'abonner</a>
 
                     </button>
 
@@ -47,20 +47,6 @@
                         <button type="button" class="connexionLink btn" data-bs-toggle="modal" data-bs-target="#connexionModal">
                             Connexion
                         </button>
-
-                        <div class="modal fade" id="connexionModal" tabindex="-1" aria-labelledby="connexionModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="connexionModalLabel">Connexion</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <?php include PATH_APPLICATION_EXTRANET . 'connexionForm.php'; ?>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
                     </li>
 
@@ -108,3 +94,17 @@
     </nav>
 
 </header>
+
+<div class="modal fade" id="connexionModal" tabindex="-1" aria-labelledby="connexionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="connexionModalLabel">Connexion</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <?php include PATH_APPLICATION_EXTRANET . 'connexionForm.php'; ?>
+            </div>
+        </div>
+    </div>
+</div>
