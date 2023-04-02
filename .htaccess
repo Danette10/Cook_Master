@@ -1,0 +1,13 @@
+RewriteEngine on
+
+# INSCRIPTION
+RewriteCond %{REQUEST_URI} ^/Cook_Master/inscription$ [NC]
+RewriteRule ^(.*)$ /Cook_Master/application/extranet/inscriptionForm.php [L]
+
+# PRICING
+RewriteCond %{REQUEST_URI} ^/Cook_Master/abonnement [NC]
+RewriteRule ^(.*)$ /Cook_Master/application/extranet/pricingForm.php [L]
+
+# RESET PASSWORD
+RewriteCond %{REQUEST_URI} ^/Cook_Master/resetPassword$ [NC]
+RewriteRule ^(.*)$ /Cook_Master/application/extranet/resetPasswordForm.php [L]
