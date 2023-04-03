@@ -52,10 +52,12 @@ include PATH_SCRIPT . 'header.php';
         </div>
 
     </div>
-
+    <div class="mb-3" id="pwdConfirmRules" hidden="hidden">
+        <div id="pwdConfirmRule1" style="color: red;">Doit être égal au mot de passe précédent</div>
+    </div>
     <div class="mb-3">
         <label for="passwordConf" class="form-label">Confirmation du mot de passe *</label>
-        <input type="password" class="form-control" id="passwordInscriptionConf" name="passwordConf" required>
+        <input type="password" class="form-control" id="passwordInscriptionConf" name="passwordConf" required oninput="pwdConfirmRules()">
 
         <div id="viewPassword" class="form-text">
 
@@ -92,15 +94,25 @@ include PATH_SCRIPT . 'footer.php';
     $('#inscriptionForm').submit(function (e) {
 
         if(confirm("Voulez-vous vraiment soumettre le formulaire ?")) {
-
-            if ($('#passwordInscription').val() !== $('#passwordInscriptionConf').val()) {
+            if (!nameRules()) {
+                alert("Le nom ne réspectent pas les conditions");
+                return false;
+            }
+            if (!firstnameRules()) {
+                alert("Le prénom ne réspectent pas les conditions");
+                return false;
+            }
+            if (!pwdRules()) {
+                alert("Le mot de passe ne réspecte pas les normes");
+            }
+            if (!pwdConfirmRules()) {
 
                 alert("Les mots de passe ne correspondent pas");
 
                 return false;
 
             }
-
+            
             if(!isValidEmail($('#emailInscription').val())) {
 
                 alert("L'adresse email n'est pas valide");
