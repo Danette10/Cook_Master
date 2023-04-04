@@ -30,6 +30,12 @@ html, body {
     background-color: #f0f0f0 !important;
 }
 
+body{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
 header{
     top: 0;
 }

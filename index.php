@@ -11,21 +11,25 @@ include PATH_SCRIPT . 'header.php';
 
 <body>
 
-<?php include 'ressources/script/messages.php'; ?>
+<main>
 
-<?php
-echo '<div id="infoPanel">';
-   if (!empty($_SESSION['errors']) && isset($_SESSION['errors'])) {
-      echo '<div class="alert alert-danger mt-4 pb-1" role="alert">';
+    <?php include 'ressources/script/messages.php'; ?>
 
-      for ($i = 0; $i < count($_SESSION['errors']); $i++) {
-         $element = $_SESSION['errors'][$i];
-         echo '<h5 class="fw-bold">- ' . $element . '</h5>';
-      }
-      echo '</div>';
-      unset($_SESSION['errors']);
-   }
-echo '</div>'; ?>
+    <?php
+    echo '<div id="infoPanel">';
+    if (!empty($_SESSION['errors']) && isset($_SESSION['errors'])) {
+        echo '<div class="alert alert-danger mt-4 pb-1" role="alert">';
+
+        for ($i = 0; $i < count($_SESSION['errors']); $i++) {
+            $element = $_SESSION['errors'][$i];
+            echo '<h5 class="fw-bold">- ' . $element . '</h5>';
+        }
+        echo '</div>';
+        unset($_SESSION['errors']);
+    }
+    echo '</div>'; ?>
+
+</main>
 
 
 <?php
