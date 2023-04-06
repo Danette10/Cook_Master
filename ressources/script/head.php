@@ -1,4 +1,7 @@
-<?php include "init.php"; ?>
+<?php
+include "init.php";
+include PATH_SCRIPT . 'functions.php';
+?>
 <head>
 
     <meta charset="utf-8">

@@ -7,11 +7,6 @@ $title = "Cook Master - Checkout";
 include '../../../ressources/script/head.php';
 include PATH_SCRIPT . 'header.php';
 
-//require '../../../vendor/autoload.php';
-//$stripe = new \Stripe\StripeClient('sk_test_51MmwzkAS99IFK7fGk46V6dGk2IzBInPZRNGjFRwghJjQzNXQENIjAvqK9LYNDEGphEl3DYV1VnXEMBETCK4KnDV100K7Gd6wU4');
-
-
-
 ?>
 
 <body>

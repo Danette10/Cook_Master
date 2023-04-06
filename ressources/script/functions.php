@@ -88,3 +88,18 @@ function uploadProfilePicture($file) {
         return 4; // Code 4: Error occurred while uploading the file
     }
 }
+
+/*
+ * TODO: Function to return the price of a product
+ */
+
+function getPriceDetails($priceId) {
+    try {
+        $price = \Stripe\Price::retrieve($priceId);
+        return $price;
+    } catch (\Stripe\Exception\ApiErrorException $e) {
+        // Gestion des erreurs
+        echo 'Error: ' . $e->getMessage();
+        return null;
+    }
+}
