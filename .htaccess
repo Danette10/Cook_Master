@@ -11,3 +11,11 @@ RewriteRule ^(.*)$ /Cook_Master/application/extranet/pricingForm.php [L]
 # RESET PASSWORD
 RewriteCond %{REQUEST_URI} ^/Cook_Master/resetPassword$ [NC]
 RewriteRule ^(.*)$ /Cook_Master/application/extranet/resetPasswordForm.php [L]
+
+# PAIEMENT
+RewriteCond %{REQUEST_URI} ^/Cook_Master/subscribe/starter/plan/monthly$ [NC]
+RewriteRule ^(.*)$ /Cook_Master/application/extranet/paiement/paiementForm.php?subscription=starter&plan=monthly [L]
+
+RewriteCond %{REQUEST_URI} ^/Cook_Master/subscribe/starter/plan/yearly$ [NC]
+RewriteRule ^(.*)$ /Cook_Master/application/extranet/paiement/paiementForm.php?subscription=starter&plan=yearly [L]
+
