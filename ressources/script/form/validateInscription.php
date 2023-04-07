@@ -13,10 +13,6 @@ $user = $selectUser->fetch();
 if($user) {
     $updateUser = $db->prepare("UPDATE user SET token = NULL, role = 1 WHERE token = :token");
     $updateUser->execute(['token' => $token]);
-    $_SESSION['email'] = $user['email'];
-    $_SESSION['role'] = $user['role'];
-    $_SESSION['name'] = $user['lastname'];
-    $_SESSION['firstname'] = $user['firstname'];
 
     $messageMail = "<p>Bonjour,</p>";
     $messageMail .= "<p>Nous vous confirmons que votre compte a bien été validé.</p>";

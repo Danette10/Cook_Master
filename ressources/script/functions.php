@@ -50,7 +50,8 @@ function uploadProfilePicture($file) {
 
     // Create folder with year if not exist
     $year = date('Y');
-    $path = PATH_IMG . 'profilePicture/' . $year . '/';
+    $month = date('m');
+    $path = PATH_IMG . 'profilePicture/' . $year . '/' . $month . '/';
 
     // Check if the folder exists, if not, create it
     if (!file_exists($path)) {
@@ -83,7 +84,7 @@ function uploadProfilePicture($file) {
 
     // Upload the file
     if (move_uploaded_file($file["tmp_name"], $target_file)) {
-        return $year . '/' . $unique_name . $extension;
+        return $year . '/' . $month . '/' . $unique_name;
     } else {
         return 4; // Code 4: Error occurred while uploading the file
     }
