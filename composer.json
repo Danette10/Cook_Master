@@ -2,7 +2,6 @@
     "require": {
         "phpmailer/phpmailer": "^6.8",
       "ext-pdo": "*",
-        "vlucas/phpdotenv": "^5.5",
-        "stripe/stripe-php": "^10.12"
+        "vlucas/phpdotenv": "^5.5"
     }
 }

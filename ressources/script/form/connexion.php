@@ -11,7 +11,7 @@ if (empty($email) || empty($password)) {
     exit();
 }
 
-$selectIfUserExist = $db->prepare('SELECT id, lastname, firstname, role, profilePicture, COUNT(*) AS userExist FROM user WHERE email = :email');
+$selectIfUserExist = $db->prepare('SELECT lastname, firstname, role, profilePicture, COUNT(*) AS userExist FROM user WHERE email = :email');
 $selectIfUserExist->execute(array(
     'email' => $email
 ));
@@ -44,7 +44,6 @@ if ($passwordIsCorrect['passwordIsCorrect'] == 0) {
 
 session_start();
 
-$_SESSION['id'] = $userExist['id'];
 $_SESSION['lastname'] = $userExist['lastname'];
 $_SESSION['firstname'] = $userExist['firstname'];
 $_SESSION['email'] = $email;
