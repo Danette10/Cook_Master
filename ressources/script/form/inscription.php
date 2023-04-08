@@ -29,21 +29,19 @@ if (isset($_POST['name']) && isset($_POST['firstname']) && isset($_POST['email']
     }
 
     if( preg_match("#\d#",$password)== 0 ||
-        preg_match("#[a-z]{2,}#",$password)== 0 ||
-        preg_match("#[A-Z]{2,}#",$password)== 0 ||
-        preg_match("#[^a-zA-Z0-9]{2,}#",$password)== 0 ||
-        preg_match("#[0-9]{2,}#",$password)== 0 ||
+        preg_match("#[a-z]#",$password)== 0 ||
+        preg_match("#[A-Z]#",$password)== 0 ||
         strlen($password) < 8
     ) {
-        $errors[] = "Le mot de passe doit contenir au moins 8 caractères, 2 majuscules, 2 minuscules, 2 caractères spéciaux et 2 chiffre";
+        $errors[] = "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre";
     }
 
-    if (strlen($firstname)== 2 || strlen($firstname) > 40) {
-        $errors[] = "Le prénom doit se situer entre 2 et 40 caractères";
+    if (strlen($firstname)== 1 || strlen($firstname) > 40) {
+        $errors[] = "Le prénom doit se situer entre 1 et 40 caractères";
     }
 
-    if (strlen($name) == 2 || strlen($name) > 100) {
-        $errors[] = "Le nom doit se situer entre 2 et 100 caractères";
+    if (strlen($name) == 1 || strlen($name) > 100) {
+        $errors[] = "Le nom doit se situer entre 1 et 100 caractères";
     }
 
     $selectUser = $db->prepare("SELECT COUNT(*) FROM user WHERE email = :email");
@@ -105,10 +103,10 @@ if (isset($_POST['name']) && isset($_POST['firstname']) && isset($_POST['email']
         $messageMail .= "<p>Vous pouvez activer votre compte en cliquant sur le lien ci-dessous</p>";
         $messageMail .= "<a href='" . ADDRESS_VALIDATE_INSCRIPTION . "?token=" . $token . "'>Activer mon compte</a>";
         $messageMail .= "<p>Nous espérons que vous allez apprécier notre site !</p>";
-        $messageMail .= "<p>L'équipe Cook Master</p>";
+        $messageMail .= "<p>L'équipe Cookorama</p>";
 
-        $subject = "Cook Master - Activation de votre compte";
-        $header = "Cook Master < " . MAIL . " >";
+        $subject = "Cookorama - Activation de votre compte";
+        $header = "Cookorama < " . MAIL . " >";
         
         mailHtml($email, $subject, $messageMail, $header);
 

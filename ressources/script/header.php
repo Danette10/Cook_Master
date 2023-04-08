@@ -12,13 +12,13 @@
 
             <li class="nav-item">
 
-                <a href="<?= ADDRESS_SITE ?>"><img src="<?= ADDRESS_IMG ?>logo.png" alt="Cook Master Logo" width="100" class="nav-link"></a>
+                <a href="<?= ADDRESS_SITE ?>"><img src="<?= ADDRESS_IMG ?>logo.png" alt="Cookorama Logo" width="300" class="nav-link"></a>
 
             </li>
 
-            <div class="collapse navbar-collapse" id="navbarToggler">
+            <div class="collapse navbar-collapse ms-3" id="navbarToggler">
 
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="font-size: 22px; position: relative; top: -3px;">
 
                     <li>
 
@@ -73,7 +73,9 @@
 
             <div class="dropdown" style="margin-right: 80px;">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="<?= ADDRESS_IMG ?>profilePicture/<?= $profilePicture ?>" alt="Profile picture" width="50" height="50" style="margin-left: 10px;" class="rounded-circle">
+
+                    <img src="<?= ADDRESS_IMG ?>profilePicture/<?= $profilePicture ?>" alt="Profile picture" width="60" height="60" class="rounded-circle">
+
                 </button>
 
                 <ul class="dropdown-menu" aria-labelledby="profileDropdown">
