@@ -15,23 +15,23 @@ function mailHtml($to, $subject, $message, $headers) {
 
     try {
         //Server settings
-        $mail->SMTPDebug = 0;                                       // Enable verbose debug output
-        $mail->isSMTP();                                            // Send using SMTP
-        $mail->Host       = 'smtp.gmail.com';                       // Set the SMTP server to send through
-        $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-        $mail->Username   = 'cookmasterpa.2023@gmail.com';          // SMTP username
-        $mail->Password   = 'pntwvqrintbfsavc';                         // SMTP password
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
-        $mail->Port       = 587;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'cookmasterpa.2023@gmail.com';
+        $mail->Password   = 'pntwvqrintbfsavc';
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port       = 587;
 
         //Recipients
-        $mail->setFrom('cookmasterpa.2023@gmail.com', 'CookMaster');
-        $mail->addAddress($to);     // Add a recipient
+        $mail->setFrom('cookmasterpa.2023@gmail.com', 'Cookorama');
+        $mail->addAddress($to);
 
         $mail->CharSet = 'UTF-8';
 
         // Content
-        $mail->isHTML(true);                                  // Set email format to HTML
+        $mail->isHTML(true);
         $mail->Subject = $subject;
         $mail->Body    = $message;
         $mail->AltBody = $message;
@@ -50,7 +50,8 @@ function uploadProfilePicture($file) {
 
     // Create folder with year if not exist
     $year = date('Y');
-    $path = PATH_IMG . 'profilePicture/' . $year . '/';
+    $month = date('m');
+    $path = PATH_IMG . 'profilePicture/' . $year . '/' . $month . '/';
 
     // Check if the folder exists, if not, create it
     if (!file_exists($path)) {
@@ -83,8 +84,46 @@ function uploadProfilePicture($file) {
 
     // Upload the file
     if (move_uploaded_file($file["tmp_name"], $target_file)) {
-        return $year . '/' . $unique_name . $extension;
+        return $year . '/' . $month . '/' . $unique_name;
     } else {
         return 4; // Code 4: Error occurred while uploading the file
     }
+}
+
+/*
+ * TODO: Function to return the price of a product
+ */
+
+function getPriceDetails($priceId) {
+    try {
+        $price = \Stripe\Price::retrieve($priceId);
+        return $price;
+    } catch (\Stripe\Exception\ApiErrorException $e) {
+        // Gestion des erreurs
+        echo 'Error: ' . $e->getMessage();
+        return null;
+    }
+}
+
+/*
+ * TODO: Function to return the currency of a product
+ * @param $priceId
+ */
+
+function getCurrency($priceId) {
+    $price = getPriceDetails($priceId);
+
+    switch ($price->currency) {
+        case 'eur':
+            $price->currency = '€';
+            break;
+        case 'usd':
+            $price->currency = '$';
+            break;
+        case 'gbp':
+            $price->currency = '£';
+            break;
+    }
+
+    return $price->currency;
 }

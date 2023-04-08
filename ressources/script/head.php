@@ -1,10 +1,13 @@
-<?php include "init.php"; ?>
+<?php
+include "init.php";
+include PATH_SCRIPT . 'functions.php';
+?>
 <head>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="<?= ADDRESS_CSS ?>style.css">
-    <link rel="icon" href="<?= ADDRESS_IMG ?>logo_tab.png">
+    <link rel="icon" href="<?= ADDRESS_IMG ?>logo_tab.svg">
 
     <title><?= $title ?></title>
 
@@ -13,5 +16,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/87014ebace.js" crossorigin="anonymous"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://js.stripe.com/v3/"></script>
 
 </head>
