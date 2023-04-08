@@ -4,10 +4,6 @@ RewriteEngine on
 RewriteCond %{REQUEST_URI} ^/Cook_Master/inscription$ [NC]
 RewriteRule ^(.*)$ /Cook_Master/application/extranet/inscriptionForm.php [L]
 
-# PROFIL
-RewriteCond %{REQUEST_URI} ^/Cook_Master/profil$ [NC]
-RewriteRule ^(.*)$ /Cook_Master/application/extranet/profil/profil.php [L]
-
 # PRICING
 RewriteCond %{REQUEST_URI} ^/Cook_Master/abonnement [NC]
 RewriteRule ^(.*)$ /Cook_Master/application/extranet/pricingForm.php [L]
@@ -15,16 +11,3 @@ RewriteRule ^(.*)$ /Cook_Master/application/extranet/pricingForm.php [L]
 # RESET PASSWORD
 RewriteCond %{REQUEST_URI} ^/Cook_Master/resetPassword$ [NC]
 RewriteRule ^(.*)$ /Cook_Master/application/extranet/resetPasswordForm.php [L]
-
-# CONFIRMATION PAIEMENT
-RewriteCond %{REQUEST_URI} ^/Cook_Master/confirmPaiement/(.*)/(.*)/(.*)$ [NC]
-RewriteRule ^(.*)$ /Cook_Master/application/extranet/paiement/confirmation.php?confirm=%1&subscription=%2&plan=%3 [L]
-
-# PAIEMENT
-RewriteCond %{REQUEST_URI} ^/Cook_Master/subscribe/(.*)/plan/(.*)$ [NC]
-RewriteRule ^(.*)$ /Cook_Master/application/extranet/paiement/paiementForm.php?subscription=%1&plan=%2 [L]
-
-RewriteCond %{REQUEST_URI} ^/Cook_Master/subscribe/(.*)$ [NC]
-RewriteRule ^(.*)$ /Cook_Master/application/extranet/paiement/paiementChoosePlan.php?subscription=%1 [L]
-
-
