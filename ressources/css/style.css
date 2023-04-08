@@ -50,7 +50,7 @@ footer {
 }
 
 nav{
-    background-color: #C2CDD3;
+    background-color: #e1e1e1;
 }
 
 ul, li{
@@ -153,6 +153,19 @@ form input[type="submit"]:hover{
 #profileDropdown::after{
     display: none;
 }
+
+#profileDropdown img {
+    transition: border-radius 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 50%;
+    box-shadow: none;
+}
+
+#profileDropdown:hover img {
+    border-radius: 0%;
+    box-shadow: 0 0 0 4px #FF9B90;
+}
+
+
 
 /* CHOOSE PLAN */
 

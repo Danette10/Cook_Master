@@ -18,10 +18,10 @@ if($user) {
     $messageMail .= "<p>Nous vous confirmons que votre compte a bien été validé.</p>";
     $messageMail .= "<p>Vous pouvez dès à présent vous connecter à votre compte.</p>";
     $messageMail .= "<p>Nous espérons que vous apprécierez notre service. Nous vous souhaitons une bonne journée.</p>";
-    $messageMail .= "<p>L'équipe Cook Master</p>";
+    $messageMail .= "<p>L'équipe Cookorama</p>";
 
-    $subject = "Cook Master - Confirmation d'inscription";
-    $header = "Cook Master < " . MAIL . " >";
+    $subject = "Cookorama - Confirmation d'inscription";
+    $header = "Cookorama < " . MAIL . " >";
 
     mailHtml($user['email'], $subject, $messageMail, $header);
 

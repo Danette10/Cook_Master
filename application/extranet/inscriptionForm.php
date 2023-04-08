@@ -3,7 +3,7 @@
 
 <?php
 
-$title = "Cook Master - Inscription";
+$title = "Cookorama - Inscription";
 include '../../ressources/script/head.php';
 include PATH_SCRIPT . 'header.php';
 

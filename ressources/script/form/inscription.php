@@ -103,10 +103,10 @@ if (isset($_POST['name']) && isset($_POST['firstname']) && isset($_POST['email']
         $messageMail .= "<p>Vous pouvez activer votre compte en cliquant sur le lien ci-dessous</p>";
         $messageMail .= "<a href='" . ADDRESS_VALIDATE_INSCRIPTION . "?token=" . $token . "'>Activer mon compte</a>";
         $messageMail .= "<p>Nous espérons que vous allez apprécier notre site !</p>";
-        $messageMail .= "<p>L'équipe Cook Master</p>";
+        $messageMail .= "<p>L'équipe Cookorama</p>";
 
-        $subject = "Cook Master - Activation de votre compte";
-        $header = "Cook Master < " . MAIL . " >";
+        $subject = "Cookorama - Activation de votre compte";
+        $header = "Cookorama < " . MAIL . " >";
         
         mailHtml($email, $subject, $messageMail, $header);
 

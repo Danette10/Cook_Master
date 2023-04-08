@@ -1,9 +1,50 @@
 <?php
 session_start();
 require_once('../../../vendor/autoload.php');
-$title = "Cook Master - Starter Plan";
+$title = "Cookorama - Starter Plan";
 include '../../../ressources/script/head.php';
 require_once(PATH_SCRIPT . 'connectDB.php');
+
+$subscriptionType = htmlspecialchars($_GET['subscription']);
+$plan = htmlspecialchars($_GET['plan']);
+$priceId = '';
+$interval = '';
+
+switch ($subscriptionType) {
+
+    case 'starter':
+
+        if ($plan == 'monthly') {
+
+            $priceId = $_ENV['SUBSCRIPTION_PRICE_ID_SARTER_MONTHLY'];
+            $interval = 'mois';
+
+        } else {
+
+            $priceId = $_ENV['SUBSCRIPTION_PRICE_ID_SARTER_YEARLY'];
+            $interval = 'an';
+
+        }
+
+        break;
+
+    case 'master':
+
+        if ($plan == 'monthly') {
+
+            $priceId = $_ENV['SUBSCRIPTION_PRICE_ID_MASTER_MONTHLY'];
+            $interval = 'mois';
+
+        } else {
+
+            $priceId = $_ENV['SUBSCRIPTION_PRICE_ID_MASTER_YEARLY'];
+            $interval = 'an';
+
+        }
+
+        break;
+
+}
 
 $selectEmail = $db->prepare("SELECT email FROM user WHERE id = :id");
 $selectEmail->execute([
@@ -42,22 +83,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $subscription = \Stripe\Subscription::create([
         'customer' => $customer->id,
         'items' => [
-            ['price' => $_ENV['SUBSCRIPTION_PRICE_ID_SARTER_MONTHLY']],
+            ['price' => $priceId],
         ],
     ]);
 
-    // Envoyer un e-mail de confirmation à l'utilisateur
     // Mettre à jour la base de données de votre site web pour indiquer que l'utilisateur a un abonnement actif (par exemple, en créant une nouvelle table STRIPE (id, user_id, subscription_id, status) et en y insérant les données de l'abonnement)
 
 
     if($subscription->status == 'active') {
 
-        header('Location: ' . ADDRESS_SCRIPT . 'paiement/confirmation.php?succes=1');
+        header('Location: ' . ADDRESS_SITE . 'confirmPaiement/1/' . $subscriptionType . '/' . $plan);
         exit();
 
     } else {
 
-        header('Location: ' . ADDRESS_FORM . 'paiement/confirmation.php?succes=0');
+        header('Location: ' . ADDRESS_SITE . 'confirmPaiement/0/' . $subscriptionType . '/' . $plan);
         exit();
 
     }
@@ -66,24 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 include PATH_SCRIPT . 'header.php';
 
-switch (getPriceDetails($_ENV['SUBSCRIPTION_PRICE_ID_SARTER_MONTHLY'])->currency) {
-    case 'eur':
-        $currency = '€';
-        break;
-    case 'usd':
-        $currency = '$';
-        break;
-    case 'gbp':
-        $currency = '£';
-        break;
-    default:
-        $currency = '';
-        break;
-}
-
-$price = getPriceDetails($_ENV['SUBSCRIPTION_PRICE_ID_SARTER_MONTHLY'])->unit_amount / 100;
-
-$price = number_format($price, 2, '.', '');
+$price = number_format(getPriceDetails($priceId)->unit_amount / 100, 2, '.', '');
 
 ?>
 
@@ -95,7 +118,7 @@ $price = number_format($price, 2, '.', '');
             <div class="col-md-6 mx-auto">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="mb-0">Abonnement Starter - <strong><?= $price ?><?= $currency ?> / mois</strong></h3>
+                        <h3 class="mb-0">Abonnement <?= ucfirst($subscriptionType) ?> - <strong><?= $price ?><?= getCurrency($priceId) ?> / <?= $interval ?></strong></h3>
                     </div>
                     <div class="card-body">
                         <form method="post" id="subscription-form">
@@ -120,7 +143,8 @@ $price = number_format($price, 2, '.', '');
 
                             <div id="card-errors" role="alert"></div>
                             <button type="submit" class="btn btn-primary btn-block mt-4">
-                                Payer maintenant <i class="fa-solid fa-lock fa-xl" style="margin-left: 25px; color: #ffffff;"></i>
+                                <span id="sendButton">Payer maintenant <i class="fa-solid fa-lock fa-xl" style="margin-left: 25px; color: #ffffff;"></i></span>
+                                <img src="<?= ADDRESS_IMG ?>loader_circle.gif" id="loader" style="width: 30px; height: 30px; display: none; margin: 0 auto;">
                             </button>
                         </form>
                     </div>
@@ -197,6 +221,8 @@ $price = number_format($price, 2, '.', '');
             event.preventDefault();
             const cardholderEmail = document.getElementById('cardholderEmail');
             const cardholderName = document.getElementById('cardholderName');
+            const sendButton = document.getElementById('sendButton');
+            const loader = document.getElementById('loader');
 
             if (cardholderName.value === '') {
                 alert('Veuillez saisir le nom du titulaire de la carte');
@@ -208,11 +234,16 @@ $price = number_format($price, 2, '.', '');
                 return;
             }
 
+            sendButton.style.display = 'none';
+            loader.style.display = 'flex';
+
             const result = await stripe.createToken(cardNumber);
 
             if (result.error) {
                 const displayError = document.getElementById('card-errors');
                 displayError.textContent = result.error.message;
+                sendButton.style.display = 'block';
+                loader.style.display = 'none';
             } else {
                 stripeTokenHandler(result.token);
             }

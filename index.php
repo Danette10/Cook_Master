@@ -4,7 +4,7 @@
 
 <?php
 
-$title = "Cook Master - Home";
+$title = "Cookorama - Home";
 include 'ressources/script/head.php';
 include PATH_SCRIPT . 'header.php';
 ?>

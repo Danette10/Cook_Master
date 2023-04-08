@@ -13,13 +13,13 @@ if($token == ''){
     $updateToken->execute(['token' => $token, 'email' => $email]);
 
     $messageMail = "<p>Bonjour,</p>";
-    $messageMail .= "<p>Vous venez de demander à réinitialiser votre mot de passe sur Cook Master.</p>";
+    $messageMail .= "<p>Vous venez de demander à réinitialiser votre mot de passe sur Cookorama.</p>";
     $messageMail .= "<p>Pour ce faire, veuillez cliquer sur le lien ci-dessous :</p>";
     $messageMail .= "<a href='" . ADDRESS_RESET_PASSWORD . "?token=" . $token . "'>Réinitialiser mon mot de passe</a>";
-    $messageMail .= "<p>L'équipe Cook Master</p>";
+    $messageMail .= "<p>L'équipe Cookorama</p>";
 
-    $subject = "Cook Master - Réinitialisation de votre mot de passe";
-    $header = "Cook Master < " . MAIL . " >";
+    $subject = "Cookorama - Réinitialisation de votre mot de passe";
+    $header = "Cookorama < " . MAIL . " >";
 
     mailHtml($email, $subject, $messageMail, $header);
 
@@ -54,10 +54,10 @@ if($token == ''){
 
     $messageMail = "<p>Bonjour,</p>";
     $messageMail .= "<p>Nous vous confirmons que votre mot de passe a bien été réinitialisé.</p>";
-    $messageMail .= "<p>L'équipe Cook Master</p>";
+    $messageMail .= "<p>L'équipe Cookorama</p>";
 
-    $subject = "Cook Master - Confirmation de réinitialisation de votre mot de passe";
-    $header = "Cook Master < " . MAIL . " >";
+    $subject = "Cookorama - Confirmation de réinitialisation de votre mot de passe";
+    $header = "Cookorama < " . MAIL . " >";
 
     mailHtml($email, $subject, $messageMail, $header);
 

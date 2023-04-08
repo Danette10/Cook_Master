@@ -2,7 +2,7 @@
 <html lang="fr">
 
 <?php
-$title = "Cook Master - Reset Password";
+$title = "Cookorama - Reset Password";
 include '../../ressources/script/head.php';
 include PATH_SCRIPT . 'header.php';
 $token = isset($_GET['token']) ? htmlspecialchars($_GET['token']) : '';

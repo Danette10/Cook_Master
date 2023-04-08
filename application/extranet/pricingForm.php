@@ -3,7 +3,7 @@
 <html lang="fr">
 
 <?php
-$title = "Cook Master - Pricing";
+$title = "Cookorama - Pricing";
 include '../../ressources/script/head.php';
 include PATH_SCRIPT . 'header.php';
 
@@ -32,7 +32,7 @@ include PATH_SCRIPT . 'header.php';
 
                        <p style="font-size: 13px;">
                            <em>Gratuit</em>
-                            <?= isset($_SESSION['subscriptionType']) && $_SESSION['subscriptionType'] != 'Free' ? '<a href="https://buy.stripe.com/test_14kcP32Lx8VegBWaEE" class="btn ms-1" id="choosePlan">Choisir cet abonnement</a>' : ''; ?>
+                            <?= isset($_SESSION['subscriptionType']) && $_SESSION['subscriptionType'] != 'Free' ? '<a href="' . ADDRESS_SITE . 'subscribe/free" class="btn ms-1" id="choosePlan">Choisir cet abonnement</a>' : ''; ?>
                        </p>
 
                    </th>
@@ -46,7 +46,7 @@ include PATH_SCRIPT . 'header.php';
 
                        <p style="font-size: 13px;">
                            <em>9,90€ / mois ou 113€/an</em>
-                           <?= isset($_SESSION['subscriptionType']) && $_SESSION['subscriptionType'] != 'Starter' ? '<a href="' . ADDRESS_PAIEMENT_FORM . 'paiementChoosePlan.php" class="btn ms-1" id="choosePlan">Choisir cet abonnement</a>' : ''; ?>
+                           <?= isset($_SESSION['subscriptionType']) && $_SESSION['subscriptionType'] != 'Starter' ? '<a href="' . ADDRESS_SITE . 'subscribe/starter" class="btn ms-1" id="choosePlan">Choisir cet abonnement</a>' : ''; ?>
                        </p>
 
                    </th>
@@ -60,7 +60,7 @@ include PATH_SCRIPT . 'header.php';
 
                        <p style="font-size: 13px;">
                            <em>19€ / mois ou 220€ / an</em>
-                            <?= isset($_SESSION['subscriptionType']) && $_SESSION['subscriptionType'] != 'Master' ? '<a href="https://buy.stripe.com/test_14kcP32Lx8VegBWaEE" class="btn ms-1" id="choosePlan">Choisir cet abonnement</a>' : ''; ?>
+                            <?= isset($_SESSION['subscriptionType']) && $_SESSION['subscriptionType'] != 'Master' ? '<a href="' . ADDRESS_SITE . 'subscribe/master" class="btn ms-1" id="choosePlan">Choisir cet abonnement</a>' : ''; ?>
                        </p>
 
                    </th>
