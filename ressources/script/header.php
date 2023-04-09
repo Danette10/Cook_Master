@@ -30,15 +30,11 @@
 
                 <div class="connexionInscriptionLinks">
 
-                    <?php if (!isset($_SESSION['role']) || ($_SESSION['role'] == 1 || $_SESSION['role'] == 0)) { ?>
-
                     <button class="pricingLink btn">
 
                         <a href="<?= ADDRESS_SITE ?>abonnement" class="nav-link">S'abonner</a>
 
                     </button>
-
-                    <?php } ?>
 
                     <?php if (!isset($_SESSION['role']) || $_SESSION['role'] == 0) { ?>
 

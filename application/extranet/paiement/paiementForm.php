@@ -9,10 +9,21 @@ $subscriptionType = htmlspecialchars($_GET['subscription']);
 $plan = htmlspecialchars($_GET['plan']);
 $priceId = '';
 $interval = '';
+$role = 0;
 
 switch ($subscriptionType) {
 
+    case 'free':
+
+        $role = 1;
+
+        $priceId = $_ENV['SUBSCRIPTION_PRICE_ID_FREE'];
+
+        break;
+
     case 'starter':
+
+        $role = 2;
 
         if ($plan == 'monthly') {
 
@@ -29,6 +40,8 @@ switch ($subscriptionType) {
         break;
 
     case 'master':
+
+        $role = 3;
 
         if ($plan == 'monthly') {
 
@@ -87,8 +100,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ],
     ]);
 
-    // Mettre à jour la base de données de votre site web pour indiquer que l'utilisateur a un abonnement actif (par exemple, en créant une nouvelle table STRIPE (id, user_id, subscription_id, status) et en y insérant les données de l'abonnement)
+    $updateUser = $db->prepare("UPDATE user SET role = :role WHERE id = :id");
+    $updateUser->execute([
+        'role' => $role,
+        'id' => $_SESSION['id']
+    ]);
 
+    $customerID = $customer->id;
+    $userId = $_SESSION['id'];
+    $invoiceId = $subscription->latest_invoice;
+    $subscriptionId = $subscription->id;
+    $subscriptionStatus = $subscription->status;
+    $subscriptionPlan = $subscription->items->data[0]->price->id;
+    $subscriptionStart = date('Y-m-d H:i:s', $subscription->current_period_start);
+    $subscriptionEnd = date('Y-m-d H:i:s', $subscription->current_period_end);
+
+    $insertSubscription = $db->prepare("INSERT INTO stripe_consumer(
+                            customer_id, user_id, invoice_id, subscription_id, 
+                            subscription_status, subscription_plan, subscription_start_date, 
+                            subscription_end_date
+                            ) VALUES(
+                                     :customer_id, :user_id, :invoice_id, :subscription_id, :subscription_status, 
+                                     :subscription_plan, :subscription_start_date, :subscription_end_date
+                                     )");
+    $insertSubscription->execute([
+        'customer_id' => $customerID,
+        'user_id' => $userId,
+        'invoice_id' => $invoiceId,
+        'subscription_id' => $subscriptionId,
+        'subscription_status' => $subscriptionStatus,
+        'subscription_plan' => $subscriptionPlan,
+        'subscription_start_date' => $subscriptionStart,
+        'subscription_end_date' => $subscriptionEnd
+    ]);
 
     if($subscription->status == 'active') {
 

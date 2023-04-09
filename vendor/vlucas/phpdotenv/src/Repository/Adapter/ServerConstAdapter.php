@@ -1,89 +1,72 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Dotenv\Repository\Adapter;
 
-use PhpOption\Option;
+use PhpOption\None;
 use PhpOption\Some;
 
-final class ServerConstAdapter implements AdapterInterface
+class ServerConstAdapter implements AvailabilityInterface, ReaderInterface, WriterInterface
 {
     /**
-     * Create a new server const adapter instance.
+     * Determines if the adapter is supported.
+     *
+     * @return bool
+     */
+    public function isSupported()
+    {
+        return true;
+    }
+
+    /**
+     * Get an environment variable, if it exists.
+     *
+     * @param non-empty-string $name
+     *
+     * @return \PhpOption\Option<string|null>
+     */
+    public function get($name)
+    {
+        if (!array_key_exists($name, $_SERVER)) {
+            return None::create();
+        }
+
+        $value = $_SERVER[$name];
+
+        if (is_scalar($value)) {
+            /** @var \PhpOption\Option<string|null> */
+            return Some::create((string) $value);
+        }
+
+        if (null === $value) {
+            /** @var \PhpOption\Option<string|null> */
+            return Some::create(null);
+        }
+
+        return None::create();
+    }
+
+    /**
+     * Set an environment variable.
+     *
+     * @param non-empty-string $name
+     * @param string|null      $value
      *
      * @return void
      */
-    private function __construct()
-    {
-        //
-    }
-
-    /**
-     * Create a new instance of the adapter, if it is available.
-     *
-     * @return \PhpOption\Option<\Dotenv\Repository\Adapter\AdapterInterface>
-     */
-    public static function create()
-    {
-        /** @var \PhpOption\Option<AdapterInterface> */
-        return Some::create(new self());
-    }
-
-    /**
-     * Read an environment variable, if it exists.
-     *
-     * @param non-empty-string $name
-     *
-     * @return \PhpOption\Option<string>
-     */
-    public function read(string $name)
-    {
-        /** @var \PhpOption\Option<string> */
-        return Option::fromArraysValue($_SERVER, $name)
-            ->filter(static function ($value) {
-                return \is_scalar($value);
-            })
-            ->map(static function ($value) {
-                if ($value === false) {
-                    return 'false';
-                }
-
-                if ($value === true) {
-                    return 'true';
-                }
-
-                /** @psalm-suppress PossiblyInvalidCast */
-                return (string) $value;
-            });
-    }
-
-    /**
-     * Write to an environment variable, if possible.
-     *
-     * @param non-empty-string $name
-     * @param string           $value
-     *
-     * @return bool
-     */
-    public function write(string $name, string $value)
+    public function set($name, $value = null)
     {
         $_SERVER[$name] = $value;
-
-        return true;
     }
 
     /**
-     * Delete an environment variable, if possible.
+     * Clear an environment variable.
      *
      * @param non-empty-string $name
      *
-     * @return bool
+     * @return void
      */
-    public function delete(string $name)
+    public function clear($name)
     {
         unset($_SERVER[$name]);
-
-        return true;
     }
 }
