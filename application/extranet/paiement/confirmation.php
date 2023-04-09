@@ -14,6 +14,30 @@ $subscriptionType = htmlspecialchars($_GET['subscription']);
 $plan = htmlspecialchars($_GET['plan']);
 $confirm = htmlspecialchars($_GET['confirm']);
 
+\Stripe\Stripe::setApiKey($_ENV['API_PRIVATE_KEY']);
+$selectSubscription = $db->prepare("SELECT * FROM stripe_consumer WHERE user_id = :user_id");
+$selectSubscription->execute(array(
+    'user_id' => $_SESSION['id']
+));
+$subscription = $selectSubscription->fetch();
+$priceId = $subscription['subscription_plan'];
+$invoiceId = $subscription['invoice_id'];
+
+$invoice = \Stripe\Invoice::retrieve($invoiceId);
+$invoice->
+
+$price = number_format(getPriceDetails($priceId)->unit_amount / 100, 2, '.', '');
+$interval = '';
+
+switch ($plan){
+    case 'monthly':
+        $interval = 'mois';
+        break;
+    case 'yearly':
+        $interval = 'an';
+        break;
+}
+
 $text = '';
 
 if($confirm == '0'){
@@ -29,18 +53,19 @@ if($confirm == '0'){
     $text .= "<p class='text-justify'>Nous espérons que vous allez apprécier notre site !</p>";
     $text .= "<p class='text-justify'>L'équipe Cookorama</p>";
 
+    $messageMail = "<h1>Merci pour votre achat !</h1>";
+    $messageMail .= "<p>Vous avez choisi l'abonnement <strong>" . ucfirst($subscriptionType) . "</strong></p>";
+    $messageMail .= "<p>Vous allez être facturé de <strong>" . $price  . getCurrency($priceId) . "</strong> / " . $interval . "</p>";
+    $messageMail .= "<p>Vous pouvez désormais accéder à votre espace personnel et profiter de fonctionnalités exclusives à votre abonnement !</p>";
+    $messageMail .= "<p>Nous espérons que vous allez apprécier notre site !</p>";
+    $messageMail .= "<p>L'équipe Cookorama</p>";
+
+    $subject = "Cookorama - Confirmation de paiement - " . ucfirst($subscriptionType);
+    $header = "Cookorama < " . MAIL . " >";
+
+    mailHtml($_SESSION['email'], $subject, $messageMail, $header);
+
 }
-
-$messageMail = "<h1>Merci pour votre achat !</h1>";
-$messageMail .= "<p>Vous avez choisi l'abonnement <strong>" . ucfirst($subscriptionType) . "</strong></p>";
-$messageMail .= "<p>Vous pouvez désormais accéder à votre espace personnel et profiter de fonctionnalités exclusives à votre abonnement !</p>";
-$messageMail .= "<p>Nous espérons que vous allez apprécier notre site !</p>";
-$messageMail .= "<p>L'équipe Cookorama</p>";
-
-$subject = "Cookorama - Confirmation de paiement - " . ucfirst($subscriptionType);
-$header = "Cookorama < " . MAIL . " >";
-
-mailHtml($_SESSION['email'], $subject, $messageMail, $header);
 
 ?>
 

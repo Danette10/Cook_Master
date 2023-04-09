@@ -25,7 +25,7 @@ namespace Stripe;
  * href="https://stripe.com/docs/invoicing/integration">Integrate with the
  * Invoicing API</a>, <a
  * href="https://stripe.com/docs/billing/invoices/subscription#adding-upcoming-invoice-items">Subscription
- * Invoices</a>.
+ * Invoice</a>.
  *
  * @property string $id Unique identifier for the object.
  * @property string $object String representing the object's type. Objects of the same type share the same value.

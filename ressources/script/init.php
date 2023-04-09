@@ -20,6 +20,8 @@ define('PATH_APPLICATION', PATH_SITE . 'application/');
 define('PATH_APPLICATION_EXTRANET', PATH_APPLICATION . 'extranet/');
 define('PATH_FORM', PATH_SCRIPT . 'form/');
 define('PATH_VALIDATE_INSCRIPTION', PATH_FORM . 'validateInscription.php');
+define('PATH_FILES', PATH_RESSOURCES . 'files/');
+define('PATH_INVOICES', PATH_FILES . 'invoice/');
 
 define('MAIL', 'cookmasterpa.2023@gmail.com');
 

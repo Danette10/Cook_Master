@@ -2,6 +2,7 @@
     "require": {
         "stripe/stripe-php": "*",
         "vlucas/phpdotenv": "*",
-        "phpmailer/phpmailer": "*"
+        "phpmailer/phpmailer": "*",
+        "tecnickcom/tcpdf": "*"
     }
 }
