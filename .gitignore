@@ -2,3 +2,4 @@
 .idea
 .env
 /ressources/images/profilePicture/
+/ressources/files/invoices/*/*/*.pdf

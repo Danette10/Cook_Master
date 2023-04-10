@@ -15,7 +15,7 @@ $plan = htmlspecialchars($_GET['plan']);
 $confirm = htmlspecialchars($_GET['confirm']);
 
 \Stripe\Stripe::setApiKey($_ENV['API_PRIVATE_KEY']);
-$selectSubscription = $db->prepare("SELECT * FROM stripe_consumer WHERE user_id = :user_id");
+$selectSubscription = $db->prepare("SELECT subscription_plan, invoice_id FROM stripe_consumer WHERE user_id = :user_id");
 $selectSubscription->execute(array(
     'user_id' => $_SESSION['id']
 ));
@@ -24,7 +24,9 @@ $priceId = $subscription['subscription_plan'];
 $invoiceId = $subscription['invoice_id'];
 
 $invoice = \Stripe\Invoice::retrieve($invoiceId);
-$invoice->
+$client = \Stripe\Customer::retrieve($invoice->customer);
+$subscription = \Stripe\Subscription::retrieve($invoice->subscription);
+$product = \Stripe\Product::retrieve($subscription->items->data[0]->price->product);
 
 $price = number_format(getPriceDetails($priceId)->unit_amount / 100, 2, '.', '');
 $interval = '';
@@ -60,10 +62,54 @@ if($confirm == '0'){
     $messageMail .= "<p>Nous espérons que vous allez apprécier notre site !</p>";
     $messageMail .= "<p>L'équipe Cookorama</p>";
 
+    $invoiceLines = $invoice->lines->data;
+
+    $amount = $invoiceLines[0]->amount;
+    $date = date('d/m/Y', $invoice->period_start);
+    $dateEnd = date('d/m/Y', $invoice->period_end);
+    $invoiceNumber = $invoice->number;
+    $quantity = $invoiceLines[0]->quantity;
+    $total = $invoice->total;
+    $priceUnit = $invoiceLines[0]->price->unit_amount;
+    $productName = $product->name;
+
+    $nameClient = $client->name;
+    $emailClient = $client->email;
+
+    $priceId = $invoiceLines[0]->price->id;
+
+    $invoiceData = [
+        'amount' => $amount,
+        'product_name' => $productName,
+        'invoice_date' => $date,
+        'invoice_due_date' => $dateEnd,
+        'invoice_number' => $invoiceNumber,
+        'invoice_quantity' => $quantity,
+        'invoice_total' => $total,
+        'invoice_name_client' => $nameClient,
+        'invoice_email_client' => $emailClient,
+        'next_invoice_date' => $invoice['subscription_end_date'],
+        'price_id' => $priceId
+    ];
+
+
+    $pdfSuite = generateInvoice($invoiceData, $db);
+
+    $updateInvoice = $db->prepare('UPDATE stripe_consumer SET path_invoice = :path_invoice WHERE user_id = :user_id AND subscription_plan = :subscription_plan');
+    $updateInvoice->execute([
+        'path_invoice' => $pdfSuite,
+        'user_id' => $_SESSION['id'],
+        'subscription_plan' => $invoiceData['price_id']
+    ]);
+
+    // Joindre la facture au mail
+    $messageMail .= "<p>Vous trouverez ci-joint votre facture</p>";
+
     $subject = "Cookorama - Confirmation de paiement - " . ucfirst($subscriptionType);
     $header = "Cookorama < " . MAIL . " >";
+    $attachement = PATH_INVOICES . $pdfSuite;
 
-    mailHtml($_SESSION['email'], $subject, $messageMail, $header);
+    mailHtml($_SESSION['email'], $subject, $messageMail, $header, $attachement);
 
 }
 

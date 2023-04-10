@@ -77,6 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $customer = \Stripe\Customer::create([
         'email' => $email,
         'name' => $name,
+        'preferred_locales' => ['fr'],
     ]);
 
     // Créer la source de paiement avec le nom du titulaire de la carte
@@ -118,10 +119,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $insertSubscription = $db->prepare("INSERT INTO stripe_consumer(
                             customer_id, user_id, invoice_id, subscription_id, 
                             subscription_status, subscription_plan, subscription_start_date, 
-                            subscription_end_date
+                            subscription_end_date, path_invoice
                             ) VALUES(
                                      :customer_id, :user_id, :invoice_id, :subscription_id, :subscription_status, 
-                                     :subscription_plan, :subscription_start_date, :subscription_end_date
+                                     :subscription_plan, :subscription_start_date, :subscription_end_date, :path_invoice
                                      )");
     $insertSubscription->execute([
         'customer_id' => $customerID,
@@ -131,7 +132,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'subscription_status' => $subscriptionStatus,
         'subscription_plan' => $subscriptionPlan,
         'subscription_start_date' => $subscriptionStart,
-        'subscription_end_date' => $subscriptionEnd
+        'subscription_end_date' => $subscriptionEnd,
+        'path_invoice' => ''
     ]);
 
     if($subscription->status == 'active') {
