@@ -7,7 +7,7 @@ use PHPMailer\PHPMailer\Exception;
  * TODO: Function to send mail
  */
 
-function mailHtml($to, $subject, $message, $headers) {
+function mailHtml($to, $subject, $message, $headers, $attachement = null) {
 
     require $_SERVER['DOCUMENT_ROOT'] . '/Cook_Master/vendor/autoload.php';
 
@@ -35,6 +35,10 @@ function mailHtml($to, $subject, $message, $headers) {
         $mail->Subject = $subject;
         $mail->Body    = $message;
         $mail->AltBody = $message;
+
+        if ($attachement != null) {
+            $mail->addAttachment($attachement);
+        }
 
         $mail->send();
     } catch (Exception $e) {
@@ -129,72 +133,180 @@ function getCurrency($priceId) {
 }
 
 /*
- * TODO: Function to create an invoice for a customer with tcpdf
+ * TODO: Function to generte an invoice
  */
 
-function generateInvoice($invoiceData) {
+function generateInvoice($invoiceData, $db){
+
     require $_SERVER['DOCUMENT_ROOT'] . '/Cook_Master/vendor/autoload.php';
 
-    // Créez une instance de la classe TCPDF
+    $invoiceNumber = $invoiceData['invoice_number'];
+    $invoiceDate = $invoiceData['invoice_date'];
+    $invoiceDueDate = $invoiceData['invoice_due_date'];
+    $invoiceNameClient = $invoiceData['invoice_name_client'];
+    $invoiceEmailClient = $invoiceData['invoice_email_client'];
+    $price = number_format(getPriceDetails($invoiceData['price_id'])->unit_amount / 100, 2, '.', '') . ' ' . getCurrency($invoiceData['price_id']);
+    $productName = $invoiceData['product_name'];
+    $invoiceQuantity = $invoiceData['invoice_quantity'];
+    $invoiceTotal = number_format($invoiceData['invoice_total'] / 100, 2, '.', '') . ' ' . getCurrency($invoiceData['price_id']);
+    $invoicePriceUnit = number_format(getPriceDetails($invoiceData['price_id'])->unit_amount / 100, 2, '.', '') . ' ' . getCurrency($invoiceData['price_id']);
+    $subscriptionEndDate = date('d/m/Y', $invoiceData['next_invoice_date']);
+
+    $logo = ADDRESS_IMG . 'logo.png';
+
     $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
-// Supprimez les en-têtes et pieds de page par défaut
-    $pdf->setPrintHeader(false);
-    $pdf->setPrintFooter(false);
+    $pdf->SetTitle('Facture - ' . $invoiceNumber);
+    $pdf->SetPrintHeader(false);
+    $pdf->SetPrintFooter(false);
 
-// Ajoutez une nouvelle page
+
+    $pdf->SetFont('helvetica', '', 12, '', true);
+
     $pdf->AddPage();
 
-// Définissez le logo et les informations de facture
-    $logo = $invoiceData['logo']; // Remplacez 'logo.png' par le chemin du logo de votre site
-    $invoice_header = <<<EOD
-<img src="$logo" width="100" />
-<h1>Facture</h1>
-<p>
-    Numéro de facture: $invoice_number<br />
-    Date de facturation: $invoice_date<br />
-    Date d'échéance: $due_date<br />
-    Client: $customer_name
-</p>
+    $pdf->SetFillColor(255, 155, 144);
+    $pdf->Rect(0, 0, 250, 2, 'F');
+
+    $header = <<<EOD
+    <table>
+        <tr>
+            <td style="width: 50%;"><h1>Facture</h1></td>
+            <td style="width: 50%; text-align: right;">
+                <img src="$logo" style="width: 150px;" alt="Logo">
+            </td>
+        </tr>
+    </table>
+    
 EOD;
 
-// Ajoutez le logo et les informations de facture au PDF
-    $pdf->writeHTML($invoice_header, true, false, true, false, '');
+    $pdf->writeHTML($header, true, false, true, false, '');
 
-// Définissez un tableau contenant les informations sur les produits ou services facturés
-    $invoice_items = [
-        ['description' => 'Produit 1', 'quantity' => 1, 'unit_price' => '49.99', 'amount' => '49.99'],
-        ['description' => 'Produit 2', 'quantity' => 1, 'unit_price' => '50.00', 'amount' => '50.00']
-    ];
+    $invoiceInformation = <<<EOD
+    <table>
+        <tr>
+            <td><p><strong>Numéro de facture</strong></p></td>
+            <td colspan="3"><p><strong>$invoiceNumber</strong></p></td>
+        </tr>
+        <tr>
+            <td><p>Date d'émission</p></td>
+            <td><p>$invoiceDate</p></td>
+        </tr>
+        <tr>
+            <td><p>Date d'échéance</p></td>
+            <td><p>$invoiceDueDate</p></td>
+        </tr>
+    </table>
+EOD;
 
-// Créez le tableau HTML pour les éléments de facture
-    $invoice_table = '<table cellspacing="0" cellpadding="4" border="1">';
-    $invoice_table .= '<tr><th>Description</th><th>Quantité</th><th>Prix unitaire</th><th>Montant</th></tr>';
+    $pdf->writeHTML($invoiceInformation, true, false, true, false, '');
 
-    foreach ($invoice_items as $item) {
-        $invoice_table .= '<tr>';
-        $invoice_table .= '<td>' . $item['description'] . '</td>';
-        $invoice_table .= '<td>' . $item['quantity'] . '</td>';
-        $invoice_table .= '<td>' . $item['unit_price'] . ' ' . $currency . '</td>';
-        $invoice_table .= '<td>' . $item['amount'] . ' ' . $currency . '</td>';
-        $invoice_table .= '</tr>';
+    $companyInformation = <<<EOD
+    <table>
+        <tr>
+            <td><p><strong>Cookorama</strong></p></td>
+            <td><p><strong>Facturer à</strong></p></td>
+        </tr>
+        <tr>
+            <td><p>+33 6 00 00 00 00</p></td>
+            <td><p>$invoiceNameClient</p></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><p>$invoiceEmailClient</p></td>
+        </tr>
+    </table>
+EOD;
+
+    $pdf->ln(5);
+
+    $pdf->writeHTML($companyInformation, true, false, true, false, '');
+
+    $pdf->ln(10);
+
+    $duePrice = <<<EOD
+    <h2>$price payé le $invoiceDate</h2>
+EOD;
+
+    $pdf->writeHTML($duePrice, true, false, true, false, '');
+
+    $pdf->ln(10);
+
+    $invoiceTable = <<<EOD
+    <style>
+        *{
+            font-size: 10pt;
+        }
+        table {
+            border-collapse: collapse;
+        }
+        tr th {
+            border-bottom: 1px solid black;
+        }
+        th, td {
+            padding: 5px;
+        }
+        </style>
+    <table border="0" cellpadding="5">
+        <tr>
+            <th style="width: 25%;"><p>Description</p></th>
+            <th style="text-align: right;"><p>Quantité</p></th>
+            <th style="text-align: right;"><p>Prix unitaire</p></th>
+            <th style="text-align: right;"><p>Montant</p></th>
+        </tr>
+        <tr>
+            <td><p>$productName<br>$invoiceDate - $subscriptionEndDate</p></td>
+            <td style="text-align: right;"><p>$invoiceQuantity</p></td>
+            <td style="text-align: right;"><p>$invoicePriceUnit</p></td>
+            <td style="text-align: right;"><p>$price</p></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="1" style="text-align: right;">
+                
+                <p><strong>Total</strong></p>
+                
+            </td>
+            
+            <td></td>
+            
+            <td style="text-align: right;">
+                
+                <p><strong>$invoiceTotal</strong></p>
+                
+            </td>
+        </tr>
+    </table>
+EOD;
+
+    $pdf->writeHTML($invoiceTable, true, false, true, false, '');
+
+    $pdf->setY(-35);
+
+    $pdf->SetFont('helvetica', '', 8, '', true);
+
+    $footer = <<<EOD
+    <hr>
+    <p>$invoiceNumber - $price payer le $invoiceDate</p>
+EOD;
+
+    $pdf->writeHTML($footer, true, false, true, false, '');
+
+    $year = date('Y');
+    $month = date('m');
+
+    $pdfPath = $year . '/' . $month;
+
+    if (!file_exists($pdfPath)) {
+        mkdir($pdfPath, 0777, true);
     }
 
-    $invoice_table .= '<tr><td colspan="3" align="right">Total:</td><td>' . $total . ' ' . $currency . '</td></tr>';
-    $invoice_table .= '</table>';
+    $pdfPathSuite = $pdfPath . '/' . $_SESSION['id'] . '_' . 'facture-' . $invoiceNumber . '.pdf';
 
-    // Ajoutez le tableau HTML des éléments de facture au PDF
-    $pdf->writeHTML($invoice_table, true, false, true, false, '');
+    $fullPath = PATH_INVOICES . $pdfPathSuite;
 
+    $pdf->Output($fullPath, 'F');
 
-
-    // Définissez le chemin de sauvegarde du fichier PDF
-    $file_path = PATH_INVOICES . $invoice_number . '.pdf';
-
-    // Enregistrez le fichier PDF
-    $pdf->Output($file_path, 'F');
-
-    // Retournez le chemin du fichier PDF
-    return $file_path;
+    return $pdfPathSuite;
 
 }
