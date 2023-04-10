@@ -1,4 +1,6 @@
-<?php session_start(); ?>
+<?php session_start();
+require_once('../../vendor/autoload.php');
+?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -6,6 +8,39 @@
 $title = "Cookorama - Pricing";
 include '../../ressources/script/head.php';
 include PATH_SCRIPT . 'header.php';
+
+$name = [];
+$price = [];
+
+\Stripe\Stripe::setApiKey($_ENV['API_PRIVATE_KEY']);
+
+// Récupérer les produits
+$products = \Stripe\Product::all([
+    'active' => true,
+    'type' => 'service'
+]);
+$prices = \Stripe\Price::all([
+    'active' => true,
+    'type' => 'recurring'
+]);
+
+$plans = [];
+
+foreach ($products->data as $product) {
+    $name = $product->name;
+
+    foreach ($prices->data as $price_data) {
+        
+        if ($product->id == $price_data->product) {
+
+            $interval = $price_data->recurring->interval;
+
+            $plans[$name][$interval] = [
+                'price' => number_format($price_data->unit_amount / 100, 2, '.', '')
+            ];
+        }
+    }
+}
 
 ?>
 
@@ -45,7 +80,7 @@ include PATH_SCRIPT . 'header.php';
                        </p>
 
                        <p style="font-size: 13px;">
-                           <em>9,90€ / mois ou 113€/an</em>
+                           <em><?= $plans['Starter']['month']['price']; ?> €/mois ou <?= $plans['Starter']['year']['price']; ?> €/an</em>
                            <?= isset($_SESSION['subscriptionType']) && $_SESSION['subscriptionType'] != 'Starter' ? '<a href="' . ADDRESS_SITE . 'subscribe/starter" class="btn ms-1" id="choosePlan">Choisir cet abonnement</a>' : ''; ?>
                        </p>
 
@@ -59,7 +94,7 @@ include PATH_SCRIPT . 'header.php';
                        </p>
 
                        <p style="font-size: 13px;">
-                           <em>19€ / mois ou 220€ / an</em>
+                            <em><?= $plans['Master']['month']['price']; ?> €/mois ou <?= $plans['Master']['year']['price']; ?> €/an</em>
                             <?= isset($_SESSION['subscriptionType']) && $_SESSION['subscriptionType'] != 'Master' ? '<a href="' . ADDRESS_SITE . 'subscribe/master" class="btn ms-1" id="choosePlan">Choisir cet abonnement</a>' : ''; ?>
                        </p>
 
