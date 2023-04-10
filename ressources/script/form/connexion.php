@@ -49,7 +49,6 @@ $_SESSION['lastname'] = $userExist['lastname'];
 $_SESSION['firstname'] = $userExist['firstname'];
 $_SESSION['email'] = $email;
 $_SESSION['role'] = $userExist['role'];
-$_SESSION['profilePicture'] = $userExist['profilePicture'];
 
 switch ($userExist['role']) {
     case 1:

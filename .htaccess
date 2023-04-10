@@ -8,6 +8,10 @@ RewriteRule ^(.*)$ /Cook_Master/application/extranet/inscriptionForm.php [L]
 RewriteCond %{REQUEST_URI} ^/Cook_Master/profil$ [NC]
 RewriteRule ^(.*)$ /Cook_Master/application/extranet/profil/profil.php [L]
 
+# PROFIL - MODIFICATION
+RewriteCond %{REQUEST_URI} ^/Cook_Master/profil/modification/(.*)$ [NC]
+RewriteRule ^(.*)$ /Cook_Master/application/extranet/profil/modifyProfil.php?id=%1 [L]
+
 # PRICING
 RewriteCond %{REQUEST_URI} ^/Cook_Master/abonnement [NC]
 RewriteRule ^(.*)$ /Cook_Master/application/extranet/pricingForm.php [L]

@@ -60,17 +60,19 @@
 
             <?php if (isset($_SESSION['email'])){
 
-                if($_SESSION['profilePicture'] != ''){
-                    $profilePicture = $_SESSION['profilePicture'];
-                }else{
-                    $profilePicture = 'defaultProfilePicture.png';
-                }
+                $selectProfilePicture = $db->prepare('SELECT profilePicture FROM user WHERE id = :id');
+                $selectProfilePicture->execute(array(
+                    'id' => $_SESSION['id']
+                ));
+
+                $profilePicture = $selectProfilePicture->fetch();
+                $profilePicture = $profilePicture['profilePicture'];
                 ?>
 
             <div class="dropdown" style="margin-right: 80px;">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
 
-                    <img src="<?= ADDRESS_IMG ?>profilePicture/<?= $profilePicture ?>" alt="Profile picture" width="60" height="60" class="rounded-circle">
+                    <img src="<?= ADDRESS_IMG_PROFIL . $profilePicture ?>" alt="Profile picture" width="60" height="60" class="rounded-circle">
 
                 </button>
 
