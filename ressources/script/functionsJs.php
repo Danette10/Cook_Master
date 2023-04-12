@@ -9,9 +9,7 @@
 
     $(document).ready(function() {
 
-        // Si on scroll sur la page
         $(window).scroll(function() {
-
             if ($(this).scrollTop() > 1) {
                 $('header').css('position', 'sticky');
             } else {
@@ -20,6 +18,59 @@
 
         });
     });
+
+    <?php
+        /*
+         * TODO: Function to connect user
+         */
+    ?>
+
+    function connexion(email, password) {
+
+        let error = document.getElementById("error");
+
+        if (email === "" || password === "") {
+
+            alert("Veuillez remplir tous les champs");
+
+        } else {
+
+            if (isValidEmail(email)) {
+
+                $.ajax({
+
+                    url: "<?= ADDRESS_FORM ?>connexion.php",
+                    type: "POST",
+                    data: {
+                        email: email,
+                        password: password
+                    },
+
+                    success: function (data) {
+
+                        if (data === "success") {
+
+                            window.location.href = "<?= ADDRESS_SITE ?>";
+
+                        } else {
+
+                            error.innerHTML = data;
+
+                        }
+
+                    }
+
+                });
+
+            } else {
+
+                alert("Veuillez entrer une adresse email valide");
+
+            }
+
+        }
+
+    }
 
     <?php
     /*
