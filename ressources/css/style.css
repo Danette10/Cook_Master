@@ -182,3 +182,30 @@ form input[type="submit"]:hover{
     font-weight: bold;
     border: 1px solid #FF9B90;
 }
+
+/* PROFIL PAGE */
+
+.allInfoProfil{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px;
+}
+
+.allInfoProfil .imageProfil img{
+    border-radius: 15px;
+}
+
+.allInfoProfil .imageProfil{
+    position: relative;
+}
+
+.allInfoProfil .imageProfil .editProfil{
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.2);
+    width: 100%;
+    height: 10%;
+    text-align: right;
+}

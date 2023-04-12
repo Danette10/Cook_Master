@@ -42,6 +42,7 @@ define('ADDRESS_CSS', ADDRESS_RESSOURCES . 'css/');
 define('ADDRESS_JS', ADDRESS_RESSOURCES . 'js/');
 define('ADDRESS_IMG', ADDRESS_RESSOURCES . 'images/');
 define('ADDRESS_PRICING_ICON', ADDRESS_IMG . 'pricingIcon/');
+define('ADDRESS_IMG_PROFIL', ADDRESS_IMG . 'profilePicture/');;
 
 define('ADDRESS_SCRIPT', ADDRESS_RESSOURCES . 'script/');
 define('ADDRESS_APPLICATION', ADDRESS_SITE . 'application/');
@@ -52,3 +53,6 @@ define('ADDRESS_RESET_PASSWORD', ADDRESS_SITE . 'resetPassword');
 define('ADDRESS_PAIEMENT_FORM', ADDRESS_APPLICATION_EXTRANET . 'paiement/');
 define('ADDRESS_FILES', ADDRESS_RESSOURCES . 'files/');
 define('ADDRESS_INVOICES', ADDRESS_FILES . 'invoices/');
+
+
+require_once(PATH_SCRIPT . 'connectDB.php');

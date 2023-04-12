@@ -46,6 +46,37 @@ function mailHtml($to, $subject, $message, $headers, $attachement = null) {
     }
 }
 
+/**
+ * Écrit un message de journalisation dans un fichier.
+ *
+ * @param string $file    Chemin du fichier de journalisation
+ * @param string $message Message à écrire dans le fichier
+ */
+function writeLog($file, $message) {
+    // Vérifier si le dossier existe, sinon le créer avec les permissions appropriées
+    $dir = dirname($file);
+    if (!is_dir($dir)) {
+        mkdir($dir, 0777, true);
+    }
+
+    // Vérifier si le fichier existe, sinon le créer
+    if (!file_exists($file)) {
+        touch($file);
+    }
+
+    // Vérifier si le fichier est accessible en écriture
+    if (is_writable($file)) {
+        $date = date('d/m/Y H:i:s');
+        $log = $message;
+
+        // Écrire le message dans le fichier en ajoutant un saut de ligne à la fin
+        file_put_contents($file, $log . PHP_EOL, FILE_APPEND);
+    } else {
+        echo "Erreur: Le fichier de journalisation n'est pas accessible en écriture. Veuillez vérifier les permissions.";
+    }
+}
+
+
 /*
  * TODO: Function to upload profile picture
  */

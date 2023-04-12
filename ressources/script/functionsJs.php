@@ -1,13 +1,15 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
 
 <script>
+
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
     const axios = require('axios');
 
     $(document).ready(function() {
 
-        // Si on scroll sur la page
         $(window).scroll(function() {
-
             if ($(this).scrollTop() > 1) {
                 $('header').css('position', 'sticky');
             } else {
@@ -16,6 +18,59 @@
 
         });
     });
+
+    <?php
+        /*
+         * TODO: Function to connect user
+         */
+    ?>
+
+    function connexion(email, password) {
+
+        let error = document.getElementById("error");
+
+        if (email === "" || password === "") {
+
+            alert("Veuillez remplir tous les champs");
+
+        } else {
+
+            if (isValidEmail(email)) {
+
+                $.ajax({
+
+                    url: "<?= ADDRESS_FORM ?>connexion.php",
+                    type: "POST",
+                    data: {
+                        email: email,
+                        password: password
+                    },
+
+                    success: function (data) {
+
+                        if (data === "success") {
+
+                            window.location.href = "<?= ADDRESS_SITE ?>";
+
+                        } else {
+
+                            error.innerHTML = data;
+
+                        }
+
+                    }
+
+                });
+
+            } else {
+
+                alert("Veuillez entrer une adresse email valide");
+
+            }
+
+        }
+
+    }
 
     <?php
     /*
