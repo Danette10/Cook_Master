@@ -9,6 +9,7 @@
  */
 
 define('PATH_SITE', $_SERVER['DOCUMENT_ROOT'] . '/Cook_Master/');
+define('PATH_LOG', PATH_SITE . 'log/');
 define('PATH_RESSOURCES', PATH_SITE . 'ressources/');
 define('PATH_CSS', PATH_RESSOURCES . 'css/');
 define('PATH_JS', PATH_RESSOURCES . 'js/');
