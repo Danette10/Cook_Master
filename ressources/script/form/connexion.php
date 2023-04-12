@@ -3,6 +3,39 @@ include '../init.php';
 include PATH_SCRIPT . 'functions.php';
 include PATH_SCRIPT . 'connectDB.php';
 
+session_start();
+
+// Limiter le taux de requêtes
+$ip_address = $_SERVER['REMOTE_ADDR'];
+$attempts_limit = 5;
+$time_limit_seconds = 60; // 1 minute
+
+if (!isset($_SESSION['login_attempts'])) {
+    $_SESSION['login_attempts'] = array();
+}
+
+if (isset($_SESSION['login_attempts'][$ip_address])) {
+    $attempts_data = $_SESSION['login_attempts'][$ip_address];
+    $time_elapsed = time() - $attempts_data['timestamp'];
+
+    if ($time_elapsed > $time_limit_seconds) {
+        // Réinitialiser le compteur d'essais et le timestamp
+        $_SESSION['login_attempts'][$ip_address] = array('count' => 1, 'timestamp' => time());
+    } else {
+        if ($attempts_data['count'] >= $attempts_limit) {
+            // Trop d'essais de connexion, redirection vers une page d'erreur
+            header('Location: ' . ADDRESS_SITE . '?type=error&message=Trop de tentatives de connexion, veuillez patienter');
+            exit();
+        } else {
+            // Incrémenter le compteur d'essais
+            $_SESSION['login_attempts'][$ip_address]['count']++;
+        }
+    }
+} else {
+    // Ajouter l'adresse IP au compteur d'essais
+    $_SESSION['login_attempts'][$ip_address] = array('count' => 1, 'timestamp' => time());
+}
+
 $email = htmlspecialchars($_POST['email']);
 $password = htmlspecialchars($_POST['password']);
 
@@ -42,8 +75,6 @@ if ($passwordIsCorrect['passwordIsCorrect'] == 0) {
     exit();
 }
 
-session_start();
-
 $_SESSION['id'] = $userExist['id'];
 $_SESSION['lastname'] = $userExist['lastname'];
 $_SESSION['firstname'] = $userExist['firstname'];
@@ -62,5 +93,9 @@ switch ($userExist['role']) {
         break;
 }
 
+// Réinitialiser le compteur d'essais pour cette IP après une connexion réussie
+unset($_SESSION['login_attempts'][$ip_address]);
+
 header('Location: ' . ADDRESS_SITE . '?type=success&message=Connexion réussie');
 exit();
+?>
