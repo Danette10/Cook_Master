@@ -81,7 +81,7 @@ include PATH_SCRIPT . 'header.php';
 
         <div class="g-recaptcha mb-4" data-sitekey="<?= $_ENV['CAPTCHA_SITE_KEY'] ?>" data-callback="recaptchaCallback" data-expired-callback="recaptchaExpired"></div>
 
-        <input type="submit" class="btn" value="Submit" onclick="verifyRecaptcha()" style="display:none;" id="submitButton">
+        <div id="div-submit"></div>
 
     </form>
 

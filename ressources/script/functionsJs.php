@@ -54,6 +54,7 @@
 
                         } else {
 
+                            $("#password").val("");
                             error.innerHTML = data;
 
                         }
@@ -78,7 +79,7 @@
      */
     ?>
 
-    function displayPassword(id) {
+    function displayPassword(id = "password") {
         let password = document.getElementById(id);
         if (password.type === "password") {
             password.type = "text";
@@ -250,11 +251,24 @@
     }
 
     function recaptchaCallback() {
-        $('#submitButton').show();
+
+        let submitButton = document.createElement('input');
+        submitButton.type = 'submit';
+        submitButton.className = 'btn';
+        submitButton.value = 'Submit';
+        submitButton.onclick = 'verifyRecaptcha()';
+        submitButton.id = 'submitButton';
+
+        $('#div-submit').replaceWith(submitButton);
+
     }
 
     function recaptchaExpired() {
-        $('#submitButton').hide();
+
+        $('#submitButton').remove();
+        if($('#div-submit').length === 0){
+            $('#inscriptionForm').append('<div id="div-submit"></div>');
+        }
     }
 
 </script>
