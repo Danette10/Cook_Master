@@ -4,6 +4,7 @@ include '../init.php';
 include PATH_SCRIPT . 'functions.php';
 
 $email = isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '';
+$password = isset($_POST['password']) ? htmlspecialchars($_POST['password']) : '';
 $newPassword = isset($_POST['newPassword']) ? htmlspecialchars($_POST['newPassword']) : '';
 $confirmNewPassword = isset($_POST['confirmNewPassword']) ? htmlspecialchars($_POST['confirmNewPassword']) : '';
 $lastname = isset($_POST['lastname']) ? htmlspecialchars($_POST['lastname']) : '';
@@ -83,25 +84,35 @@ if( preg_match("#\d#",$newPassword)== 0 ||
 
 if(!empty($newPassword) && !empty($confirmNewPassword)){
 
+    $password = hash('sha512', $password);
     $newPassword = hash('sha512', $newPassword);
 
-    $updateUser = $db->prepare("UPDATE user SET password = :password WHERE id = :id");
-    $updateUser->execute(
-        [
-            'password' => $newPassword,
-            'id' => $_SESSION['id']
-        ]
-    );
+    $selectUser = $db->prepare("SELECT COUNT(*) FROM user WHERE password = :password");
+    $selectUser->execute(['password' => $password]);
+    $user = $selectUser->fetchColumn();
 
-    $messageMail = "<h1>Modification de votre mot de passe</h1>";
-    $messageMail .= "<p>Vous avez modifié votre mot de passe sur Cookorama</p>";
-    $messageMail .= "<p>Nous espérons que vous allez apprécier notre site !</p>";
-    $messageMail .= "<p>L'équipe Cookorama</p>";
+    if ($user == 0) {
+        $errors[] = "Le mot de passe est incorrect";
+    }else {
 
-    $subject = "Cookorama - Modification de votre mot de passe";
-    $header = "Cookorama < " . MAIL . " >";
+        $updateUser = $db->prepare("UPDATE user SET password = :password WHERE id = :id");
+        $updateUser->execute(
+            [
+                'password' => $newPassword,
+                'id' => $_SESSION['id']
+            ]
+        );
 
-    mailHtml($email, $subject, $messageMail, $header);
+        $messageMail = "<h1>Modification de votre mot de passe</h1>";
+        $messageMail .= "<p>Vous avez modifié votre mot de passe sur Cookorama</p>";
+        $messageMail .= "<p>Nous espérons que vous allez apprécier notre site !</p>";
+        $messageMail .= "<p>L'équipe Cookorama</p>";
+
+        $subject = "Cookorama - Modification de votre mot de passe";
+        $header = "Cookorama < " . MAIL . " >";
+
+        mailHtml($email, $subject, $messageMail, $header);
+    }
 }
 
 if(!empty($lastname)){
