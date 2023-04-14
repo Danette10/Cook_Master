@@ -15,7 +15,7 @@ if($token == ''){
     $messageMail = "<p>Bonjour,</p>";
     $messageMail .= "<p>Vous venez de demander à réinitialiser votre mot de passe sur Cookorama.</p>";
     $messageMail .= "<p>Pour ce faire, veuillez cliquer sur le lien ci-dessous :</p>";
-    $messageMail .= "<a href='" . ADDRESS_RESET_PASSWORD . "?token=" . $token . "'>Réinitialiser mon mot de passe</a>";
+    $messageMail .= "<a href='" . ADDRESS_RESET_PASSWORD . "?token=" . $token . "&email=" . $email . "'>Réinitialiser mon mot de passe</a>";
     $messageMail .= "<p>L'équipe Cookorama</p>";
 
     $subject = "Cookorama - Réinitialisation de votre mot de passe";
@@ -60,6 +60,13 @@ if($token == ''){
     $header = "Cookorama < " . MAIL . " >";
 
     mailHtml($email, $subject, $messageMail, $header);
+
+    $selectId = $db->prepare("SELECT id FROM user WHERE token = :token");
+    $selectId->execute(['token' => $token]);
+    $id = $selectId->fetchColumn();
+
+    $updateToken = $db->prepare("UPDATE user SET token = :token WHERE id = :id");
+    $updateToken->execute(['token' => '', 'id' => $id]);
 
     header("Location: " . ADDRESS_SITE . '?type=success&message=Votre mot de passe a bien été réinitialisé');
     exit();

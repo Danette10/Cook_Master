@@ -271,4 +271,28 @@
         }
     }
 
+    /**
+     * TODO: Function to delete profil picture
+     * @param id
+     *
+     * @return void
+     */
+
+    function deleteProfilPicture(id) {
+
+        $.ajax({
+            url: '<?= ADDRESS_SCRIPT ?>ajaxProfil.php',
+            type: 'POST',
+            data: {
+                id: id,
+                type: 'deleteProfilPicture'
+            },
+            success: function (data) {
+                if (data !== 'error') {
+                    $('#profilPicture').html(data);
+                }
+            }
+        });
+    }
+
 </script>

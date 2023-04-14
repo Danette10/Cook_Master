@@ -26,6 +26,18 @@
 
                     </li>
 
+                    <li>
+
+                        <a href="<?= ADDRESS_SITE ?>recettes" class="nav-link">Recettes</a>
+
+                    </li>
+
+                    <li>
+
+                        <a href="<?= ADDRESS_SITE ?>leçons" class="nav-link">Leçons</a>
+
+                    </li>
+
                 </ul>
 
                 <div class="connexionInscriptionLinks">
@@ -72,8 +84,11 @@
             <div class="dropdown" style="margin-right: 80px;">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
 
+                    <?php if ($profilePicture != ''){ ?>
                     <img src="<?= ADDRESS_IMG_PROFIL . $profilePicture ?>" alt="Profile picture" width="60" height="60" class="rounded-circle">
-
+                    <?php } else { ?>
+                    <img src="<?= ADDRESS_DEFAULT_PROFIL ?>" alt="Profile picture" width="50" height="50" class="rounded-circle">
+                    <?php } ?>
                 </button>
 
                 <ul class="dropdown-menu" aria-labelledby="profileDropdown">

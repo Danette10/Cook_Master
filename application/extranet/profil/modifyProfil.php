@@ -13,7 +13,7 @@
         exit();
     }
 
-    $selectInfo = $db->prepare('SELECT id, profilePicture, password, birthdate FROM user WHERE id = :id');
+    $selectInfo = $db->prepare('SELECT id, lastname, firstname, email, profilePicture, password, birthdate FROM user WHERE id = :id');
     $selectInfo->execute(array(
         'id' => $_SESSION['id']
     ));
@@ -25,9 +25,9 @@
     $birthdate = date('Y-m-d', strtotime($infos['birthdate']));
     $profilePicture = ADDRESS_IMG_PROFIL . $infos['profilePicture'];
     $password = $infos['password'];
-    $lastname = $_SESSION['lastname'];
-    $firstname = $_SESSION['firstname'];
-    $email = $_SESSION['email'];
+    $lastname = $infos['lastname'];
+    $firstname = $infos['firstname'];
+    $email = $infos['email'];
 
     if($id == $_SESSION['id']) {
         $titlePage = "Modification de votre profil";
@@ -45,8 +45,17 @@
 
             <form action="<?= ADDRESS_FORM ?>updateProfil.php" method="post" class="col-md-6" id="inscriptionForm" enctype="multipart/form-data" style="margin: 0 auto; padding: 15px;">
 
-                <div class="mb-3">
-                    <img src="<?= $profilePicture ?>" alt="Photo de profil" width="300" height="300" style="border-radius: 15px;">
+                <div class="mb-3" id="profilPicture">
+                    <?php
+                    if($profilePicture != ADDRESS_IMG_PROFIL){ ?>
+                    <div style="width: fit-content; position: relative; margin: 0 auto;">
+                        <img src="<?= $profilePicture ?>" alt="Photo de profil" width="300" height="300" style="border-radius: 15px;">
+                        <i class="fa-solid fa-xmark fa-2xl" style="color: #ff0000; position: absolute; right: 3px; top: 15px; cursor: pointer;" onclick="deleteProfilPicture(<?= $_SESSION['id'] ?>)"  data-bs-toggle="tooltip" data-bs-title="Supprimer votre photo de profil" data-bs-placement="right"></i>
+                    </div>
+                    <?php } else { ?>
+                    <label>Photo de profil</label>
+                    <input type="file" class="form-control" id="profilePicture" name="profilePicture">
+                    <?php } ?>
                 </div>
 
                 <div class="mb-3">

@@ -40,7 +40,11 @@ $profilePicture = ADDRESS_IMG_PROFIL . $infos['profilePicture'];
 
                 <div class="imageProfil me-4">
 
+                    <?php if($profilePicture != ADDRESS_IMG_PROFIL){ ?>
                     <img src="<?= $profilePicture ?>" alt="Photo de profil" width="300" height="300">
+                    <?php } else { ?>
+                    <img src="<?= ADDRESS_DEFAULT_PROFIL ?>" alt="Photo de profil" width="300" height="300">
+                    <?php } ?>
 
                     <div class="editProfil">
 

@@ -6,6 +6,7 @@ $title = "Cookorama - Reset Password";
 include '../../ressources/script/head.php';
 include PATH_SCRIPT . 'header.php';
 $token = isset($_GET['token']) ? htmlspecialchars($_GET['token']) : '';
+$email = isset($_GET['email']) ? htmlspecialchars($_GET['email']) : '';
 
 ?>
 
@@ -56,6 +57,7 @@ $token = isset($_GET['token']) ? htmlspecialchars($_GET['token']) : '';
             </div>
 
             <input type="hidden" name="token" value="<?= $token ?>">
+            <input type="hidden" name="email" value="<?= $email ?>">
             <input type="submit" class="btn" value="Submit">
 
         </form>
