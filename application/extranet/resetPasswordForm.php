@@ -1,14 +1,30 @@
-<!DOCTYPE html>
-<html lang="fr">
-
 <?php
 $title = "Cookorama - Reset Password";
 include '../../ressources/script/head.php';
-include PATH_SCRIPT . 'header.php';
 $token = isset($_GET['token']) ? htmlspecialchars($_GET['token']) : '';
+$email = isset($_GET['email']) ? htmlspecialchars($_GET['email']) : '';
+
+if($token != ''){
+    $selectToken = $db->prepare('SELECT * FROM user WHERE token = :token');
+    $selectToken->execute(array(
+        'token' => $token
+    ));
+
+    $tokenExist = $selectToken->rowCount();
+
+    if($tokenExist == 0){
+        header('Location: ' . ADDRESS_SITE);
+        exit();
+    }
+}
 
 ?>
+<!DOCTYPE html>
+<html lang="fr">
+<?php
+include PATH_SCRIPT . 'header.php';
 
+?>
 <body>
 
 <main>
@@ -56,6 +72,7 @@ $token = isset($_GET['token']) ? htmlspecialchars($_GET['token']) : '';
             </div>
 
             <input type="hidden" name="token" value="<?= $token ?>">
+            <input type="hidden" name="email" value="<?= $email ?>">
             <input type="submit" class="btn" value="Submit">
 
         </form>

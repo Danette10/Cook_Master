@@ -9,6 +9,7 @@
  */
 
 define('PATH_SITE', $_SERVER['DOCUMENT_ROOT'] . '/Cook_Master/');
+define('PATH_LOG', PATH_SITE . 'log/');
 define('PATH_RESSOURCES', PATH_SITE . 'ressources/');
 define('PATH_CSS', PATH_RESSOURCES . 'css/');
 define('PATH_JS', PATH_RESSOURCES . 'js/');
@@ -43,6 +44,7 @@ define('ADDRESS_JS', ADDRESS_RESSOURCES . 'js/');
 define('ADDRESS_IMG', ADDRESS_RESSOURCES . 'images/');
 define('ADDRESS_PRICING_ICON', ADDRESS_IMG . 'pricingIcon/');
 define('ADDRESS_IMG_PROFIL', ADDRESS_IMG . 'profilePicture/');;
+define('ADDRESS_DEFAULT_PROFIL', ADDRESS_IMG . 'defaultPicture.svg');
 
 define('ADDRESS_SCRIPT', ADDRESS_RESSOURCES . 'script/');
 define('ADDRESS_APPLICATION', ADDRESS_SITE . 'application/');
