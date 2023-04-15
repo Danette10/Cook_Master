@@ -1,7 +1,8 @@
 <?php
 include "init.php";
 include "functions.php";
-include "connectDB.php";
+
+global $db;
 
 $email = htmlspecialchars($_GET['email']);
 

@@ -1,13 +1,10 @@
-<?php session_start();
-require_once('../../vendor/autoload.php');
-?>
 <!DOCTYPE html>
 <html lang="fr">
 
 <?php
 $title = "Cookorama - Pricing";
-include '../../ressources/script/head.php';
-include PATH_SCRIPT . 'header.php';
+include 'ressources/script/head.php';
+require_once PATH_SCRIPT . 'header.php';
 
 $name = [];
 $price = [];
@@ -188,10 +185,5 @@ foreach ($products->data as $product) {
        </div>
 
    </main>
-
-    <?php
-    include PATH_SCRIPT . 'functionsJs.php';
-    include PATH_SCRIPT . 'footer.php';
-    ?>
 
 </body>

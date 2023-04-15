@@ -1,8 +1,5 @@
 <?php
-$title = "Cookorama - Reset Password";
-include '../../ressources/script/head.php';
-$token = isset($_GET['token']) ? htmlspecialchars($_GET['token']) : '';
-$email = isset($_GET['email']) ? htmlspecialchars($_GET['email']) : '';
+global $db;
 
 if($token != ''){
     $selectToken = $db->prepare('SELECT * FROM user WHERE token = :token');
@@ -17,14 +14,17 @@ if($token != ''){
         exit();
     }
 }
+?>
+
+<?php
+$title = "Cookorama - Reset Password";
+include 'ressources/script/head.php';
+require_once PATH_SCRIPT . 'header.php';
 
 ?>
 <!DOCTYPE html>
 <html lang="fr">
-<?php
-include PATH_SCRIPT . 'header.php';
 
-?>
 <body>
 
 <main>
@@ -81,12 +81,5 @@ include PATH_SCRIPT . 'header.php';
 
 </main>
 
-
-
-
-<?php
-include PATH_SCRIPT . 'functionsJs.php';
-include PATH_SCRIPT . 'footer.php';
-?>
 
 </body>

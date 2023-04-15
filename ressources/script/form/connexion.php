@@ -2,7 +2,8 @@
 session_start();
 include '../init.php';
 include PATH_SCRIPT . 'functions.php';
-include PATH_SCRIPT . 'connectDB.php';
+
+global $db;
 
 // Limiter le taux de requêtes
 $ip_address = $_SERVER['REMOTE_ADDR'];

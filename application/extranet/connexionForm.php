@@ -12,7 +12,7 @@
 
     </div>
 
-    <a href="<?= ADDRESS_SITE ?>resetPassword">Mot de passe oublié ?</a>
+    <a href="<?= ADDRESS_SITE ?>profil/resetPassword">Mot de passe oublié ?</a>
 
 </div>
 

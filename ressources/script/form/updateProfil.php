@@ -1,7 +1,7 @@
 <?php
-session_start();
-include '../init.php';
 include PATH_SCRIPT . 'functions.php';
+
+global $db;
 
 $email = isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '';
 $password = isset($_POST['password']) ? htmlspecialchars($_POST['password']) : '';

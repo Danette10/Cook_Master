@@ -9,8 +9,6 @@ use PHPMailer\PHPMailer\Exception;
 
 function mailHtml($to, $subject, $message, $headers, $attachement = null) {
 
-    require $_SERVER['DOCUMENT_ROOT'] . '/Cook_Master/vendor/autoload.php';
-
     $mail = new PHPMailer(true);
 
     try {
@@ -191,9 +189,7 @@ function getCurrency($priceId) {
  * TODO: Function to generte an invoice
  */
 
-function generateInvoice($invoiceData, $db){
-
-    require $_SERVER['DOCUMENT_ROOT'] . '/Cook_Master/vendor/autoload.php';
+function generateInvoice($invoiceData){
 
     $invoiceNumber = $invoiceData['invoice_number'];
     $invoiceDate = $invoiceData['invoice_date'];
@@ -352,13 +348,13 @@ EOD;
 
     $pdfPath = $year . '/' . $month;
 
-    if (!file_exists($pdfPath)) {
-        mkdir($pdfPath, 0777, true);
-    }
-
     $pdfPathSuite = $pdfPath . '/' . $_SESSION['id'] . '_' . 'facture-' . $invoiceNumber . '.pdf';
 
     $fullPath = PATH_INVOICES . $pdfPathSuite;
+
+    if (!file_exists(PATH_INVOICES . $pdfPath)) {
+        mkdir(PATH_INVOICES . $pdfPath, 0777, true);
+    }
 
     $pdf->Output($fullPath, 'F');
 

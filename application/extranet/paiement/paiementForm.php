@@ -1,12 +1,11 @@
 <?php
-session_start();
-require_once('../../../vendor/autoload.php');
+ob_start();
 $title = "Cookorama - Starter Plan";
-include '../../../ressources/script/head.php';
-require_once(PATH_SCRIPT . 'connectDB.php');
+include 'ressources/script/head.php';
+require_once PATH_SCRIPT . 'header.php';
 
-$subscriptionType = htmlspecialchars($_GET['subscription']);
-$plan = htmlspecialchars($_GET['plan']);
+global $db;
+
 $priceId = '';
 $interval = '';
 $role = 0;
@@ -73,14 +72,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['cardholderEmail'];
     $name = $_POST['cardholderName'];
 
-    // Créer le client dans Stripe avec le nom
-    $customer = \Stripe\Customer::create([
-        'email' => $email,
-        'name' => $name,
-        'preferred_locales' => ['fr'],
-    ]);
+    $allCustomers = \Stripe\Customer::all();
 
-    // Créer la source de paiement avec le nom du titulaire de la carte
+    $customer = null;
+
+    foreach ($allCustomers->data as $existingCustomer) {
+        if (isset($existingCustomer->metadata['user_id']) && $existingCustomer->metadata['user_id'] == $_SESSION['id']) {
+            $customer = $existingCustomer;
+            break;
+        }
+    }
+
+    if ($customer === null) {
+        $customer = \Stripe\Customer::create([
+            'email' => $email,
+            'name' => $name,
+            'preferred_locales' => ['fr'],
+            'metadata' => [
+                'user_id' => $_SESSION['id'],
+            ],
+        ]);
+    }
+
+
     $card = \Stripe\Customer::createSource(
         $customer->id,
         ['source' => $stripeToken]
@@ -116,6 +130,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $subscriptionStart = date('Y-m-d H:i:s', $subscription->current_period_start);
     $subscriptionEnd = date('Y-m-d H:i:s', $subscription->current_period_end);
 
+    // Si il a déjà un abonnement actif, on le désactive
+    $selectSubscription = $db->prepare("SELECT * FROM stripe_consumer WHERE user_id = :user_id AND subscription_status = 'active'");
+    $selectSubscription->execute([
+        'user_id' => $userId
+    ]);
+    $existingSubscription = $selectSubscription->fetch();
+    if($existingSubscription) {
+        $updateSubscription = $db->prepare("UPDATE stripe_consumer SET subscription_status = 'inactive' WHERE user_id = :user_id");
+        $updateSubscription->execute([
+            'user_id' => $userId
+        ]);
+
+        $subscriptionLast = \Stripe\Subscription::retrieve($existingSubscription['subscription_id']);
+        try {
+            $subscriptionLast->cancel();
+        } catch (\Stripe\Exception\ApiErrorException $e) {
+            // The subscription has already been canceled.
+
+        }
+    }
+
+
     $insertSubscription = $db->prepare("INSERT INTO stripe_consumer(
                             customer_id, user_id, invoice_id, subscription_id, 
                             subscription_status, subscription_plan, subscription_start_date, 
@@ -138,19 +174,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if($subscription->status == 'active') {
 
-        header('Location: ' . ADDRESS_SITE . 'confirmPaiement/1/' . $subscriptionType . '/' . $plan);
+        header('Location: ' . ADDRESS_SITE . 'confirm/1/' . $subscriptionType . '/' . $plan);
         exit();
 
     } else {
 
-        header('Location: ' . ADDRESS_SITE . 'confirmPaiement/0/' . $subscriptionType . '/' . $plan);
+        header('Location: ' . ADDRESS_SITE . 'confirm/0/' . $subscriptionType . '/' . $plan);
         exit();
 
     }
 }
 
-
-include PATH_SCRIPT . 'header.php';
+ob_end_flush();
 
 $price = number_format(getPriceDetails($priceId)->unit_amount / 100, 2, '.', '');
 
@@ -198,12 +233,6 @@ $price = number_format(getPriceDetails($priceId)->unit_amount / 100, 2, '.', '')
             </div>
         </div>
     </main>
-
-
-    <?php
-    include PATH_SCRIPT . 'functionsJs.php';
-    include PATH_SCRIPT . 'footer.php';
-    ?>
 
 </body>
 

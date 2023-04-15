@@ -44,7 +44,7 @@
 
                     <button class="pricingLink btn">
 
-                        <a href="<?= ADDRESS_SITE ?>abonnement" class="nav-link">S'abonner</a>
+                        <a href="<?= ADDRESS_SITE ?>subscribe" class="nav-link">S'abonner</a>
 
                     </button>
 
@@ -71,6 +71,8 @@
             </div>
 
             <?php if (isset($_SESSION['email'])){
+
+                global $db;
 
                 $selectProfilePicture = $db->prepare('SELECT profilePicture FROM user WHERE id = :id');
                 $selectProfilePicture->execute(array(

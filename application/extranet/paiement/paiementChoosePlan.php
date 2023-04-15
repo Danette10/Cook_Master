@@ -1,14 +1,10 @@
-<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="fr">
 
 <?php
 $title = "Cookorama - Checkout";
-include '../../../ressources/script/head.php';
-include PATH_SCRIPT . 'header.php';
-require_once('../../../vendor/autoload.php');
-
-$subscriptionType = htmlspecialchars($_GET['subscription']);
+include 'ressources/script/head.php';
+require_once PATH_SCRIPT . 'header.php';
 
 \Stripe\Stripe::setApiKey($_ENV['API_PRIVATE_KEY']);
 
@@ -71,9 +67,5 @@ switch ($subscriptionType) {
 
 </div>
 
-<?php
-include PATH_SCRIPT . 'functionsJs.php';
-include PATH_SCRIPT . 'footer.php';
-?>
 </body>
 </html>

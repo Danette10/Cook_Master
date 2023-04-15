@@ -21,7 +21,9 @@ define('PATH_APPLICATION', PATH_SITE . 'application/');
 define('PATH_APPLICATION_EXTRANET', PATH_APPLICATION . 'extranet/');
 define('PATH_FORM', PATH_SCRIPT . 'form/');
 define('PATH_VALIDATE_INSCRIPTION', PATH_FORM . 'validateInscription.php');
+define('PATH_RESET_PASSWORD_FORM', PATH_APPLICATION_EXTRANET . 'resetPasswordForm.php');
 define('PATH_FILES', PATH_RESSOURCES . 'files/');
+define('PATH_PAIEMENT_FORM', PATH_APPLICATION_EXTRANET . 'paiement/');
 define('PATH_INVOICES', PATH_FILES . 'invoices/');
 
 define('MAIL', 'cookmasterpa.2023@gmail.com');
@@ -51,7 +53,7 @@ define('ADDRESS_APPLICATION', ADDRESS_SITE . 'application/');
 define('ADDRESS_APPLICATION_EXTRANET', ADDRESS_APPLICATION . 'extranet/');
 define('ADDRESS_FORM', ADDRESS_SCRIPT . 'form/');
 define('ADDRESS_VALIDATE_INSCRIPTION', ADDRESS_FORM . 'validateInscription.php');
-define('ADDRESS_RESET_PASSWORD', ADDRESS_SITE . 'resetPassword');
+define('ADDRESS_RESET_PASSWORD', ADDRESS_SITE . 'resetPassword.php');
 define('ADDRESS_PAIEMENT_FORM', ADDRESS_APPLICATION_EXTRANET . 'paiement/');
 define('ADDRESS_FILES', ADDRESS_RESSOURCES . 'files/');
 define('ADDRESS_INVOICES', ADDRESS_FILES . 'invoices/');

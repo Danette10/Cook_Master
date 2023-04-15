@@ -1,7 +1,8 @@
 <?php
 include "../init.php";
 include PATH_SCRIPT . "functions.php";
-include PATH_SCRIPT . "connectDB.php";
+
+global $db;
 
 
 if (isset($_POST['name']) && isset($_POST['firstname']) && isset($_POST['email']) && isset($_POST['password']) && isset($_POST['passwordConf']) && isset($_POST['birthday'])) {
@@ -101,7 +102,7 @@ if (isset($_POST['name']) && isset($_POST['firstname']) && isset($_POST['email']
 
         $messageMail = "<h1>Merci pour votre inscription !</h1>";
         $messageMail .= "<p>Vous pouvez activer votre compte en cliquant sur le lien ci-dessous</p>";
-        $messageMail .= "<a href='" . ADDRESS_VALIDATE_INSCRIPTION . "?token=" . $token . "'>Activer mon compte</a>";
+        $messageMail .= "<a href='" . ADDRESS_SITE . "inscription/validate/" . $token . "'>Activer mon compte</a>";
         $messageMail .= "<p>Nous espérons que vous allez apprécier notre site !</p>";
         $messageMail .= "<p>L'équipe Cookorama</p>";
 
