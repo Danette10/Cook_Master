@@ -72,6 +72,8 @@
 
             <?php if (isset($_SESSION['email'])){
 
+                global $db;
+
                 $selectProfilePicture = $db->prepare('SELECT profilePicture FROM user WHERE id = :id');
                 $selectProfilePicture->execute(array(
                     'id' => $_SESSION['id']

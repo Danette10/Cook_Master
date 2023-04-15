@@ -1,13 +1,12 @@
-<?php session_start(); ?>
-
 <!DOCTYPE html>
 <html lang="fr">
 
 <?php
 $title = "Cookorama - Profil";
-include '../../../ressources/script/head.php';
-include PATH_SCRIPT . 'header.php';
-require_once('../../../vendor/autoload.php');
+include 'ressources/script/head.php';
+require_once PATH_SCRIPT . 'header.php';
+
+global $db;
 
 if (!isset($_SESSION['id'])) {
     header('Location: ' . PATH_SITE);
@@ -48,7 +47,7 @@ $profilePicture = ADDRESS_IMG_PROFIL . $infos['profilePicture'];
 
                     <div class="editProfil">
 
-                        <a href="<?= ADDRESS_SITE ?>profil/modification/<?=$_SESSION['id'] ?>" data-bs-toggle="tooltip" data-bs-title="Modifier le profil" data-bs-placement="top">
+                        <a href="<?= ADDRESS_SITE ?>profil/modify/<?=$_SESSION['id'] ?>" data-bs-toggle="tooltip" data-bs-title="Modifier le profil" data-bs-placement="top">
 
                             <i class="fa-solid fa-pen-to-square fa-2xl" style="color: #ff9b90;"></i>
 
@@ -69,11 +68,6 @@ $profilePicture = ADDRESS_IMG_PROFIL . $infos['profilePicture'];
             </div>
 
         </main>
-
-        <?php
-        include PATH_SCRIPT . 'functionsJs.php';
-        include PATH_SCRIPT . 'footer.php';
-        ?>
 
     </body>
 

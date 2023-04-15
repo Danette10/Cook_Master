@@ -1,7 +1,8 @@
 <?php
 include "../init.php";
 include PATH_SCRIPT . "functions.php";
-include PATH_SCRIPT . "connectDB.php";
+
+global $db;
 
 $token = htmlspecialchars($_POST['token']);
 $email = htmlspecialchars($_POST['email']);
@@ -15,7 +16,7 @@ if($token == ''){
     $messageMail = "<p>Bonjour,</p>";
     $messageMail .= "<p>Vous venez de demander à réinitialiser votre mot de passe sur Cookorama.</p>";
     $messageMail .= "<p>Pour ce faire, veuillez cliquer sur le lien ci-dessous :</p>";
-    $messageMail .= "<a href='" . ADDRESS_RESET_PASSWORD . "?token=" . $token . "&email=" . $email . "'>Réinitialiser mon mot de passe</a>";
+    $messageMail .= "<a href='" . ADDRESS_SITE . "profil/resetPassword/" . $token . "/" . $email . "'>Réinitialiser mon mot de passe</a>";
     $messageMail .= "<p>L'équipe Cookorama</p>";
 
     $subject = "Cookorama - Réinitialisation de votre mot de passe";

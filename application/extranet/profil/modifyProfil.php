@@ -1,21 +1,21 @@
-<?php session_start(); ?>
-
 <!DOCTYPE html>
 <html lang="fr">
 
     <?php
     $title = "Cookorama - Modification du profil";
-    include '../../../ressources/script/head.php';
-    include PATH_SCRIPT . 'header.php';
+    include 'ressources/script/head.php';
+    require_once PATH_SCRIPT . 'header.php';
 
-    if (!isset($_SESSION['id'])) {
+    global $db;
+
+    if (!isset($idUser)) {
         header('Location: ' . PATH_SITE);
         exit();
     }
 
     $selectInfo = $db->prepare('SELECT id, lastname, firstname, email, profilePicture, password, birthdate FROM user WHERE id = :id');
     $selectInfo->execute(array(
-        'id' => $_SESSION['id']
+        'id' => $idUser
     ));
 
     $infos = $selectInfo->fetch();
@@ -43,7 +43,7 @@
 
             <h2 class="text-center mt-4"><?= $titlePage ?></h2>
 
-            <form action="<?= ADDRESS_FORM ?>updateProfil.php" method="post" class="col-md-6" id="inscriptionForm" enctype="multipart/form-data" style="margin: 0 auto; padding: 15px;">
+            <form action="<?= ADDRESS_SITE ?>profil/update" method="post" class="col-md-6" id="inscriptionForm" enctype="multipart/form-data" style="margin: 0 auto; padding: 15px;">
 
                 <div class="mb-3" id="profilPicture">
                     <?php
@@ -106,11 +106,6 @@
             </form>
 
         </main>
-
-        <?php
-        include PATH_SCRIPT . 'functionsJs.php';
-        include PATH_SCRIPT . 'footer.php';
-        ?>
 
         <script>
 
