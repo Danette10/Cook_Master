@@ -5,10 +5,9 @@
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
-    const axios = require('axios');
-
     $(document).ready(function() {
 
+        console.log("ready!");
         $(window).scroll(function() {
             if ($(this).scrollTop() > 1) {
                 $('header').css('position', 'sticky');
@@ -239,6 +238,9 @@
     ?>
 
     async function verifyRecaptcha(recaptchaResponse) {
+
+        const axios = require('axios');
+
         const secretKey = '<?= $_ENV['CAPTCHA_SITE_SECRET_KEY'] ?>';
         const apiUrl = 'https://www.google.com/recaptcha/api/siteverify';
         const response = await axios.post(apiUrl, null, {
