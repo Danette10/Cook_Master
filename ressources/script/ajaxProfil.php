@@ -2,6 +2,8 @@
 require_once ('init.php');
 $type = htmlspecialchars($_POST['type']);
 
+global $db;
+
 switch ($type) {
 
     case 'deleteProfilPicture':

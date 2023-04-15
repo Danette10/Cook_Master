@@ -1,21 +1,16 @@
-<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="fr">
 
 <?php
 
 $title = "Cookorama - Confirmation";
-include '../../../ressources/script/head.php';
-include PATH_SCRIPT . 'header.php';
-require_once('../../../vendor/autoload.php');
-require_once(PATH_SCRIPT . 'connectDB.php');
+include 'ressources/script/head.php';
+require_once PATH_SCRIPT . 'header.php';
 
-$subscriptionType = htmlspecialchars($_GET['subscription']);
-$plan = htmlspecialchars($_GET['plan']);
-$confirm = htmlspecialchars($_GET['confirm']);
+global $db;
 
 \Stripe\Stripe::setApiKey($_ENV['API_PRIVATE_KEY']);
-$selectSubscription = $db->prepare("SELECT subscription_plan, invoice_id FROM stripe_consumer WHERE user_id = :user_id");
+$selectSubscription = $db->prepare("SELECT subscription_plan, invoice_id FROM stripe_consumer WHERE user_id = :user_id AND subscription_status = 'active'");
 $selectSubscription->execute(array(
     'user_id' => $_SESSION['id']
 ));
@@ -93,7 +88,7 @@ if($confirm == '0'){
     ];
 
 
-    $pdfSuite = generateInvoice($invoiceData, $db);
+    $pdfSuite = generateInvoice($invoiceData);
 
     $updateInvoice = $db->prepare('UPDATE stripe_consumer SET path_invoice = :path_invoice WHERE user_id = :user_id AND subscription_plan = :subscription_plan');
     $updateInvoice->execute([
@@ -135,10 +130,5 @@ if($confirm == '0'){
         </div>
 
     </main>
-
-    <?php
-    include PATH_SCRIPT . 'functionsJs.php';
-    include PATH_SCRIPT . 'footer.php';
-    ?>
 
 </body>

@@ -1,5 +1,4 @@
 <?php
-include "init.php";
 include PATH_SCRIPT . 'functions.php';
 ?>
 <head>

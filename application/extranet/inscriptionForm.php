@@ -4,8 +4,8 @@
 <?php
 
 $title = "Cookorama - Inscription";
-include '../../ressources/script/head.php';
-include PATH_SCRIPT . 'header.php';
+include 'ressources/script/head.php';
+require_once PATH_SCRIPT . 'header.php';
 
 ?>
 
@@ -84,11 +84,6 @@ include PATH_SCRIPT . 'header.php';
         <div id="div-submit"></div>
 
     </form>
-
-    <?php
-    include PATH_SCRIPT . 'functionsJs.php';
-    include PATH_SCRIPT . 'footer.php';
-    ?>
 
     <script>
 

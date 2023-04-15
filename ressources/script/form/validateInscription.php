@@ -1,8 +1,8 @@
 <?php
-session_start();
 include '../init.php';
 include PATH_SCRIPT . 'functions.php';
-include PATH_SCRIPT . 'connectDB.php';
+
+global $db;
 
 $token = htmlspecialchars($_GET['token']);
 
