@@ -24,6 +24,7 @@ define('PATH_VALIDATE_INSCRIPTION', PATH_FORM . 'validateInscription.php');
 define('PATH_RESET_PASSWORD_FORM', PATH_APPLICATION_EXTRANET . 'resetPasswordForm.php');
 define('PATH_FILES', PATH_RESSOURCES . 'files/');
 define('PATH_PAIEMENT_FORM', PATH_APPLICATION_EXTRANET . 'paiement/');
+define('PATH_PAIEMENT_SCRIPT', PATH_SCRIPT . 'paiement/');
 define('PATH_INVOICES', PATH_FILES . 'invoices/');
 
 define('MAIL', 'cookmasterpa.2023@gmail.com');

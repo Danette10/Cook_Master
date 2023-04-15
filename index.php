@@ -34,16 +34,16 @@ $routeur->get('/subscribe/:subscription/:plan', function ($subscription, $plan){
     $planType = htmlspecialchars($plan);
     require PATH_PAIEMENT_FORM . 'paiementForm.php';
 });
-$routeur->post('/subscribe/:subscription/:plan', function ($subscription, $plan){
+$routeur->post('/:subscription/:plan/paiement', function ($subscription, $plan){
     $subscriptionType = htmlspecialchars($subscription);
     $planType = htmlspecialchars($plan);
-    require PATH_PAIEMENT_FORM . 'paiementForm.php';
+    require PATH_PAIEMENT_SCRIPT . 'paiement.php';
 });
 $routeur->get('/confirm/:confirm/:subscription/:plan', function ($confirm, $subscription, $plan){
     $subscriptionType = htmlspecialchars($subscription);
     $planType = htmlspecialchars($plan);
     $confirm = htmlspecialchars($confirm);
-    require PATH_PAIEMENT_FORM . 'confirmation.php';
+    require PATH_PAIEMENT_SCRIPT . 'confirmation.php';
 });
 
 // Routes -> Profil

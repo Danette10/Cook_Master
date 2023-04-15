@@ -46,7 +46,7 @@ switch ($subscriptionType) {
                     </div>
                     <div class="card-body">
                         <h1 class="card-title pricing-card-title"><?= $priceMonthly ?><small class="text-body-secondary fw-light">/mo</small></h1>
-                        <a href="<?= ADDRESS_SITE ?>subscribe/<?= $subscriptionType ?>/plan/monthly" type="button" class="w-100 btn btn-lg btn-outline-primary">Choisir</a>
+                        <a href="<?= ADDRESS_SITE ?>subscribe/<?= $subscriptionType ?>/monthly" type="button" class="w-100 btn btn-lg btn-outline-primary">Choisir</a>
                     </div>
                 </div>
             </div>
@@ -57,7 +57,7 @@ switch ($subscriptionType) {
                     </div>
                     <div class="card-body">
                         <h1 class="card-title pricing-card-title"><?= $priceYearly ?><small class="text-body-secondary fw-light">/an</small></h1>
-                        <a href="<?= ADDRESS_SITE ?>subscribe/<?= $subscriptionType ?>/plan/yearly" type="button" class="w-100 btn btn-lg btn-primary">Choisir</a>
+                        <a href="<?= ADDRESS_SITE ?>subscribe/<?= $subscriptionType ?>/yearly" type="button" class="w-100 btn btn-lg btn-primary">Choisir</a>
                     </div>
                 </div>
             </div>

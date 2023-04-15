@@ -1,5 +1,4 @@
 <?php
-ob_start();
 $title = "Cookorama - Starter Plan";
 include 'ressources/script/head.php';
 require_once PATH_SCRIPT . 'header.php';
@@ -66,127 +65,6 @@ $email = $selectEmail->fetch();
 
 \Stripe\Stripe::setApiKey($_ENV['API_PRIVATE_KEY']);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    $stripeToken = $_POST['stripeToken'];
-    $email = $_POST['cardholderEmail'];
-    $name = $_POST['cardholderName'];
-
-    $allCustomers = \Stripe\Customer::all();
-
-    $customer = null;
-
-    foreach ($allCustomers->data as $existingCustomer) {
-        if (isset($existingCustomer->metadata['user_id']) && $existingCustomer->metadata['user_id'] == $_SESSION['id']) {
-            $customer = $existingCustomer;
-            break;
-        }
-    }
-
-    if ($customer === null) {
-        $customer = \Stripe\Customer::create([
-            'email' => $email,
-            'name' => $name,
-            'preferred_locales' => ['fr'],
-            'metadata' => [
-                'user_id' => $_SESSION['id'],
-            ],
-        ]);
-    }
-
-
-    $card = \Stripe\Customer::createSource(
-        $customer->id,
-        ['source' => $stripeToken]
-    );
-
-    // Associer le nom du titulaire à la source de paiement (carte)
-    $updatedCard = \Stripe\Customer::updateSource(
-        $customer->id,
-        $card->id,
-        ['name' => $name]
-    );
-
-    // Créer l'abonnement associé au produit
-    $subscription = \Stripe\Subscription::create([
-        'customer' => $customer->id,
-        'items' => [
-            ['price' => $priceId],
-        ],
-    ]);
-
-    $updateUser = $db->prepare("UPDATE user SET role = :role WHERE id = :id");
-    $updateUser->execute([
-        'role' => $role,
-        'id' => $_SESSION['id']
-    ]);
-
-    $customerID = $customer->id;
-    $userId = $_SESSION['id'];
-    $invoiceId = $subscription->latest_invoice;
-    $subscriptionId = $subscription->id;
-    $subscriptionStatus = $subscription->status;
-    $subscriptionPlan = $subscription->items->data[0]->price->id;
-    $subscriptionStart = date('Y-m-d H:i:s', $subscription->current_period_start);
-    $subscriptionEnd = date('Y-m-d H:i:s', $subscription->current_period_end);
-
-    // Si il a déjà un abonnement actif, on le désactive
-    $selectSubscription = $db->prepare("SELECT * FROM stripe_consumer WHERE user_id = :user_id AND subscription_status = 'active'");
-    $selectSubscription->execute([
-        'user_id' => $userId
-    ]);
-    $existingSubscription = $selectSubscription->fetch();
-    if($existingSubscription) {
-        $updateSubscription = $db->prepare("UPDATE stripe_consumer SET subscription_status = 'inactive' WHERE user_id = :user_id");
-        $updateSubscription->execute([
-            'user_id' => $userId
-        ]);
-
-        $subscriptionLast = \Stripe\Subscription::retrieve($existingSubscription['subscription_id']);
-        try {
-            $subscriptionLast->cancel();
-        } catch (\Stripe\Exception\ApiErrorException $e) {
-            // The subscription has already been canceled.
-
-        }
-    }
-
-
-    $insertSubscription = $db->prepare("INSERT INTO stripe_consumer(
-                            customer_id, user_id, invoice_id, subscription_id, 
-                            subscription_status, subscription_plan, subscription_start_date, 
-                            subscription_end_date, path_invoice
-                            ) VALUES(
-                                     :customer_id, :user_id, :invoice_id, :subscription_id, :subscription_status, 
-                                     :subscription_plan, :subscription_start_date, :subscription_end_date, :path_invoice
-                                     )");
-    $insertSubscription->execute([
-        'customer_id' => $customerID,
-        'user_id' => $userId,
-        'invoice_id' => $invoiceId,
-        'subscription_id' => $subscriptionId,
-        'subscription_status' => $subscriptionStatus,
-        'subscription_plan' => $subscriptionPlan,
-        'subscription_start_date' => $subscriptionStart,
-        'subscription_end_date' => $subscriptionEnd,
-        'path_invoice' => ''
-    ]);
-
-    if($subscription->status == 'active') {
-
-        header('Location: ' . ADDRESS_SITE . 'confirm/1/' . $subscriptionType . '/' . $plan);
-        exit();
-
-    } else {
-
-        header('Location: ' . ADDRESS_SITE . 'confirm/0/' . $subscriptionType . '/' . $plan);
-        exit();
-
-    }
-}
-
-ob_end_flush();
-
 $price = number_format(getPriceDetails($priceId)->unit_amount / 100, 2, '.', '');
 
 ?>
@@ -202,7 +80,7 @@ $price = number_format(getPriceDetails($priceId)->unit_amount / 100, 2, '.', '')
                         <h3 class="mb-0">Abonnement <?= ucfirst($subscriptionType) ?> - <strong><?= $price ?><?= getCurrency($priceId) ?> / <?= $interval ?></strong></h3>
                     </div>
                     <div class="card-body">
-                        <form method="post" id="subscription-form">
+                        <form action="<?= ADDRESS_SITE ?><?= $subscriptionType . '/' . $plan ?>/paiement" method="post" id="subscription-form">
                             <div class="form-group mb-3">
                                 <label for="cardholderName">Nom du titulaire</label>
                                 <input type="text" name="cardholderName" id="cardholderName" class="form-control" required>
@@ -227,6 +105,9 @@ $price = number_format(getPriceDetails($priceId)->unit_amount / 100, 2, '.', '')
                                 <span id="sendButton">Payer maintenant <i class="fa-solid fa-lock fa-xl" style="margin-left: 25px; color: #ffffff;"></i></span>
                                 <img src="<?= ADDRESS_IMG ?>loader_circle.gif" id="loader" style="width: 30px; height: 30px; display: none; margin: 0 auto;">
                             </button>
+
+                                <input type="hidden" name="priceId" value="<?= $priceId ?>">
+
                         </form>
                     </div>
                 </div>
@@ -321,6 +202,7 @@ $price = number_format(getPriceDetails($priceId)->unit_amount / 100, 2, '.', '')
                 loader.style.display = 'none';
             } else {
                 stripeTokenHandler(result.token);
+                form.submit();
             }
         });
 
