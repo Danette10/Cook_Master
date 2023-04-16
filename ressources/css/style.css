@@ -242,3 +242,32 @@ form input[type="submit"]:hover{
     color: #A23A2E !important;
     border: 1px solid #A23A2E !important;
 }
+
+/* MANAGE INVOICE */
+
+.year {
+    margin-bottom: 1em;
+}
+
+.year h4 {
+    margin: 0;
+    padding: 0.5em 0;
+}
+
+.month {
+    margin-left: 1em;
+}
+
+.month h5 {
+    padding: 0.25em 0;
+    margin-left: 2em;
+}
+
+.month ul {
+    list-style-type: none;
+    margin-left: 2em;
+}
+
+.month li {
+    margin-bottom: 0.5em;
+}

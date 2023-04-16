@@ -362,4 +362,51 @@ EOD;
 
 }
 
+/**
+ * Function to get invoice by year and month
+ *
+ * @param string $customerId
+ *
+ * @return array
+ */
+
+function getUserInvoicesByYear($customerId) {
+
+    \Stripe\Stripe::setApiKey($_ENV['API_PRIVATE_KEY']);
+
+    $invoicesByYearAndMonth = [];
+
+    try {
+        $invoices = \Stripe\Invoice::all(['customer' => $customerId, 'limit' => 100]);
+
+        foreach ($invoices->autoPagingIterator() as $invoice) {
+            // Vérifie si le champ 'metadata' contient au moins une clé
+            if (count($invoice->metadata) > 0) {
+                $year = date('Y', $invoice->created);
+                $month = date('m', $invoice->created);
+
+                if (!isset($invoicesByYearAndMonth[$year])) {
+                    $invoicesByYearAndMonth[$year] = [];
+                }
+                if (!isset($invoicesByYearAndMonth[$year][$month])) {
+                    $invoicesByYearAndMonth[$year][$month] = [];
+                }
+
+                $invoicesByYearAndMonth[$year][$month][] = $invoice;
+            }
+        }
+
+        krsort($invoicesByYearAndMonth);
+
+    } catch (\Stripe\Exception\ApiErrorException $e) {
+        echo "Erreur lors de la récupération des factures : " . $e->getMessage();
+    }
+
+    return $invoicesByYearAndMonth;
+
+}
+
+
+
+
 ?>

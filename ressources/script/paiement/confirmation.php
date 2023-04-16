@@ -98,6 +98,11 @@ if($confirm == '0'){
         'subscriptionPlan' => $invoiceData['price_id']
     ]);
 
+    // Stocker le chemin de la facture dans les métadonnées de la facture
+    $invoice->metadata = array('pathInvoice' => $pdfSuite);
+
+    $invoice->save();
+
     // Joindre la facture au mail
     $messageMail .= "<p>Vous trouverez ci-joint votre facture</p>";
 
