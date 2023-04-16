@@ -149,6 +149,8 @@ form input[type="submit"]:hover{
 #profileDropdown{
     background: transparent;
     border: none;
+    position: relative;
+    left: 30px;
 }
 
 #profileDropdown::after{
@@ -209,4 +211,63 @@ form input[type="submit"]:hover{
     width: 100%;
     height: 10%;
     text-align: right;
+}
+
+.manageSubLink, .manageInvoice{
+    color: white !important;
+    font-weight: bold !important;
+    border-radius: 15px !important;
+    padding: 10px !important;
+}
+
+.manageInvoice{
+    background-color: #A23A2E !important;
+}
+
+.manageSubLink{
+    background-color: #FF9B90 !important;
+}
+
+.manageSubLink:hover, .manageInvoice:hover{
+    background-color: white !important;
+    font-weight: bold !important;
+}
+
+.manageSubLink:hover{
+    color: #FF9B90 !important;
+    border: 1px solid #FF9B90 !important;
+}
+
+.manageInvoice:hover{
+    color: #A23A2E !important;
+    border: 1px solid #A23A2E !important;
+}
+
+/* MANAGE INVOICE */
+
+.year {
+    margin-bottom: 1em;
+}
+
+.year h4 {
+    margin: 0;
+    padding: 0.5em 0;
+}
+
+.month {
+    margin-left: 1em;
+}
+
+.month h5 {
+    padding: 0.25em 0;
+    margin-left: 2em;
+}
+
+.month ul {
+    list-style-type: none;
+    margin-left: 2em;
+}
+
+.month li {
+    margin-bottom: 0.5em;
 }

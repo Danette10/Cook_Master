@@ -12,5 +12,7 @@ if($type != '' && $message != ''){
         echo '<div class="alert alert-success" role="alert">' . $message . '</div>';
     } else if($type == 'error') {
         echo '<div class="alert alert-danger" role="alert">' . $message . '</div>';
+    }else if($type == 'warning') {
+        echo '<div class="alert alert-warning" role="alert">' . $message . '</div>';
     }
 }

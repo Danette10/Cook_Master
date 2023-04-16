@@ -18,6 +18,14 @@ $selectInfo->execute(array(
     'id' => $_SESSION['id']
 ));
 
+$selectIfUserIsSubscribed = $db->prepare('SELECT COUNT(*) FROM stripe_consumer WHERE userId = :id AND subscriptionStatus = :status');
+$selectIfUserIsSubscribed->execute(array(
+    'id' => $_SESSION['id'],
+    'status' => 'active'
+));
+
+$isUserSubscribed = $selectIfUserIsSubscribed->fetch();
+
 $infos = $selectInfo->fetch();
 
 $lastname = $infos['lastname'];
@@ -63,6 +71,24 @@ $profilePicture = ADDRESS_IMG_PROFIL . $infos['profilePicture'];
                     <p><strong>Date de naissance : </strong><?= $birthdate ?></p>
                     <p><strong>Date d'inscription : </strong><?= $creation ?></p>
                     <p><strong>Nombre de points de fidélité : </strong><?= $fidelityCounter ?></p>
+                    <?php
+                    if($isUserSubscribed[0] == 1){
+                    ?>
+                        <button class="manageSubLink btn">
+                            <a href="<?= ADDRESS_SITE ?>profil/manage/subscription" class="nav-link">Gérer votre abonnement</a>
+                        </button>
+                    <?php
+                    }else{
+                    ?>
+                        <button class="manageSubLink btn">
+                            <a href="<?= ADDRESS_SITE ?>subscribe" class="nav-link">S'abonner</a>
+                        </button>
+                    <?php
+                    }
+                    ?>
+                    <button class="manageInvoice btn">
+                        <a href="<?= ADDRESS_SITE ?>profil/manage/invoice" class="nav-link">Voir mes factures</a>
+                    </button>
                 </div>
 
             </div>

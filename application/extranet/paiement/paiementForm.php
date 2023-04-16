@@ -1,5 +1,5 @@
 <?php
-$title = "Cookorama - Starter Plan";
+$title = "Cookorama - " . ucfirst($subscriptionType) . " plan";
 include 'ressources/script/head.php';
 require_once PATH_SCRIPT . 'header.php';
 
@@ -14,8 +14,6 @@ switch ($subscriptionType) {
     case 'free':
 
         $role = 1;
-
-        $priceId = $_ENV['SUBSCRIPTION_PRICE_ID_FREE'];
 
         break;
 
@@ -65,6 +63,8 @@ $email = $selectEmail->fetch();
 
 \Stripe\Stripe::setApiKey($_ENV['API_PRIVATE_KEY']);
 
+if($subscriptionType == 'free') $price = '0.00€';
+else
 $price = number_format(getPriceDetails($priceId)->unit_amount / 100, 2, '.', '');
 
 ?>

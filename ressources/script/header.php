@@ -16,7 +16,7 @@
 
             </li>
 
-            <div class="collapse navbar-collapse ms-3" id="navbarToggler">
+            <div class="collapse navbar-collapse ms-3" id="navbarToggler" style="margin-right: 50px;">
 
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="font-size: 22px; position: relative; top: -3px;">
 
@@ -83,7 +83,7 @@
                 $profilePicture = $profilePicture['profilePicture'];
                 ?>
 
-            <div class="dropdown" style="margin-right: 80px;">
+            <div class="dropdown" style="position: relative; right: 80px;">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
 
                     <?php if ($profilePicture != ''){ ?>

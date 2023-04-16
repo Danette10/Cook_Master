@@ -7,7 +7,6 @@
 
     $(document).ready(function() {
 
-        console.log("ready!");
         $(window).scroll(function() {
             if ($(this).scrollTop() > 1) {
                 $('header').css('position', 'sticky');
