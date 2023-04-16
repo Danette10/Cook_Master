@@ -16,7 +16,7 @@ define('PATH_JS', PATH_RESSOURCES . 'js/');
 define('PATH_IMG', PATH_RESSOURCES . 'images/');
 define('PATH_PRICING_ICON', PATH_IMG . 'pricingIcon/');
 define('PATH_SCRIPT', PATH_RESSOURCES . 'script/');
-
+define('PATH_SCRIPT_PROFIL', PATH_SCRIPT . 'profil/');
 define('PATH_APPLICATION', PATH_SITE . 'application/');
 define('PATH_APPLICATION_EXTRANET', PATH_APPLICATION . 'extranet/');
 define('PATH_FORM', PATH_SCRIPT . 'form/');
@@ -61,3 +61,17 @@ define('ADDRESS_INVOICES', ADDRESS_FILES . 'invoices/');
 
 
 require_once(PATH_SCRIPT . 'connectDB.php');
+
+if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 3600)) {
+
+    session_unset();
+    session_destroy();
+
+    header('Location: ' . ADDRESS_SITE . '?message=Vous avez été déconnecté pour inactivité&type=warning');
+    exit();
+
+}else{
+
+    $_SESSION['LAST_ACTIVITY'] = time();
+
+}

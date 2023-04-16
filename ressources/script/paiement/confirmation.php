@@ -10,13 +10,14 @@ require_once PATH_SCRIPT . 'header.php';
 global $db;
 
 \Stripe\Stripe::setApiKey($_ENV['API_PRIVATE_KEY']);
-$selectSubscription = $db->prepare("SELECT subscription_plan, invoice_id FROM stripe_consumer WHERE user_id = :user_id AND subscription_status = 'active'");
+$selectSubscription = $db->prepare("SELECT subscriptionPlan, invoiceId, subscriptionEndDate FROM stripe_consumer WHERE userId = :userId AND subscriptionStatus = 'active'");
 $selectSubscription->execute(array(
-    'user_id' => $_SESSION['id']
+    'userId' => $_SESSION['id']
 ));
 $subscription = $selectSubscription->fetch();
-$priceId = $subscription['subscription_plan'];
-$invoiceId = $subscription['invoice_id'];
+$priceId = $subscription['subscriptionPlan'];
+$invoiceId = $subscription['invoiceId'];
+$subscriptionEndDate = $subscription['subscriptionEndDate'];
 
 $invoice = \Stripe\Invoice::retrieve($invoiceId);
 $client = \Stripe\Customer::retrieve($invoice->customer);
@@ -83,19 +84,24 @@ if($confirm == '0'){
         'invoice_total' => $total,
         'invoice_name_client' => $nameClient,
         'invoice_email_client' => $emailClient,
-        'next_invoice_date' => $invoice['subscription_end_date'],
+        'next_invoice_date' => $subscriptionEndDate,
         'price_id' => $priceId
     ];
 
 
     $pdfSuite = generateInvoice($invoiceData);
 
-    $updateInvoice = $db->prepare('UPDATE stripe_consumer SET path_invoice = :path_invoice WHERE user_id = :user_id AND subscription_plan = :subscription_plan');
+    $updateInvoice = $db->prepare('UPDATE stripe_consumer SET pathInvoice = :pathInvoice WHERE userId = :userId AND subscriptionPlan = :subscriptionPlan');
     $updateInvoice->execute([
-        'path_invoice' => $pdfSuite,
-        'user_id' => $_SESSION['id'],
-        'subscription_plan' => $invoiceData['price_id']
+        'pathInvoice' => $pdfSuite,
+        'userId' => $_SESSION['id'],
+        'subscriptionPlan' => $invoiceData['price_id']
     ]);
+
+    // Stocker le chemin de la facture dans les métadonnées de la facture
+    $invoice->metadata = array('pathInvoice' => $pdfSuite);
+
+    $invoice->save();
 
     // Joindre la facture au mail
     $messageMail .= "<p>Vous trouverez ci-joint votre facture</p>";

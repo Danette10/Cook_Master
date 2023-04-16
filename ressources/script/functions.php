@@ -201,7 +201,7 @@ function generateInvoice($invoiceData){
     $invoiceQuantity = $invoiceData['invoice_quantity'];
     $invoiceTotal = number_format($invoiceData['invoice_total'] / 100, 2, '.', '') . ' ' . getCurrency($invoiceData['price_id']);
     $invoicePriceUnit = number_format(getPriceDetails($invoiceData['price_id'])->unit_amount / 100, 2, '.', '') . ' ' . getCurrency($invoiceData['price_id']);
-    $subscriptionEndDate = date('d/m/Y', $invoiceData['next_invoice_date']);
+    $subscriptionEndDate = date('d/m/Y', strtotime($invoiceData['next_invoice_date']));
 
     $logo = ADDRESS_IMG . 'logo.png';
 
@@ -361,5 +361,52 @@ EOD;
     return $pdfPathSuite;
 
 }
+
+/**
+ * Function to get invoice by year and month
+ *
+ * @param string $customerId
+ *
+ * @return array
+ */
+
+function getUserInvoicesByYear($customerId) {
+
+    \Stripe\Stripe::setApiKey($_ENV['API_PRIVATE_KEY']);
+
+    $invoicesByYearAndMonth = [];
+
+    try {
+        $invoices = \Stripe\Invoice::all(['customer' => $customerId, 'limit' => 100]);
+
+        foreach ($invoices->autoPagingIterator() as $invoice) {
+            // Vérifie si le champ 'metadata' contient au moins une clé
+            if (count($invoice->metadata) > 0) {
+                $year = date('Y', $invoice->created);
+                $month = date('m', $invoice->created);
+
+                if (!isset($invoicesByYearAndMonth[$year])) {
+                    $invoicesByYearAndMonth[$year] = [];
+                }
+                if (!isset($invoicesByYearAndMonth[$year][$month])) {
+                    $invoicesByYearAndMonth[$year][$month] = [];
+                }
+
+                $invoicesByYearAndMonth[$year][$month][] = $invoice;
+            }
+        }
+
+        krsort($invoicesByYearAndMonth);
+
+    } catch (\Stripe\Exception\ApiErrorException $e) {
+        echo "Erreur lors de la récupération des factures : " . $e->getMessage();
+    }
+
+    return $invoicesByYearAndMonth;
+
+}
+
+
+
 
 ?>
