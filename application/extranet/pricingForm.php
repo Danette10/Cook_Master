@@ -9,7 +9,26 @@ require_once PATH_SCRIPT . 'header.php';
 $name = [];
 $price = [];
 
+// Récupérer l'abonnement actuel
+$selectSubscription = $db->prepare('SELECT * FROM stripe_consumer WHERE userId = :id AND subscriptionStatus = :status');
+$selectSubscription->execute(array(
+    'id' => $_SESSION['id'],
+    'status' => 'active'
+));
+
+$subscription = $selectSubscription->fetch();
+
 \Stripe\Stripe::setApiKey($_ENV['API_PRIVATE_KEY']);
+
+if ($subscription) {
+    $subscriptionPlan = $subscription['subscriptionPlan'];
+    $subscription = \Stripe\Subscription::retrieve($subscription['subscriptionId']);
+    $plan = \Stripe\Plan::retrieve($subscriptionPlan);
+    $product = \Stripe\Product::retrieve($plan->product);
+    $nameSubscription = $product->name;
+}else {
+    $nameSubscription = 'Free';
+}
 
 // Récupérer les produits
 $products = \Stripe\Product::all([
@@ -59,12 +78,12 @@ foreach ($products->data as $product) {
 
                        <p class="text-center d-flex flex-column align-items-center">
                            <img src="<?= ADDRESS_PRICING_ICON . 'free.png'; ?>" alt="Free" class="img-fluid">
-                           <span>Free<?= isset($_SESSION['subscriptionType']) && $_SESSION['subscriptionType'] == 'Free' ? '<span class="badge text-bg-success ms-2">Abonnement actuel</span>' : ''; ?></span>
+                           <span>Free<?= $nameSubscription == 'Free' ? '<span class="badge text-bg-success ms-2">Abonnement actuel</span>' : ''; ?></span>
                        </p>
 
                        <p style="font-size: 13px;">
                            <em>Gratuit</em>
-                            <?= isset($_SESSION['subscriptionType']) && $_SESSION['subscriptionType'] != 'Free' ? '<a href="' . ADDRESS_SITE . 'subscribe/free" class="btn ms-1" id="choosePlan">Choisir cet abonnement</a>' : ''; ?>
+                            <?= $nameSubscription != 'Free' ? '<a href="' . ADDRESS_SITE . 'profil/manageSubscription/' . $subscriptionPlan . '/cancel" class="btn ms-1" id="choosePlan">Choisir cet abonnement</a>' : ''; ?>
                        </p>
 
                    </th>
@@ -73,12 +92,12 @@ foreach ($products->data as $product) {
 
                        <p class="text-center d-flex flex-column align-items-center">
                            <img src="<?= ADDRESS_PRICING_ICON . 'starter.png'; ?>" alt="Starter" class="img-fluid">
-                           <span>Starter<?= isset($_SESSION['subscriptionType']) && $_SESSION['subscriptionType'] == 'Starter' ? '<span class="badge text-bg-success ms-2">Abonnement actuel</span>' : ''; ?></span>
+                           <span>Starter<?= $nameSubscription == 'Starter' ? '<span class="badge text-bg-success ms-2">Abonnement actuel</span>' : ''; ?></span>
                        </p>
 
                        <p style="font-size: 13px;">
                            <em><?= $plans['Starter']['month']['price']; ?> €/mois ou <?= $plans['Starter']['year']['price']; ?> €/an</em>
-                           <?= isset($_SESSION['subscriptionType']) && $_SESSION['subscriptionType'] != 'Starter' ? '<a href="' . ADDRESS_SITE . 'subscribe/starter" class="btn ms-1" id="choosePlan">Choisir cet abonnement</a>' : ''; ?>
+                           <?= $nameSubscription != 'Starter' ? '<a href="' . ADDRESS_SITE . 'subscribe/starter" class="btn ms-1" id="choosePlan">Choisir cet abonnement</a>' : ''; ?>
                        </p>
 
                    </th>
@@ -87,12 +106,12 @@ foreach ($products->data as $product) {
 
                        <p class="text-center d-flex flex-column align-items-center">
                            <img src="<?= ADDRESS_PRICING_ICON . 'master.png'; ?>" alt="Master" class="img-fluid">
-                           <span>Master<?= isset($_SESSION['subscriptionType']) && $_SESSION['subscriptionType'] == 'Master' ? '<span class="badge text-bg-success ms-2">Abonnement actuel</span>' : ''; ?></span>
+                           <span>Master<?= $nameSubscription == 'Master' ? '<span class="badge text-bg-success ms-2">Abonnement actuel</span>' : ''; ?></span>
                        </p>
 
                        <p style="font-size: 13px;">
                             <em><?= $plans['Master']['month']['price']; ?> €/mois ou <?= $plans['Master']['year']['price']; ?> €/an</em>
-                            <?= isset($_SESSION['subscriptionType']) && $_SESSION['subscriptionType'] != 'Master' ? '<a href="' . ADDRESS_SITE . 'subscribe/master" class="btn ms-1" id="choosePlan">Choisir cet abonnement</a>' : ''; ?>
+                            <?= $nameSubscription != 'Master' ? '<a href="' . ADDRESS_SITE . 'subscribe/master" class="btn ms-1" id="choosePlan">Choisir cet abonnement</a>' : ''; ?>
                        </p>
 
                    </th>

@@ -210,3 +210,18 @@ form input[type="submit"]:hover{
     height: 10%;
     text-align: right;
 }
+
+.manageSubLink{
+    background-color: #FF9B90 !important;
+    color: white !important;
+    font-weight: bold !important;
+    border-radius: 15px !important;
+    padding: 10px !important;
+}
+
+.manageSubLink:hover{
+    background-color: white !important;
+    color: #FF9B90 !important;
+    font-weight: bold !important;
+    border: 1px solid #FF9B90 !important;
+}

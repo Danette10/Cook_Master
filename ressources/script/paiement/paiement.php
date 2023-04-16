@@ -131,7 +131,7 @@ $selectSubscription->execute([
 ]);
 $existingSubscription = $selectSubscription->fetch();
 if($existingSubscription) {
-    $updateSubscription = $db->prepare("UPDATE stripe_consumer SET subscriptionStatus = 'inactive' WHERE userId = :userId");
+    $updateSubscription = $db->prepare("UPDATE stripe_consumer SET subscriptionStatus = 'canceled' WHERE userId = :userId");
     $updateSubscription->execute([
         'userId' => $userId
     ]);
