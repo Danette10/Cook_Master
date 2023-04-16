@@ -75,7 +75,7 @@ $profilePicture = ADDRESS_IMG_PROFIL . $infos['profilePicture'];
                     if($isUserSubscribed[0] == 1){
                     ?>
                         <button class="manageSubLink btn">
-                            <a href="<?= ADDRESS_SITE ?>profil/manageSubscription" class="nav-link">Gérer votre abonnement</a>
+                            <a href="<?= ADDRESS_SITE ?>profil/manage/subscription" class="nav-link">Gérer votre abonnement</a>
                         </button>
                     <?php
                     }else{
@@ -86,6 +86,9 @@ $profilePicture = ADDRESS_IMG_PROFIL . $infos['profilePicture'];
                     <?php
                     }
                     ?>
+                    <button class="manageInvoice btn">
+                        <a href="<?= ADDRESS_SITE ?>profil/manage/invoice" class="nav-link">Voir mes factures</a>
+                    </button>
                 </div>
 
             </div>

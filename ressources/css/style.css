@@ -149,6 +149,8 @@ form input[type="submit"]:hover{
 #profileDropdown{
     background: transparent;
     border: none;
+    position: relative;
+    left: 30px;
 }
 
 #profileDropdown::after{
@@ -211,17 +213,32 @@ form input[type="submit"]:hover{
     text-align: right;
 }
 
-.manageSubLink{
-    background-color: #FF9B90 !important;
+.manageSubLink, .manageInvoice{
     color: white !important;
     font-weight: bold !important;
     border-radius: 15px !important;
     padding: 10px !important;
 }
 
-.manageSubLink:hover{
+.manageInvoice{
+    background-color: #A23A2E !important;
+}
+
+.manageSubLink{
+    background-color: #FF9B90 !important;
+}
+
+.manageSubLink:hover, .manageInvoice:hover{
     background-color: white !important;
-    color: #FF9B90 !important;
     font-weight: bold !important;
+}
+
+.manageSubLink:hover{
+    color: #FF9B90 !important;
     border: 1px solid #FF9B90 !important;
+}
+
+.manageInvoice:hover{
+    color: #A23A2E !important;
+    border: 1px solid #A23A2E !important;
 }

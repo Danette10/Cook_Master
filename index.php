@@ -67,12 +67,15 @@ $routeur->get('/profil/resetPassword/:token/:email', function ($token, $email){
     $email = htmlspecialchars($email);
     require PATH_RESET_PASSWORD_FORM;
 });
-$routeur->get('/profil/manageSubscription', function (){
+$routeur->get('/profil/manage/subscription', function (){
     require PATH_APPLICATION_EXTRANET . 'profil/manageSubscription.php';
 });
-$routeur->get('/profil/manageSubscription/:subscription/cancel', function ($subscription){
+$routeur->get('/profil/manage/subscription/:subscription/cancel', function ($subscription){
     $subscriptionType = htmlspecialchars($subscription);
     require PATH_SCRIPT_PROFIL . 'cancelSubscription.php';
+});
+$routeur->get('/profil/manage/invoice', function (){
+    require PATH_APPLICATION_EXTRANET . 'profil/manageInvoice.php';
 });
 
 // Routes -> Recettes
