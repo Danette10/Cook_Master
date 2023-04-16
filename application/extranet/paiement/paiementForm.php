@@ -15,8 +15,6 @@ switch ($subscriptionType) {
 
         $role = 1;
 
-        $priceId = $_ENV['SUBSCRIPTION_PRICE_ID_FREE'];
-
         break;
 
     case 'starter':
@@ -65,6 +63,8 @@ $email = $selectEmail->fetch();
 
 \Stripe\Stripe::setApiKey($_ENV['API_PRIVATE_KEY']);
 
+if($subscriptionType == 'free') $price = '0.00€';
+else
 $price = number_format(getPriceDetails($priceId)->unit_amount / 100, 2, '.', '');
 
 ?>

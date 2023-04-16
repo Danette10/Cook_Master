@@ -5,29 +5,84 @@
 $title = "Cookorama - Pricing";
 include 'ressources/script/head.php';
 require_once PATH_SCRIPT . 'header.php';
+global $db;
 
 $name = [];
 $price = [];
 
-// Récupérer l'abonnement actuel
-$selectSubscription = $db->prepare('SELECT * FROM stripe_consumer WHERE userId = :id AND subscriptionStatus = :status');
-$selectSubscription->execute(array(
-    'id' => $_SESSION['id'],
-    'status' => 'active'
-));
-
-$subscription = $selectSubscription->fetch();
-
 \Stripe\Stripe::setApiKey($_ENV['API_PRIVATE_KEY']);
+$nameSubscription = '';
+$subscriptionPlan = '';
+$link = '';
+$linkMaster = '';
+$linkStarter = '';
 
-if ($subscription) {
-    $subscriptionPlan = $subscription['subscriptionPlan'];
-    $subscription = \Stripe\Subscription::retrieve($subscription['subscriptionId']);
-    $plan = \Stripe\Plan::retrieve($subscriptionPlan);
-    $product = \Stripe\Product::retrieve($plan->product);
-    $nameSubscription = $product->name;
-}else {
-    $nameSubscription = 'Free';
+if(isset($_SESSION['id'])){
+
+    // Récupérer l'abonnement actuel
+    $selectSubscription = $db->prepare('SELECT * FROM stripe_consumer WHERE userId = :id AND subscriptionStatus = :status');
+    $selectSubscription->execute(array(
+        'id' => $_SESSION['id'],
+        'status' => 'active'
+    ));
+
+    $subscription = $selectSubscription->fetch();
+
+    if ($subscription) {
+        $subscriptionPlan = $subscription['subscriptionPlan'];
+        $subscription = \Stripe\Subscription::retrieve($subscription['subscriptionId']);
+        $plan = \Stripe\Plan::retrieve($subscriptionPlan);
+        $product = \Stripe\Product::retrieve($plan->product);
+        $nameSubscription = $product->name;
+    }else {
+        $nameSubscription = 'Free';
+    }
+
+    // Récupérer tout les plans
+    $plans = \Stripe\Plan::all([
+        'active' => true
+    ]);
+
+    // Récupérer les produits
+    $products = \Stripe\Product::all([
+        'active' => true,
+        'type' => 'service'
+    ]);
+
+
+    foreach ($products->data as $product) {
+
+        $name[] = strtolower($product->name);
+
+    }
+
+    $name = array_unique($name);
+
+    foreach ($name as $value) {
+
+        switch ($value) {
+
+            case 'starter':
+
+                $linkStarter = '<a href="' . ADDRESS_SITE . 'subscribe/starter" class="btn ms-1" id="choosePlan">Choisir cet abonnement</a>';
+
+                break;
+
+            case 'master':
+
+                $linkMaster = '<a href="' . ADDRESS_SITE . 'subscribe/master" class="btn ms-1" id="choosePlan">Choisir cet abonnement</a>';
+
+                break;
+
+            default:
+
+                $link = '<a href="' . ADDRESS_SITE . 'profil/manageSubscription/' . $subscriptionPlan . '/cancel" class="btn ms-1" id="choosePlan">Choisir cet abonnement</a>';
+
+                break;
+
+        }
+    }
+
 }
 
 // Récupérer les produits
@@ -83,7 +138,7 @@ foreach ($products->data as $product) {
 
                        <p style="font-size: 13px;">
                            <em>Gratuit</em>
-                            <?= $nameSubscription != 'Free' ? '<a href="' . ADDRESS_SITE . 'profil/manageSubscription/' . $subscriptionPlan . '/cancel" class="btn ms-1" id="choosePlan">Choisir cet abonnement</a>' : ''; ?>
+                            <?= $nameSubscription != 'Free' ? $link : ''; ?>
                        </p>
 
                    </th>
@@ -97,7 +152,7 @@ foreach ($products->data as $product) {
 
                        <p style="font-size: 13px;">
                            <em><?= $plans['Starter']['month']['price']; ?> €/mois ou <?= $plans['Starter']['year']['price']; ?> €/an</em>
-                           <?= $nameSubscription != 'Starter' ? '<a href="' . ADDRESS_SITE . 'subscribe/starter" class="btn ms-1" id="choosePlan">Choisir cet abonnement</a>' : ''; ?>
+                           <?= $nameSubscription != 'Starter' ? $linkStarter : ''; ?>
                        </p>
 
                    </th>
@@ -111,7 +166,7 @@ foreach ($products->data as $product) {
 
                        <p style="font-size: 13px;">
                             <em><?= $plans['Master']['month']['price']; ?> €/mois ou <?= $plans['Master']['year']['price']; ?> €/an</em>
-                            <?= $nameSubscription != 'Master' ? '<a href="' . ADDRESS_SITE . 'subscribe/master" class="btn ms-1" id="choosePlan">Choisir cet abonnement</a>' : ''; ?>
+                            <?= $nameSubscription != 'Master' ? $linkMaster : ''; ?>
                        </p>
 
                    </th>
