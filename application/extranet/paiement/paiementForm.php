@@ -1,5 +1,5 @@
 <?php
-$title = "Cookorama - Starter Plan";
+$title = "Cookorama - " . ucfirst($subscriptionType) . " plan";
 include 'ressources/script/head.php';
 require_once PATH_SCRIPT . 'header.php';
 

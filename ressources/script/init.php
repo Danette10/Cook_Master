@@ -61,3 +61,17 @@ define('ADDRESS_INVOICES', ADDRESS_FILES . 'invoices/');
 
 
 require_once(PATH_SCRIPT . 'connectDB.php');
+
+if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 3600)) {
+
+    session_unset();
+    session_destroy();
+
+    header('Location: ' . ADDRESS_SITE . '?message=Vous avez été déconnecté pour inactivité&type=warning');
+    exit();
+
+}else{
+
+    $_SESSION['LAST_ACTIVITY'] = time();
+
+}

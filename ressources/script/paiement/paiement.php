@@ -6,6 +6,28 @@ $name = $_POST['cardholderName'];
 $priceId = $_POST['priceId'];
 global $db;
 
+switch ($subscriptionType) {
+
+    case 'free':
+
+        $role = 1;
+
+        break;
+
+    case 'starter':
+
+        $role = 2;
+
+        break;
+
+    case 'master':
+
+        $role = 3;
+
+        break;
+
+}
+
 
 \Stripe\Stripe::setApiKey($_ENV['API_PRIVATE_KEY']);
 $allCustomers = \Stripe\Customer::all();
@@ -31,17 +53,53 @@ if ($customer === null) {
 }
 
 
-$card = \Stripe\Customer::createSource(
+// Récupérer les empreintes des sources de paiement du client
+$sources = \Stripe\Customer::allSources(
     $customer->id,
-    ['source' => $stripeToken]
+    ['object' => 'card']
 );
 
-// Associer le nom du titulaire à la source de paiement (carte)
-$updatedCard = \Stripe\Customer::updateSource(
-    $customer->id,
-    $card->id,
-    ['name' => $name]
-);
+// Récupérer l'empreinte de la carte soumise
+$newCard = \Stripe\Token::retrieve($stripeToken);
+$newCardFingerprint = $newCard->card->fingerprint;
+
+// Vérifier si le moyen de paiement existe déjà
+$existingCard = null;
+foreach ($sources->data as $source) {
+    if ($source->fingerprint == $newCardFingerprint) {
+        $existingCard = $source;
+        break;
+    }
+}
+
+if ($existingCard === null) {
+    // Ajouter le moyen de paiement au client
+    $card = \Stripe\Customer::createSource(
+        $customer->id,
+        ['source' => $stripeToken]
+    );
+
+    // Associer le nom du titulaire à la source de paiement (carte)
+    $updatedCard = \Stripe\Customer::updateSource(
+        $customer->id,
+        $card->id,
+        ['name' => $name]
+    );
+
+    // Mettre à jour la source de paiement par défaut
+    $updatedCustomer = \Stripe\Customer::update(
+        $customer->id,
+        ['invoice_settings' => ['default_payment_method' => $updatedCard->id]]
+    );
+} else {
+    // Utiliser le moyen de paiement existant comme source de paiement par défaut
+    $updatedCustomer = \Stripe\Customer::update(
+        $customer->id,
+        ['invoice_settings' => ['default_payment_method' => $existingCard->id]]
+    );
+}
+
+
 
 // Créer l'abonnement associé au produit
 $subscription = \Stripe\Subscription::create([
@@ -67,18 +125,18 @@ $subscriptionStart = date('Y-m-d H:i:s', $subscription->current_period_start);
 $subscriptionEnd = date('Y-m-d H:i:s', $subscription->current_period_end);
 
 // Si il a déjà un abonnement actif, on le désactive
-$selectSubscription = $db->prepare("SELECT * FROM stripe_consumer WHERE user_id = :user_id AND subscription_status = 'active'");
+$selectSubscription = $db->prepare("SELECT * FROM stripe_consumer WHERE userId = :userId AND subscriptionStatus = 'active'");
 $selectSubscription->execute([
-    'user_id' => $userId
+    'userId' => $userId
 ]);
 $existingSubscription = $selectSubscription->fetch();
 if($existingSubscription) {
-    $updateSubscription = $db->prepare("UPDATE stripe_consumer SET subscription_status = 'inactive' WHERE user_id = :user_id");
+    $updateSubscription = $db->prepare("UPDATE stripe_consumer SET subscriptionStatus = 'inactive' WHERE userId = :userId");
     $updateSubscription->execute([
-        'user_id' => $userId
+        'userId' => $userId
     ]);
 
-    $subscriptionLast = \Stripe\Subscription::retrieve($existingSubscription['subscription_id']);
+    $subscriptionLast = \Stripe\Subscription::retrieve($existingSubscription['subscriptionId']);
     try {
         $subscriptionLast->cancel();
     } catch (\Stripe\Exception\ApiErrorException $e) {
@@ -87,26 +145,55 @@ if($existingSubscription) {
     }
 }
 
-
-$insertSubscription = $db->prepare("INSERT INTO stripe_consumer(
-                            customer_id, user_id, invoice_id, subscription_id, 
-                            subscription_status, subscription_plan, subscription_start_date, 
-                            subscription_end_date, path_invoice
-                            ) VALUES(
-                                     :customer_id, :user_id, :invoice_id, :subscription_id, :subscription_status, 
-                                     :subscription_plan, :subscription_start_date, :subscription_end_date, :path_invoice
-                                     )");
-$insertSubscription->execute([
-    'customer_id' => $customerID,
-    'user_id' => $userId,
-    'invoice_id' => $invoiceId,
-    'subscription_id' => $subscriptionId,
-    'subscription_status' => $subscriptionStatus,
-    'subscription_plan' => $subscriptionPlan,
-    'subscription_start_date' => $subscriptionStart,
-    'subscription_end_date' => $subscriptionEnd,
-    'path_invoice' => ''
+// Si il a déjà eu le même abonnement, on update la ligne
+$selectSubscription = $db->prepare("SELECT * FROM stripe_consumer WHERE userId = :userId AND subscriptionPlan = :subscriptionPlan");
+$selectSubscription->execute([
+    'userId' => $userId,
+    'subscriptionPlan' => $subscriptionPlan
 ]);
+$existingSubscription = $selectSubscription->fetch();
+if($existingSubscription) {
+    $updateSubscription = $db->prepare("UPDATE stripe_consumer SET 
+                            customerId = :customerId, 
+                            invoiceId = :invoiceId, 
+                            subscriptionId = :subscriptionId, 
+                            subscriptionStatus = :subscriptionStatus, 
+                            subscriptionStartDate = :subscriptionStartDate, 
+                            subscriptionEndDate = :subscriptionEndDate, 
+                            pathInvoice = :pathInvoice
+                            WHERE userId = :userId AND subscriptionPlan = :subscriptionPlan");
+    $updateSubscription->execute([
+        'customerId' => $customerID,
+        'invoiceId' => $invoiceId,
+        'subscriptionId' => $subscriptionId,
+        'subscriptionStatus' => 'active',
+        'subscriptionStartDate' => date('Y-m-d H:i:s', strtotime('+2 hour')),
+        'subscriptionEndDate' => date('Y-m-d H:i:s', strtotime('+2 hour +1 month')),
+        'pathInvoice' => '',
+        'userId' => $userId,
+        'subscriptionPlan' => $subscriptionPlan
+    ]);
+}else{
+    $insertSubscription = $db->prepare("INSERT INTO stripe_consumer(
+                            customerId, userId, invoiceId, subscriptionId, 
+                            subscriptionStatus, subscriptionPlan, subscriptionStartDate, 
+                            subscriptionEndDate, pathInvoice
+                            ) VALUES(
+                                     :customerId, :userId, :invoiceId, :subscriptionId, :subscriptionStatus, 
+                                     :subscriptionPlan, :subscriptionStartDate, :subscriptionEndDate, :pathInvoice
+                                     )");
+    $insertSubscription->execute([
+        'customerId' => $customerID,
+        'userId' => $userId,
+        'invoiceId' => $invoiceId,
+        'subscriptionId' => $subscriptionId,
+        'subscriptionStatus' => 'active',
+        'subscriptionPlan' => $subscriptionPlan,
+        'subscriptionStartDate' => $subscriptionStart,
+        'subscriptionEndDate' => $subscriptionEnd,
+        'pathInvoice' => ''
+    ]);
+}
 
 if($subscription->status == 'active') {
 

@@ -201,7 +201,7 @@ function generateInvoice($invoiceData){
     $invoiceQuantity = $invoiceData['invoice_quantity'];
     $invoiceTotal = number_format($invoiceData['invoice_total'] / 100, 2, '.', '') . ' ' . getCurrency($invoiceData['price_id']);
     $invoicePriceUnit = number_format(getPriceDetails($invoiceData['price_id'])->unit_amount / 100, 2, '.', '') . ' ' . getCurrency($invoiceData['price_id']);
-    $subscriptionEndDate = date('d/m/Y', $invoiceData['next_invoice_date']);
+    $subscriptionEndDate = date('d/m/Y', strtotime($invoiceData['next_invoice_date']));
 
     $logo = ADDRESS_IMG . 'logo.png';
 
