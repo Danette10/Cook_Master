@@ -49,7 +49,7 @@ $nameSubscription = $product->name;
 
             <h4 class="m-5">Votre abonnement expire le : <strong><?= date('d/m/Y', $subscription->current_period_end) ?></strong></h4>
 
-            <a class="btn btn-danger ms-5" href="<?= ADDRESS_SITE ?>profil/manageSubscription/<?= $subscriptionPlan ?>/cancel" onclick="confirm('Voulez-vous vraiment annuler votre abonnement ?')?null:event.preventDefault()">Annuler l'abonnement</a>
+            <a class="btn btn-danger ms-5" href="<?= ADDRESS_SITE ?>profil/manage/subscription/<?= $subscriptionPlan ?>/cancel" onclick="confirm('Voulez-vous vraiment annuler votre abonnement ?')?null:event.preventDefault()">Annuler l'abonnement</a>
 
             <a class="btn btn-primary ms-2" href="<?= ADDRESS_SITE ?>subscribe">Changer d'abonnement</a>
 
