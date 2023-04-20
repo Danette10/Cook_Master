@@ -1,10 +1,7 @@
 <?php
-include '../init.php';
 include PATH_SCRIPT . 'functions.php';
 
 global $db;
-
-$token = htmlspecialchars($_GET['token']);
 
 $selectUser = $db->prepare("SELECT * FROM user WHERE token = :token");
 $selectUser->execute(['token' => $token]);
