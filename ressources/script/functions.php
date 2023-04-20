@@ -7,7 +7,7 @@ use PHPMailer\PHPMailer\Exception;
  * TODO: Function to send mail
  */
 
-function mailHtml($to, $subject, $message, $headers, $attachement = null) {
+function mailHtml($to, $subject, $message, $headers, $attachement = null, $image = null) {
 
     $mail = new PHPMailer(true);
 
@@ -18,7 +18,7 @@ function mailHtml($to, $subject, $message, $headers, $attachement = null) {
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
         $mail->Username   = 'cookmasterpa.2023@gmail.com';
-        $mail->Password   = 'pntwvqrintbfsavc';
+        $mail->Password   = $_ENV['EMAIL_PASSWORD'];
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
 
@@ -29,8 +29,12 @@ function mailHtml($to, $subject, $message, $headers, $attachement = null) {
         $mail->CharSet = 'UTF-8';
 
         // Content
+
         $mail->isHTML(true);
         $mail->Subject = $subject;
+        if ($image != null) {
+            $mail->addEmbeddedImage($image, 'logo');
+        }
         $mail->Body    = $message;
         $mail->AltBody = $message;
 

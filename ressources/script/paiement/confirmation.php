@@ -51,7 +51,8 @@ if($confirm == '0'){
     $text .= "<p class='text-justify'>Nous espérons que vous allez apprécier notre site !</p>";
     $text .= "<p class='text-justify'>L'équipe Cookorama</p>";
 
-    $messageMail = "<h1>Merci pour votre achat !</h1>";
+    $messageMail = "<p><img src='cid:logo' alt='logo' width='300'></p>";
+    $messageMail .= "<h1>Merci pour votre achat !</h1>";
     $messageMail .= "<p>Vous avez choisi l'abonnement <strong>" . ucfirst($subscriptionType) . "</strong></p>";
     $messageMail .= "<p>Vous allez être facturé de <strong>" . $price  . getCurrency($priceId) . "</strong> / " . $interval . "</p>";
     $messageMail .= "<p>Vous pouvez désormais accéder à votre espace personnel et profiter de fonctionnalités exclusives à votre abonnement !</p>";
@@ -110,7 +111,7 @@ if($confirm == '0'){
     $header = "Cookorama < " . MAIL . " >";
     $attachement = PATH_INVOICES . $pdfSuite;
 
-    mailHtml($_SESSION['email'], $subject, $messageMail, $header, $attachement);
+    mailHtml($_SESSION['email'], $subject, $messageMail, $header, $attachement, PATH_IMG . 'logo.png');
 
 }
 
