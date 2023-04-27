@@ -1,7 +1,5 @@
 <header>
-
-    <nav class="navbar navbar-expand-lg">
-
+	<nav class="navbar navbar-expand-lg navbar-light bg-light" id="nav-custom">
         <div class="container-fluid">
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
@@ -22,7 +20,7 @@
 
                     <li>
 
-                        <a href="<?= ADDRESS_SITE ?>" class="nav-link">Accueil</a>
+                        <a href="<?= ADDRESS_SITE ?>" class="nav-link">Accueil</a><img  style="width:24px" src="ressources/images/moon.png" id="icon">
 
                     </li>
 
@@ -92,6 +90,21 @@
         </div>
 
     </nav>
+    <script>
+
+       var icon = document.getElementById("icon");
+
+       icon.onclick = function(){
+           document.body.classList.toggle("dark-theme"); 
+           if(document.body.classList.contains("dark-theme")){
+               icon.src = "ressources/images/sun.png";
+           }else{
+               icon.src = "ressources/images/moon.png";
+           }
+
+
+       }
+  </script>
 
 </header>
 
