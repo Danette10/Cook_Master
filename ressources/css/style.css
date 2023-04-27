@@ -220,25 +220,20 @@ form input[type="submit"]:hover{
     cursor: pointer;
     color: #FFF; 
   }
-  
-  :root{
-  
-     --primary-color:  white;
-     --secondary-color:  black;
-  }
-  .dark-theme{
-      --primary-color: #616677;
-      --secondary-color:  white;
-   }
-  
-   body{
-      background-color: var(--primary-color);
-      color: var(--secondary-color);
-  }
-  #nav-custom{
-      background-color: var(--primary-color)!important;
-      color: #FFF!important;
-  }
+
+.dark-theme header nav ul li a{
+    color: white !important;
+}
+
+.dark-theme{
+    background-color: #7C8190 !important;
+    color: white !important;
+}
+
+.dark-theme header nav{
+    background-color: #616677 !important;
+}
+
 
 .manageSubLink, .manageInvoice{
     color: white !important;
