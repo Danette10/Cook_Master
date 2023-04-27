@@ -42,7 +42,7 @@
 
                     <div class="me-3">
 
-                        <img  style="width:24px" src="ressources/images/moon.png" id="icon">
+                        <img  style="width:24px" src="<?= ADDRESS_IMG ?>moon.png" id="icon">
 
                     </div>
 
@@ -120,9 +120,9 @@
        icon.onclick = function(){
            document.body.classList.toggle("dark-theme"); 
            if(document.body.classList.contains("dark-theme")){
-               icon.src = "ressources/images/sun.png";
+               icon.src = '<?= ADDRESS_IMG ?>' + "sun.png";
            }else{
-               icon.src = "ressources/images/moon.png";
+               icon.src = '<?= ADDRESS_IMG ?>' + "moon.png";
            }
 
 
