@@ -20,7 +20,7 @@
 
                     <li>
 
-                        <a href="<?= ADDRESS_SITE ?>" class="nav-link">Accueil</a><img  style="width:24px" src="ressources/images/moon.png" id="icon">
+                        <a href="<?= ADDRESS_SITE ?>" class="nav-link">Accueil</a>
 
                     </li>
 
@@ -39,6 +39,12 @@
                 </ul>
 
                 <div class="connexionInscriptionLinks">
+
+                    <div class="me-3">
+
+                        <img  style="width:24px" src="ressources/images/moon.png" id="icon">
+
+                    </div>
 
                     <button class="pricingLink btn">
 
