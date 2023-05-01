@@ -109,10 +109,10 @@ $subscription = \Stripe\Subscription::create([
     ],
 ]);
 
-$updateUser = $db->prepare("UPDATE user SET role = :role WHERE id = :id");
+$updateUser = $db->prepare("UPDATE users SET role = :role WHERE idUser = :idUser");
 $updateUser->execute([
     'role' => $role,
-    'id' => $_SESSION['id']
+    'idUser' => $_SESSION['id']
 ]);
 
 $customerID = $customer->id;
@@ -125,15 +125,16 @@ $subscriptionStart = date('Y-m-d H:i:s', $subscription->current_period_start);
 $subscriptionEnd = date('Y-m-d H:i:s', $subscription->current_period_end);
 
 // Si il a déjà un abonnement actif, on le désactive
-$selectSubscription = $db->prepare("SELECT * FROM stripe_consumer WHERE userId = :userId AND subscriptionStatus = 'active'");
+$selectSubscription = $db->prepare("SELECT idConsumer, subscriptionId, subscriptionStatus FROM stripe_consumer WHERE idUser = :userId");
 $selectSubscription->execute([
     'userId' => $userId
 ]);
 $existingSubscription = $selectSubscription->fetch();
-if($existingSubscription) {
-    $updateSubscription = $db->prepare("UPDATE stripe_consumer SET subscriptionStatus = 'canceled' WHERE userId = :userId");
+
+if($existingSubscription['subscriptionStatus'] == 'active') {
+    $updateSubscription = $db->prepare("UPDATE stripe_consumer SET subscriptionStatus = 'canceled' WHERE idUser = :idUser");
     $updateSubscription->execute([
-        'userId' => $userId
+        'idUser' => $userId
     ]);
 
     $subscriptionLast = \Stripe\Subscription::retrieve($existingSubscription['subscriptionId']);
@@ -146,52 +147,31 @@ if($existingSubscription) {
 }
 
 // Si il a déjà eu le même abonnement, on update la ligne
-$selectSubscription = $db->prepare("SELECT * FROM stripe_consumer WHERE userId = :userId AND subscriptionPlan = :subscriptionPlan");
-$selectSubscription->execute([
-    'userId' => $userId,
-    'subscriptionPlan' => $subscriptionPlan
-]);
+$selectSubscription = $db->prepare("SELECT * FROM stripe_consumer WHERE idUser = :idUser AND subscriptionId = :subscriptionId");
 $existingSubscription = $selectSubscription->fetch();
 if($existingSubscription) {
-    $updateSubscription = $db->prepare("UPDATE stripe_consumer SET 
-                            customerId = :customerId, 
-                            invoiceId = :invoiceId, 
-                            subscriptionId = :subscriptionId, 
-                            subscriptionStatus = :subscriptionStatus, 
-                            subscriptionStartDate = :subscriptionStartDate, 
-                            subscriptionEndDate = :subscriptionEndDate, 
-                            pathInvoice = :pathInvoice
-                            WHERE userId = :userId AND subscriptionPlan = :subscriptionPlan");
+
+    $updateSubscription = $db->prepare("UPDATE stripe_consumer SET subscriptionStatus = :subscriptionStatus WHERE idUser = :idUser AND subscriptionId = :subscriptionId");
     $updateSubscription->execute([
-        'customerId' => $customerID,
-        'invoiceId' => $invoiceId,
-        'subscriptionId' => $subscriptionId,
-        'subscriptionStatus' => 'active',
-        'subscriptionStartDate' => date('Y-m-d H:i:s', strtotime('+2 hour')),
-        'subscriptionEndDate' => date('Y-m-d H:i:s', strtotime('+2 hour +1 month')),
-        'pathInvoice' => '',
-        'userId' => $userId,
-        'subscriptionPlan' => $subscriptionPlan
+        'subscriptionStatus' => $subscriptionStatus,
+        'idUser' => $userId,
+        'subscriptionId' => $subscriptionId
     ]);
+
 }else{
-    $insertSubscription = $db->prepare("INSERT INTO stripe_consumer(
-                            customerId, userId, invoiceId, subscriptionId, 
-                            subscriptionStatus, subscriptionPlan, subscriptionStartDate, 
-                            subscriptionEndDate, pathInvoice
-                            ) VALUES(
-                                     :customerId, :userId, :invoiceId, :subscriptionId, :subscriptionStatus, 
-                                     :subscriptionPlan, :subscriptionStartDate, :subscriptionEndDate, :pathInvoice
-                                     )");
+    // Sinon on insert une nouvelle ligne
+    $insertCart = $db->prepare("INSERT INTO cart (idUser) VALUES (:idUser)");
+    $insertCart->execute([
+        'idUser' => $userId
+    ]);
+
+    $insertSubscription = $db->prepare("INSERT INTO stripe_consumer (idConsumer, creation, idUser, subscriptionId, subscriptionStatus) VALUES (:idConsumer, :creation, :idUser, :subscriptionId, :subscriptionStatus)");
     $insertSubscription->execute([
-        'customerId' => $customerID,
-        'userId' => $userId,
-        'invoiceId' => $invoiceId,
+        'idConsumer' => $customerID,
+        'creation' => date('Y-m-d H:i:s'),
+        'idUser' => $userId,
         'subscriptionId' => $subscriptionId,
-        'subscriptionStatus' => 'active',
-        'subscriptionPlan' => $subscriptionPlan,
-        'subscriptionStartDate' => $subscriptionStart,
-        'subscriptionEndDate' => $subscriptionEnd,
-        'pathInvoice' => ''
+        'subscriptionStatus' => $subscriptionStatus
     ]);
 }
 

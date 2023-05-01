@@ -20,10 +20,9 @@ $linkStarter = '';
 if(isset($_SESSION['id'])){
 
     // Récupérer l'abonnement actuel
-    $selectSubscription = $db->prepare('SELECT * FROM stripe_consumer WHERE userId = :id AND subscriptionStatus = :status');
+    $selectSubscription = $db->prepare('SELECT idConsumer FROM stripe_consumer WHERE idUser = :idUser');
     $selectSubscription->execute(array(
-        'id' => $_SESSION['id'],
-        'status' => 'active'
+        'idUser' => $_SESSION['id'],
     ));
 
     $subscription = $selectSubscription->fetch();

@@ -45,7 +45,7 @@ if (isset($_POST['name']) && isset($_POST['firstname']) && isset($_POST['email']
         $errors[] = "Le nom doit se situer entre 1 et 100 caractères";
     }
 
-    $selectUser = $db->prepare("SELECT COUNT(*) FROM user WHERE email = :email");
+    $selectUser = $db->prepare("SELECT COUNT(*) FROM users WHERE email = :email");
     $selectUser->execute(['email' => $email]);
     $user = $selectUser->fetchColumn();
 
@@ -83,7 +83,7 @@ if (isset($_POST['name']) && isset($_POST['firstname']) && isset($_POST['email']
 
         $creation = date('Y-m-d H:i:s');
 
-        $insertUser = $db->prepare("INSERT INTO user (lastname, firstname, profilePicture, email, password, role, token, fidelityCounter, birthdate, creation) VALUES (:lastname, :firstname, :profilePicture, :email, :password, :role, :token, :fidelityCounter, :birthdate, :creation)");
+        $insertUser = $db->prepare("INSERT INTO users (lastname, firstname, profilePicture, email, password, role, token, fidelityCounter, birthdate, creation) VALUES (:lastname, :firstname, :profilePicture, :email, :password, :role, :token, :fidelityCounter, :birthdate, :creation)");
 
         $insertUser->execute(
             [

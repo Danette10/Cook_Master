@@ -28,18 +28,18 @@ if(!empty($_FILES['profilePicture']) && $_FILES['profilePicture']['error'] == 0)
         $profilePicture = $file;
     }
 
-    $updateUser = $db->prepare("UPDATE user SET profilePicture = :profilePicture WHERE id = :id");
+    $updateUser = $db->prepare("UPDATE users SET profilePicture = :profilePicture WHERE idUser = :idUser");
     $updateUser->execute(
         [
         'profilePicture' => $profilePicture,
-        'id' => $_SESSION['id']
+        'idUser' => $_SESSION['id']
         ]
     );
 }
 
 if(!empty($email)){
 
-    $selectUser = $db->prepare("SELECT COUNT(*) FROM user WHERE email = :email");
+    $selectUser = $db->prepare("SELECT COUNT(*) FROM users WHERE email = :email");
     $selectUser->execute(['email' => $email]);
     $user = $selectUser->fetchColumn();
 
@@ -48,12 +48,13 @@ if(!empty($email)){
     }else {
 
         $token = bin2hex(random_bytes(64));
-        $updateUser = $db->prepare("UPDATE user SET email = :email, token = :token, role = :role WHERE id = :id");
+        $updateUser = $db->prepare("UPDATE users SET email = :email, token = :token, role = :role WHERE idUser = :idUser");
         $updateUser->execute(
             [
                 'email' => $email,
                 'token' => $token,
                 'role' => 0,
+                'idUser' => $_SESSION['id']
             ]
         );
 
@@ -87,7 +88,7 @@ if(!empty($newPassword) && !empty($confirmNewPassword)){
     $password = hash('sha512', $password);
     $newPassword = hash('sha512', $newPassword);
 
-    $selectUser = $db->prepare("SELECT COUNT(*) FROM user WHERE password = :password");
+    $selectUser = $db->prepare("SELECT COUNT(*) FROM users WHERE password = :password");
     $selectUser->execute(['password' => $password]);
     $user = $selectUser->fetchColumn();
 
@@ -95,11 +96,11 @@ if(!empty($newPassword) && !empty($confirmNewPassword)){
         $errors[] = "Le mot de passe est incorrect";
     }else {
 
-        $updateUser = $db->prepare("UPDATE user SET password = :password WHERE id = :id");
+        $updateUser = $db->prepare("UPDATE users SET password = :password WHERE idUser = :idUser");
         $updateUser->execute(
             [
                 'password' => $newPassword,
-                'id' => $_SESSION['id']
+                'idUser' => $_SESSION['id']
             ]
         );
 
@@ -117,33 +118,33 @@ if(!empty($newPassword) && !empty($confirmNewPassword)){
 
 if(!empty($lastname)){
 
-    $updateUser = $db->prepare("UPDATE user SET lastname = :lastname WHERE id = :id");
+    $updateUser = $db->prepare("UPDATE users SET lastname = :lastname WHERE idUser = :idUser");
     $updateUser->execute(
         [
             'lastname' => $lastname,
-            'id' => $_SESSION['id']
+            'idUser' => $_SESSION['id']
         ]
     );
 }
 
 if(!empty($firstname)){
 
-    $updateUser = $db->prepare("UPDATE user SET firstname = :firstname WHERE id = :id");
+    $updateUser = $db->prepare("UPDATE users SET firstname = :firstname WHERE idUser = :idUser");
     $updateUser->execute(
         [
             'firstname' => $firstname,
-            'id' => $_SESSION['id']
+            'idUser' => $_SESSION['id']
         ]
     );
 }
 
 if(!empty($birthdate)){
 
-    $updateUser = $db->prepare("UPDATE user SET birthdate = :birthdate WHERE id = :id");
+    $updateUser = $db->prepare("UPDATE users SET birthdate = :birthdate WHERE idUser = :idUser");
     $updateUser->execute(
         [
             'birthdate' => $birthdate,
-            'id' => $_SESSION['id']
+            'idUser' => $_SESSION['id']
         ]
     );
 }

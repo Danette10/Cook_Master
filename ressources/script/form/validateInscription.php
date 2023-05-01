@@ -3,12 +3,12 @@ include PATH_SCRIPT . 'functions.php';
 
 global $db;
 
-$selectUser = $db->prepare("SELECT * FROM user WHERE token = :token");
+$selectUser = $db->prepare("SELECT * FROM users WHERE token = :token");
 $selectUser->execute(['token' => $token]);
 $user = $selectUser->fetch();
 
 if($user) {
-    $updateUser = $db->prepare("UPDATE user SET token = NULL, role = 1 WHERE token = :token");
+    $updateUser = $db->prepare("UPDATE users SET token = NULL, role = 1 WHERE token = :token");
     $updateUser->execute(['token' => $token]);
 
     $messageMail = "<p>Bonjour,</p>";

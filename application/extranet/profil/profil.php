@@ -13,18 +13,10 @@ if (!isset($_SESSION['id'])) {
     exit();
 }
 
-$selectInfo = $db->prepare('SELECT * FROM user WHERE id = :id');
+$selectInfo = $db->prepare('SELECT * FROM users WHERE idUser = :idUser');
 $selectInfo->execute(array(
-    'id' => $_SESSION['id']
+    'idUser' => $_SESSION['id']
 ));
-
-$selectIfUserIsSubscribed = $db->prepare('SELECT COUNT(*) FROM stripe_consumer WHERE userId = :id AND subscriptionStatus = :status');
-$selectIfUserIsSubscribed->execute(array(
-    'id' => $_SESSION['id'],
-    'status' => 'active'
-));
-
-$isUserSubscribed = $selectIfUserIsSubscribed->fetch();
 
 $infos = $selectInfo->fetch();
 
@@ -71,21 +63,21 @@ $profilePicture = ADDRESS_IMG_PROFIL . $infos['profilePicture'];
                     <p><strong>Date de naissance : </strong><?= $birthdate ?></p>
                     <p><strong>Date d'inscription : </strong><?= $creation ?></p>
                     <p><strong>Nombre de points de fidélité : </strong><?= $fidelityCounter ?></p>
-                    <?php
-                    if($isUserSubscribed[0] == 1){
-                    ?>
+<!--                    <?php
+/*                    if($isUserSubscribed[0] == 1){
+                    */?>
                         <button class="manageSubLink btn">
-                            <a href="<?= ADDRESS_SITE ?>profil/manage/subscription" class="nav-link">Gérer votre abonnement</a>
+                            <a href="<?php /*= ADDRESS_SITE */?>profil/manage/subscription" class="nav-link">Gérer votre abonnement</a>
                         </button>
                     <?php
-                    }else{
-                    ?>
+/*                    }else{
+                    */?>
                         <button class="manageSubLink btn">
-                            <a href="<?= ADDRESS_SITE ?>subscribe" class="nav-link">S'abonner</a>
+                            <a href="<?php /*= ADDRESS_SITE */?>subscribe" class="nav-link">S'abonner</a>
                         </button>
-                    <?php
-                    }
-                    ?>
+                    --><?php
+/*                    }
+                    */?>
                     <button class="manageInvoice btn">
                         <a href="<?= ADDRESS_SITE ?>profil/manage/invoice" class="nav-link">Voir mes factures</a>
                     </button>

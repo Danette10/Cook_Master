@@ -2,7 +2,7 @@
 global $db;
 
 if($token != ''){
-    $selectToken = $db->prepare('SELECT * FROM user WHERE token = :token');
+    $selectToken = $db->prepare('SELECT * FROM users WHERE token = :token');
     $selectToken->execute(array(
         'token' => $token
     ));

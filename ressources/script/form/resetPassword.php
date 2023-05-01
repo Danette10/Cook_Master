@@ -10,7 +10,7 @@ $email = htmlspecialchars($_POST['email']);
 if($token == ''){
 
     $token = bin2hex(random_bytes(64));
-    $updateToken = $db->prepare("UPDATE user SET token = :token WHERE email = :email");
+    $updateToken = $db->prepare("UPDATE users SET token = :token WHERE email = :email");
     $updateToken->execute(['token' => $token, 'email' => $email]);
 
     $messageMail = "<p>Bonjour,</p>";
@@ -50,7 +50,7 @@ if($token == ''){
 
     $password = hash('sha512', $password);
 
-    $updatePassword = $db->prepare("UPDATE user SET password = :password WHERE token = :token");
+    $updatePassword = $db->prepare("UPDATE users SET password = :password WHERE token = :token");
     $updatePassword->execute(['password' => $password, 'token' => $token]);
 
     $messageMail = "<p>Bonjour,</p>";
@@ -62,12 +62,12 @@ if($token == ''){
 
     mailHtml($email, $subject, $messageMail, $header);
 
-    $selectId = $db->prepare("SELECT id FROM user WHERE token = :token");
+    $selectId = $db->prepare("SELECT idUser FROM users WHERE token = :token");
     $selectId->execute(['token' => $token]);
     $id = $selectId->fetchColumn();
 
-    $updateToken = $db->prepare("UPDATE user SET token = :token WHERE id = :id");
-    $updateToken->execute(['token' => '', 'id' => $id]);
+    $updateToken = $db->prepare("UPDATE users SET token = :token WHERE idUser = :idUser");
+    $updateToken->execute(['token' => '', 'idUser' => $id]);
 
     header("Location: " . ADDRESS_SITE . '?type=success&message=Votre mot de passe a bien été réinitialisé');
     exit();

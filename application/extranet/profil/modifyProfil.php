@@ -13,14 +13,14 @@
         exit();
     }
 
-    $selectInfo = $db->prepare('SELECT id, lastname, firstname, email, profilePicture, password, birthdate FROM user WHERE id = :id');
+    $selectInfo = $db->prepare('SELECT idUser, lastname, firstname, email, profilePicture, password, birthdate FROM users WHERE idUser = :idUser');
     $selectInfo->execute(array(
-        'id' => $idUser
+        'idUser' => $idUser
     ));
 
     $infos = $selectInfo->fetch();
 
-    $id = $infos['id'];
+    $id = $infos['idUser'];
 
     $birthdate = date('Y-m-d', strtotime($infos['birthdate']));
     $profilePicture = ADDRESS_IMG_PROFIL . $infos['profilePicture'];

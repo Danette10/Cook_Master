@@ -55,9 +55,9 @@ switch ($subscriptionType) {
 
 }
 
-$selectEmail = $db->prepare("SELECT email FROM user WHERE id = :id");
+$selectEmail = $db->prepare("SELECT email FROM users WHERE idUser = :idUser");
 $selectEmail->execute([
-    'id' => $_SESSION['id']
+    'idUser' => $_SESSION['id']
 ]);
 $email = $selectEmail->fetch();
 

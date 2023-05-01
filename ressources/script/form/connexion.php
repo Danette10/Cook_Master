@@ -18,23 +18,29 @@ if (empty($email) || empty($password)) {
     $error .= '<p class="text-danger">Veuillez remplir tous les champs</p>';
 }
 
-$selectIfUserExist = $db->prepare('SELECT id, lastname, firstname, password, role, profilePicture, COUNT(*) AS userExist FROM user WHERE email = :email GROUP BY id');
+$selectIfUserExist = $db->prepare('SELECT COUNT(*) AS userExist FROM users WHERE email = :email');
 $selectIfUserExist->execute(array(
     'email' => $email
 ));
 $userExist = $selectIfUserExist->fetch();
 
 if ($userExist['userExist'] == 0) {
-    $error .= '<p class="text-danger">Email ou mot de passe incorrect</p>';
+    echo '<p class="text-danger">Email ou mot de passe incorrect</p>';
 }
 
-if($userExist['role'] == 0){
+$selectIfUserExist = $db->prepare('SELECT idUser, lastname, firstname, password, role, profilePicture FROM users WHERE email = :email GROUP BY idUser');
+$selectIfUserExist->execute(array(
+    'email' => $email
+));
+$userExist = $selectIfUserExist->fetch();
+$resultCount = $selectIfUserExist->rowCount();
+if ($resultCount == 1 && $userExist['role'] == 0) {
 
     $error .= '<p class="text-danger">Vous n\'avez pas encore validé votre compte.</p>';
 
 }
 $password = hash('sha512', $password);
-$selectIfPasswordIsCorrect = $db->prepare('SELECT COUNT(*) AS passwordIsCorrect FROM user WHERE email = :email AND password = :password');
+$selectIfPasswordIsCorrect = $db->prepare('SELECT COUNT(*) AS passwordIsCorrect FROM users WHERE email = :email AND password = :password');
 $selectIfPasswordIsCorrect->execute(array(
     'email' => $email,
     'password' => $password
@@ -42,7 +48,7 @@ $selectIfPasswordIsCorrect->execute(array(
 $passwordIsCorrect = $selectIfPasswordIsCorrect->fetch();
 
 if ($passwordIsCorrect['passwordIsCorrect'] == 0) {
-    $error .= '<p class="text-danger">Email ou mot de passe incorrect</p>';
+    $error .= '<p class="text-danger">Mot de passe incorrect</p>';
 }
 
 if(!empty($error)){
@@ -82,7 +88,7 @@ if(!empty($error)){
 
 }else{
 
-    $_SESSION['id'] = $userExist['id'];
+    $_SESSION['id'] = $userExist['idUser'];
     $_SESSION['lastname'] = $userExist['lastname'];
     $_SESSION['firstname'] = $userExist['firstname'];
     $_SESSION['email'] = $email;

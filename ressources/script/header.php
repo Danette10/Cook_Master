@@ -74,9 +74,9 @@
 
                 global $db;
 
-                $selectProfilePicture = $db->prepare('SELECT profilePicture FROM user WHERE id = :id');
+                $selectProfilePicture = $db->prepare('SELECT profilePicture FROM users WHERE idUser = :idUser');
                 $selectProfilePicture->execute(array(
-                    'id' => $_SESSION['id']
+                    'idUser' => $_SESSION['id']
                 ));
 
                 $profilePicture = $selectProfilePicture->fetch();

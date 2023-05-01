@@ -14,9 +14,9 @@ if (!isset($_SESSION['id'])) {
     exit();
 }
 
-$selectCustomerID = $db->prepare('SELECT customerId FROM stripe_consumer WHERE userId = :id');
+$selectCustomerID = $db->prepare('SELECT idConsumer FROM stripe_consumer WHERE idUser = :idUser');
 $selectCustomerID->execute(array(
-    'id' => $_SESSION['id']
+    'idUser' => $_SESSION['id']
 ));
 
 $customerID = $selectCustomerID->fetch();
@@ -27,7 +27,7 @@ if(!$customerID){
 }
 ob_end_flush();
 
-$getInvoice = getUserInvoicesByYear($customerID['customerId']);
+$getInvoice = getUserInvoicesByYear($customerID['idConsumer']);
 
 ?>
 

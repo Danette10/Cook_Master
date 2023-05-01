@@ -10,9 +10,9 @@ switch ($type) {
 
         $id = htmlspecialchars($_POST['id']);
 
-        $select = $db->prepare('SELECT profilePicture FROM user WHERE id = :id');
+        $select = $db->prepare('SELECT profilePicture FROM users WHERE idUser = :idUser');
         $select->execute(array(
-            'id' => $id
+            'idUser' => $id
         ));
 
         $profilePicture = $select->fetch();
@@ -22,9 +22,9 @@ switch ($type) {
             unlink(PATH_IMG . 'profilePicture/' . $profilePicture);
         }
 
-        $req = $db->prepare('UPDATE user SET profilePicture = NULL WHERE id = :id');
+        $req = $db->prepare('UPDATE users SET profilePicture = NULL WHERE idUser = :idUser');
         $req->execute(array(
-            'id' => $id
+            'idUser' => $id
         ));
 
         if($req) {
