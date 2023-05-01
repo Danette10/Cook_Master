@@ -1,7 +1,5 @@
 <header>
-
-    <nav class="navbar navbar-expand-lg">
-
+	<nav class="navbar navbar-expand-lg navbar-light bg-light" id="nav-custom">
         <div class="container-fluid">
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,6 +39,12 @@
                 </ul>
 
                 <div class="connexionInscriptionLinks">
+
+                    <div class="me-3">
+
+                        <img  style="width:24px" src="<?= ADDRESS_IMG ?>moon.png" id="icon">
+
+                    </div>
 
                     <button class="pricingLink btn">
 
@@ -109,6 +113,21 @@
         </div>
 
     </nav>
+    <script>
+
+       var icon = document.getElementById("icon");
+
+       icon.onclick = function(){
+           document.body.classList.toggle("dark-theme"); 
+           if(document.body.classList.contains("dark-theme")){
+               icon.src = '<?= ADDRESS_IMG ?>' + "sun.png";
+           }else{
+               icon.src = '<?= ADDRESS_IMG ?>' + "moon.png";
+           }
+
+
+       }
+  </script>
 
 </header>
 

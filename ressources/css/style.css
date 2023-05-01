@@ -213,6 +213,28 @@ form input[type="submit"]:hover{
     text-align: right;
 }
 
+/*Dark mode*/
+
+#icon {
+    width: 30px;
+    cursor: pointer;
+    color: #FFF; 
+  }
+
+.dark-theme header nav ul li a{
+    color: white !important;
+}
+
+.dark-theme{
+    background-color: #7C8190 !important;
+    color: white !important;
+}
+
+.dark-theme header nav{
+    background-color: #616677 !important;
+}
+
+
 .manageSubLink, .manageInvoice{
     color: white !important;
     font-weight: bold !important;
