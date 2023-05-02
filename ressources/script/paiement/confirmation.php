@@ -12,11 +12,11 @@ global $db;
 \Stripe\Stripe::setApiKey($_ENV['API_PRIVATE_KEY']);
 $selectSubscription = $db->prepare("SELECT idInvoice, idProduct FROM orders, cart_item, stripe_consumer WHERE orders.idUser = :idUser AND orders.idCart = cart_item.idCart AND orders.idUser = stripe_consumer.idUser AND stripe_consumer.subscriptionStatus = 'active'");
 $selectSubscription->execute(array(
-    'idUser' => $_SESSION['idUser']
+    'idUser' => $_SESSION['id']
 ));
 $subscription = $selectSubscription->fetch();
 $priceId = \Stripe\Product::retrieve($subscription['idProduct'])->default_price;
-$invoiceId = $subscription['invoiceId'];
+$invoiceId = $subscription['idInvoice'];
 
 $invoice = \Stripe\Invoice::retrieve($invoiceId);
 $client = \Stripe\Customer::retrieve($invoice->customer);
@@ -62,7 +62,7 @@ if($confirm == '0'){
 
     $amount = $invoiceLines[0]->amount;
     $date = date('d/m/Y', $invoice->period_start);
-    $dateEnd = date('d/m/Y', $invoice->period_end);
+    $dateEnd = date('d/m/Y', $invoiceLines[0]->period->end);
     $invoiceNumber = $invoice->number;
     $quantity = $invoiceLines[0]->quantity;
     $total = $invoice->total;
@@ -84,18 +84,17 @@ if($confirm == '0'){
         'invoice_total' => $total,
         'invoice_name_client' => $nameClient,
         'invoice_email_client' => $emailClient,
-        'next_invoice_date' => $subscriptionEndDate,
+        'next_invoice_date' => $dateEnd,
         'price_id' => $priceId
     ];
 
 
     $pdfSuite = generateInvoice($invoiceData);
 
-    $updateInvoice = $db->prepare('UPDATE stripe_consumer SET pathInvoice = :pathInvoice WHERE userId = :userId AND subscriptionPlan = :subscriptionPlan');
+    $updateInvoice = $db->prepare('UPDATE orders SET pathInvoice = :pathInvoice WHERE idUser = :idUser');
     $updateInvoice->execute([
         'pathInvoice' => $pdfSuite,
-        'userId' => $_SESSION['id'],
-        'subscriptionPlan' => $invoiceData['price_id']
+        'idUser' => $_SESSION['id']
     ]);
 
     // Stocker le chemin de la facture dans les métadonnées de la facture
