@@ -410,6 +410,17 @@ function getUserInvoicesByYear($customerId) {
 
 }
 
+function getRecipes() {
+    global $db;
+
+    $selectRecipes = $db->prepare('SELECT * FROM USERS_RECIPE ORDER BY idRecipe DESC');
+    $selectRecipes->execute();
+
+    $recipes = $selectRecipes->fetchAll();
+    
+
+    return $recipes;
+}
 
 
 
