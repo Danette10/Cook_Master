@@ -3,11 +3,11 @@ ob_start();
 include "ressources/script/head.php";
 global $db;
 \Stripe\Stripe::setApiKey($_ENV['API_PRIVATE_KEY']);
-$selectSubscription = $db->prepare('SELECT * FROM stripe_consumer WHERE userId = :id AND subscriptionStatus = :status AND subscriptionPlan = :plan');
+$selectSubscription = $db->prepare('SELECT * FROM stripe_consumer WHERE idUser = :id AND subscriptionStatus = :status AND subscriptionId = :subscriptionId');
 $selectSubscription->execute(array(
     'id' => $_SESSION['id'],
     'status' => 'active',
-    'plan' => $subscriptionType
+    'subscriptionId' => $subscriptionId
 ));
 
 $subscription = $selectSubscription->fetch();
@@ -15,10 +15,10 @@ $subscription = $selectSubscription->fetch();
 $subscription = \Stripe\Subscription::retrieve($subscription['subscriptionId']);
 $subscription->cancel();
 
-$updateSubscription = $db->prepare('UPDATE stripe_consumer, user SET subscriptionStatus = :status, role = 1 WHERE stripe_consumer.userId = :id AND user.id = :id');
+$updateSubscription = $db->prepare('UPDATE stripe_consumer, users SET subscriptionStatus = :status, role = 1 WHERE stripe_consumer.idUser = :idUser AND users.idUser = :idUser');
 $updateSubscription->execute(array(
     'status' => 'canceled',
-    'id' => $_SESSION['id']
+    'idUser' => $_SESSION['id']
 ));
 
 $mailHTML = '<h1>Annulation d\'abonnement</h1>

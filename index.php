@@ -71,7 +71,7 @@ $routeur->get('/profil/manage/subscription', function (){
     require PATH_APPLICATION_EXTRANET . 'profil/manageSubscription.php';
 });
 $routeur->get('/profil/manage/subscription/:subscription/cancel', function ($subscription){
-    $subscriptionType = htmlspecialchars($subscription);
+    $subscriptionId = htmlspecialchars($subscription);
     require PATH_SCRIPT_PROFIL . 'cancelSubscription.php';
 });
 $routeur->get('/profil/manage/invoice', function (){
