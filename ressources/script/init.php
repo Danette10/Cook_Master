@@ -4,6 +4,15 @@
  * TODO: Link Local
  */
 
+/**
+ * VARIABLES
+ */
+
+define('MASTER_YEARLY', 'prod_NeXRwi2aT28FXA');
+define('MASTER_MONTHLY', 'prod_NeXRHRc6d5UjRq');
+define('STARTER_YEARLY', 'prod_NeXQV8mjycAaDE');
+define('STARTER_MONTHLY', 'prod_NeXPCayzYQqXgS');
+
 /*
  *TODO: PATH
  */

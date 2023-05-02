@@ -10,14 +10,13 @@ require_once PATH_SCRIPT . 'header.php';
 global $db;
 
 \Stripe\Stripe::setApiKey($_ENV['API_PRIVATE_KEY']);
-$selectSubscription = $db->prepare("SELECT subscriptionPlan, invoiceId, subscriptionEndDate FROM stripe_consumer WHERE userId = :userId AND subscriptionStatus = 'active'");
+$selectSubscription = $db->prepare("SELECT subscriptionId, subscriptionStatus FROM stripe_consumer WHERE idUser = :userId AND subscriptionStatus = 'active'");
 $selectSubscription->execute(array(
     'userId' => $_SESSION['id']
 ));
 $subscription = $selectSubscription->fetch();
 $priceId = $subscription['subscriptionPlan'];
 $invoiceId = $subscription['invoiceId'];
-$subscriptionEndDate = $subscription['subscriptionEndDate'];
 
 $invoice = \Stripe\Invoice::retrieve($invoiceId);
 $client = \Stripe\Customer::retrieve($invoice->customer);

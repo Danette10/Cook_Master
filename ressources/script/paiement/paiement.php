@@ -165,13 +165,32 @@ if($existingSubscription) {
         'idUser' => $userId
     ]);
 
+    $cartId = $db->lastInsertId();
+
+    $idProduct = \Stripe\Price::retrieve($priceId)->product;
+
+    $insertCartItem = $db->prepare("INSERT INTO cart_item (quantity, idProduct, idCart) VALUES (:quantity, :idProduct, :idCart)");
+    $insertCartItem->execute([
+        'quantity' => 1,
+        'idProduct' => $idProduct,
+        'idCart' => $cartId
+    ]);
+
     $insertSubscription = $db->prepare("INSERT INTO stripe_consumer (idConsumer, creation, idUser, subscriptionId, subscriptionStatus) VALUES (:idConsumer, :creation, :idUser, :subscriptionId, :subscriptionStatus)");
     $insertSubscription->execute([
         'idConsumer' => $customerID,
         'creation' => date('Y-m-d H:i:s'),
         'idUser' => $userId,
         'subscriptionId' => $subscriptionId,
-        'subscriptionStatus' => $subscriptionStatus
+        'subscriptionStatus' => 'active'
+    ]);
+
+    $insertOrder = $db->prepare("INSERT INTO orders (idUser, idCart, idInvoice, pathInvoice) VALUES (:idUser, :idCart, :idInvoice, :pathInvoice)");
+    $insertOrder->execute([
+        'idUser' => $userId,
+        'idCart' => $cartId,
+        'idInvoice' => $invoiceId,
+        'pathInvoice' => ''
     ]);
 }
 

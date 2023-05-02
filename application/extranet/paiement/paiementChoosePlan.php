@@ -17,12 +17,12 @@ switch ($subscriptionType) {
         $priceYearly = '0.00';
         break;
     case 'starter':
-        $priceMonthly = number_format(getPriceDetails($_ENV['SUBSCRIPTION_PRICE_ID_SARTER_MONTHLY'])->unit_amount / 100, 2, '.', '') . getCurrency($_ENV['SUBSCRIPTION_PRICE_ID_SARTER_MONTHLY']);
-        $priceYearly = number_format(getPriceDetails($_ENV['SUBSCRIPTION_PRICE_ID_SARTER_YEARLY'])->unit_amount / 100, 2, '.', '') . getCurrency($_ENV['SUBSCRIPTION_PRICE_ID_SARTER_YEARLY']);
+        $priceMonthly = number_format(getPriceDetails(\Stripe\Product::retrieve(STARTER_MONTHLY)->default_price)->unit_amount / 100, 2, '.', '') . getCurrency(\Stripe\Product::retrieve(STARTER_MONTHLY)->default_price);
+        $priceYearly = number_format(getPriceDetails(\Stripe\Product::retrieve(STARTER_YEARLY)->default_price)->unit_amount / 100, 2, '.', '') . getCurrency(\Stripe\Product::retrieve(STARTER_YEARLY)->default_price);
         break;
     case 'master':
-        $priceMonthly = number_format(getPriceDetails($_ENV['SUBSCRIPTION_PRICE_ID_MASTER_MONTHLY'])->unit_amount / 100, 2, '.', '') . getCurrency($_ENV['SUBSCRIPTION_PRICE_ID_MASTER_MONTHLY']);
-        $priceYearly = number_format(getPriceDetails($_ENV['SUBSCRIPTION_PRICE_ID_MASTER_YEARLY'])->unit_amount / 100, 2, '.', '') . getCurrency($_ENV['SUBSCRIPTION_PRICE_ID_MASTER_YEARLY']);
+        $priceMonthly = number_format(getPriceDetails(\Stripe\Product::retrieve(MASTER_MONTHLY)->default_price)->unit_amount / 100, 2, '.', '') . getCurrency(\Stripe\Product::retrieve(MASTER_MONTHLY)->default_price);
+        $priceYearly = number_format(getPriceDetails(\Stripe\Product::retrieve(MASTER_YEARLY)->default_price)->unit_amount / 100, 2, '.', '') . getCurrency(\Stripe\Product::retrieve(MASTER_YEARLY)->default_price);
         break;
 }
 

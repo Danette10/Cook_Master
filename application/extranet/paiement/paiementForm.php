@@ -3,6 +3,8 @@ $title = "Cookorama - " . ucfirst($subscriptionType) . " plan";
 include 'ressources/script/head.php';
 require_once PATH_SCRIPT . 'header.php';
 
+\Stripe\Stripe::setApiKey($_ENV['API_PRIVATE_KEY']);
+
 global $db;
 
 $priceId = '';
@@ -23,12 +25,12 @@ switch ($subscriptionType) {
 
         if ($plan == 'monthly') {
 
-            $priceId = $_ENV['SUBSCRIPTION_PRICE_ID_SARTER_MONTHLY'];
+            $priceId = \Stripe\Product::retrieve(STARTER_MONTHLY)->default_price;
             $interval = 'mois';
 
         } else {
 
-            $priceId = $_ENV['SUBSCRIPTION_PRICE_ID_SARTER_YEARLY'];
+            $priceId = \Stripe\Product::retrieve(STARTER_YEARLY)->default_price;
             $interval = 'an';
 
         }
@@ -41,12 +43,12 @@ switch ($subscriptionType) {
 
         if ($plan == 'monthly') {
 
-            $priceId = $_ENV['SUBSCRIPTION_PRICE_ID_MASTER_MONTHLY'];
+            $priceId = \Stripe\Product::retrieve(MASTER_MONTHLY)->default_price;
             $interval = 'mois';
 
         } else {
 
-            $priceId = $_ENV['SUBSCRIPTION_PRICE_ID_MASTER_YEARLY'];
+            $priceId = \Stripe\Product::retrieve(MASTER_YEARLY)->default_price;
             $interval = 'an';
 
         }
@@ -60,8 +62,6 @@ $selectEmail->execute([
     'idUser' => $_SESSION['id']
 ]);
 $email = $selectEmail->fetch();
-
-\Stripe\Stripe::setApiKey($_ENV['API_PRIVATE_KEY']);
 
 if($subscriptionType == 'free') $price = '0.00€';
 else
