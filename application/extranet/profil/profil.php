@@ -13,7 +13,7 @@ if (!isset($_SESSION['id'])) {
     exit();
 }
 
-$selectInfo = $db->prepare('SELECT * FROM users, stripe_consumer WHERE users.idUser = :idUser AND stripe_consumer.idUser = :idUser');
+$selectInfo = $db->prepare('SELECT * FROM users WHERE users.idUser = :idUser');
 $selectInfo->execute(array(
     'idUser' => $_SESSION['id']
 ));
@@ -28,7 +28,19 @@ $fidelityCounter = $infos['fidelityCounter'];
 $creation = date('d/m/Y', strtotime($infos['creation']));
 $birthdate = date('d/m/Y', strtotime($infos['birthdate']));
 $profilePicture = ADDRESS_IMG_PROFIL . $infos['profilePicture'];
-$subscribed = $infos['subscriptionStatus'];
+
+$selectSubscription = $db->prepare('SELECT subscriptionStatus FROM stripe_consumer WHERE idUser = :idUser');
+$selectSubscription->execute(array(
+    'idUser' => $_SESSION['id']
+));
+
+$subscription = $selectSubscription->fetch();
+
+if($selectSubscription->rowCount() > 0){
+    $subscribed = $subscription['subscriptionStatus'];
+}else{
+    $subscribed = '';
+}
 
 ?>
 
