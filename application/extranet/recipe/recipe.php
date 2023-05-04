@@ -6,9 +6,18 @@ $title = "Cookorama - Toutes nos recettes";
 include 'ressources/script/head.php';
 require_once PATH_SCRIPT . 'header.php';
 
+if(isset($_GET['page']) && !empty($_GET['page'])){
+    $currentPage = (int) strip_tags($_GET['page']);
+}else{
+    $currentPage = 1;
+}
 
-$recipes = getRecipes();
+$echo $currentPage;
 
+$nbOfPages = getNbrOfPages();
+$perPage = 8;
+$offset = ($currentPage * $perPage) * $perPage;
+$recipes = getRecipes($offset,$perPage);
 
 
 ?>
@@ -33,17 +42,19 @@ $recipes = getRecipes();
                         <option value="3">Date de création</option>
                     </select>
                 </div>
-                <div class="col-3"></div>
+                <div class="col-3">
+                    <button type="button" class="btn connexionLink shadow">Crée ta recette</button>
+                </div>
                 
                 
             </div>
             <div class="col-3"></div>
         </div>
-        <div class="row text-center mt-5 shadow">
+        <div class="row text-center mt-5 ">
             <?php 
             foreach($recipes as $recipe){
                 echo '
-                <div class="col-sm-3 shadow mt-2">
+                <div class="col-sm-3  mt-2">
                     <div class="card board" style="width: 18rem;">
                         <img src="'.$recipe['recipeImage'].'" class="card-img-top" alt="...">
                         <div class="card-body">
@@ -55,6 +66,9 @@ $recipes = getRecipes();
                 
             }
             ?>
+        </div>
+        <div class="row text-center">
+            <a class="btn paginationBtn shadow" href="#" role="button">1</a>
         </div>
     </div>
 

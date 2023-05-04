@@ -410,10 +410,12 @@ function getUserInvoicesByYear($customerId) {
 
 }
 
-function getRecipes() {
+function getRecipes($offset,$perPage) {
     global $db;
 
-    $selectRecipes = $db->prepare('SELECT * FROM USERS_RECIPE ORDER BY idRecipe DESC');
+    $selectRecipes = $db->prepare('SELECT * FROM USERS_RECIPE ORDER BY idRecipe DESC LIMIT :offset, :perPage');
+    $selectRecipes->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $selectRecipes->bindValue(':perPage', $perPage, PDO::PARAM_INT);
     $selectRecipes->execute();
 
     $recipes = $selectRecipes->fetchAll();
@@ -422,6 +424,16 @@ function getRecipes() {
     return $recipes;
 }
 
+function getNbrOfPages() {
+    global $db;
 
+    $selectRecipes = $db->prepare('SELECT COUNT(*) FROM USERS_RECIPE');
+    $selectRecipes->execute();
+
+    $recipes = $selectRecipes->fetch();
+    $nbrOfPages = ceil(count($recipes) / 8);
+
+    return $nbrOfPages;
+}
 
 ?>
