@@ -12,11 +12,9 @@ if(isset($_GET['page']) && !empty($_GET['page'])){
     $currentPage = 1;
 }
 
-$echo $currentPage;
-
 $nbOfPages = getNbrOfPages();
 $perPage = 8;
-$offset = ($currentPage * $perPage) * $perPage;
+$offset = ($currentPage * $perPage) - $perPage;
 $recipes = getRecipes($offset,$perPage);
 
 
@@ -54,7 +52,7 @@ $recipes = getRecipes($offset,$perPage);
             <?php 
             foreach($recipes as $recipe){
                 echo '
-                <div class="col-sm-3  mt-2">
+                <div class="col-sm-3  mt-3">
                     <div class="card board" style="width: 18rem;">
                         <img src="'.$recipe['recipeImage'].'" class="card-img-top" alt="...">
                         <div class="card-body">
@@ -67,8 +65,38 @@ $recipes = getRecipes($offset,$perPage);
             }
             ?>
         </div>
-        <div class="row text-center">
-            <a class="btn paginationBtn shadow" href="#" role="button">1</a>
+        <div class="row text-center mt-4 ">
+            <div class="col"></div>
+            <div class="col">
+            <nav>
+                <ul class="pagination">
+                    <!-- Lien vers la page précédente (désactivé si on se trouve sur la 1ère page) -->
+                    <li class="page-item <?= ($currentPage == 1) ? "disabled" : "" ?>">
+                        <a href="recettes?page=<?= $currentPage - 1 ?>" class="page-link">Précédente</a>
+                    </li>
+                    <?php for($page = 1; $page <= $nbOfPages; $page++): 
+                        //<!-- Lien vers chacune des pages (activé si on se trouve sur la page correspondante) -->
+                        if ($page == $currentPage) {
+                            echo '
+                            <li class="page-item disabled">
+                                <a href="'.ADDRESS_SITE.'recettes?page='. $page .'" class="page-link">'.$page.'</a>
+                            </li>';
+                        }else {
+                            echo'
+                            <li class="page-item">
+                                <a href="'.ADDRESS_SITE.'recettes?page='. $page .'" class="page-link">'.$page.'</a>
+                            </li>';
+                        }
+                        
+                     endfor ?>
+                        <!-- Lien vers la page suivante (désactivé si on se trouve sur la dernière page) -->
+                    <li class="page-item <?= ($currentPage == $nbOfPages) ? "disabled" : "" ?>">
+                        <a href="<?=ADDRESS_SITE."recettes?page=". $currentPage + 1 ?>" class="page-link">Suivante</a>
+                    </li>
+                </ul>
+            </nav>
+            </div>
+            <div class="col"></div>
         </div>
     </div>
 

@@ -429,10 +429,10 @@ function getNbrOfPages() {
 
     $selectRecipes = $db->prepare('SELECT COUNT(*) FROM USERS_RECIPE');
     $selectRecipes->execute();
-
     $recipes = $selectRecipes->fetch();
-    $nbrOfPages = ceil(count($recipes) / 8);
 
+    $nbrOfPages = ceil($recipes[0]/ 8);
+ 
     return $nbrOfPages;
 }
 
