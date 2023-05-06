@@ -230,7 +230,7 @@ form input[type="submit"]:hover{
     color: #FFF; 
   }
 
-.dark-theme header nav ul li a{
+.dark-theme header nav ul li a:not(.dropdown-item){
     color: white !important;
 }
 

@@ -77,6 +77,13 @@ if($selectSubscription->rowCount() > 0){
                     <p><strong>Date d'inscription : </strong><?= $creation ?></p>
                     <p><strong>Nombre de points de fidélité : </strong><?= $fidelityCounter ?></p>
                     <?php
+                    if($role == -1){
+                    ?>
+                        <p><strong>Compte préstataire : </strong><em>En cours de validation</em></p>
+                    <?php }else if($role == 4){ ?>
+                        <p><strong>Compte préstataire : </strong>Validé</p>
+                    <?php } ?>
+                    <?php
                     if($subscribed == 'active'){
                     ?>
                         <button class="manageSubLink btn">
