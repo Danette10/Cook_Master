@@ -16,8 +16,9 @@ $routeur->get('/', function (){
 $routeur->get('/inscription', function (){
     require PATH_APPLICATION_EXTRANET . 'inscriptionForm.php';
 });
-$routeur->get('/inscription/validate/:token', function ($token){
+$routeur->get('/inscription/validate/:typeInscription/:token', function ($typeInscription, $token){
     $token = htmlspecialchars($token);
+    $typeInscription = htmlspecialchars($typeInscription);
     require PATH_VALIDATE_INSCRIPTION;
 });
 

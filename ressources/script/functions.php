@@ -104,15 +104,21 @@ function readLog($file) {
 
 
 /*
- * TODO: Function to upload profile picture
+ * TODO: Function to upload a file to inscription
  */
 
-function uploadProfilePicture($file) {
+function uploadFileInscription($file, $type) {
 
     // Create folder with year if not exist
     $year = date('Y');
     $month = date('m');
-    $path = PATH_IMG . 'profilePicture/' . $year . '/' . $month . '/';
+
+    if($type == 'image'){
+        $pathFile = PATH_IMG . 'profilePicture/';
+    }else{
+        $pathFile = PATH_FILES . 'serviceProvider/';
+    }
+        $path = $pathFile . $year . '/' . $month . '/';
 
     // Check if the folder exists, if not, create it
     if (!file_exists($path)) {
@@ -126,19 +132,12 @@ function uploadProfilePicture($file) {
     // Set the target file path
     $target_file = $path . $unique_name;
 
-    // Check if the uploaded file is an image
-    $check = getimagesize($file["tmp_name"]);
-    if ($check === false) {
-        return 1; // Code 1: Uploaded file is not an image
-    }
-
-
-     if ($file["size"] > 500000) {
+     if ($file["size"] > 2000000) {
          return 2; // Code 2: File is too large
      }
 
     // Allow certain file formats (optional, you can set allowed formats)
-     $allowed_extensions = array("jpg", "jpeg", "png");
+     $allowed_extensions = array("jpg", "jpeg", "png", "pdf");
      if (!in_array($extension, $allowed_extensions)) {
          return 3; // Code 3: File format is not allowed
      }

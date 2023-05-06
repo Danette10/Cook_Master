@@ -114,12 +114,12 @@ require_once PATH_SCRIPT . 'header.php';
 
             <div class="mb-3">
                 <label for="diploma" class="form-label">Diplôme *</label>
-                <input type="file" class="form-control" id="diploma" name="diploma" accept="image/jpeg, image/png, image/jpg, application/pdf" required>
+                <input type="file" class="form-control" id="diploma" name="diploma" accept="application/pdf" required>
             </div>
 
             <div class="mb-3">
                 <label for="cardId" class="form-label">Carte d'identité *</label>
-                <input type="file" class="form-control" id="cardId" name="cardId" accept="image/jpeg, image/png, image/jpg, application/pdf" required>
+                <input type="file" class="form-control" id="cardId" name="cardId" accept="application/pdf" required>
             </div>
 
             <div class="mb-3 d-flex align-items-baseline">
@@ -131,6 +131,9 @@ require_once PATH_SCRIPT . 'header.php';
         <div class="g-recaptcha mb-4" data-sitekey="<?= $_ENV['CAPTCHA_SITE_KEY'] ?>" data-callback="recaptchaCallback" data-expired-callback="recaptchaExpired"></div>
 
         <div id="div-submit"></div>
+
+
+        <input type="hidden" name="typeInscription" id="typeInscription" value="1">
 
     </form>
 
@@ -186,12 +189,14 @@ require_once PATH_SCRIPT . 'header.php';
                 }
                 document.getElementById('professionnelForm').style.display = 'none';
                 document.getElementById('professionnel').checked = false;
+                document.getElementById('typeInscription').value = 1;
             } else if (formType === 'professionnel') {
                 if (!document.getElementById('particulier').checked && !document.getElementById('professionnel').checked) {
                     document.getElementById('professionnel').checked = true;
                 }
                 document.getElementById('professionnelForm').style.display = 'block';
                 document.getElementById('particulier').checked = false;
+                document.getElementById('typeInscription').value = 2;
             }
         }
 
