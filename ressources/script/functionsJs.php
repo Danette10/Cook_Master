@@ -48,7 +48,7 @@
 
                         if (data === "success") {
 
-                            window.location.href = "<?= ADDRESS_SITE ?>";
+                            window.location.href = "<?= ADDRESS_SITE ?>?type=success&message=Connexion réussie";
 
                         } else {
 

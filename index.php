@@ -89,6 +89,11 @@ $routeur->get('/leçons', function (){
     require PATH_APPLICATION_EXTRANET . 'lesson/lesson.php';
 });
 
+// Routes -> Dashboard Admin
+$routeur->get('/admin/dashboard', function (){
+    require PATH_APPLICATION_EXTRANET . 'admin/dashboard.php';
+});
+
 // Execution du routeur
 $routeur->run();
 

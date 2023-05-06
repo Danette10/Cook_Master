@@ -36,6 +36,14 @@
 
                     </li>
 
+                    <?php
+                    if(isset($_SESSION['role']) && $_SESSION['role'] == 5){?>
+                    <li>
+
+                        <a href="<?= ADDRESS_SITE ?>admin/dashboard" class="nav-link">Dashboard</a>
+
+                    </li>
+                    <?php } ?>
                 </ul>
 
                 <div class="connexionInscriptionLinks">
@@ -46,11 +54,16 @@
 
                     </div>
 
+                    <?php
+                    if(isset($_SESSION['role']) && $_SESSION['role'] != 5){?>
+
                     <button class="pricingLink btn">
 
                         <a href="<?= ADDRESS_SITE ?>subscribe" class="nav-link">S'abonner</a>
 
                     </button>
+
+                    <?php } ?>
 
                     <?php if (!isset($_SESSION['role']) || $_SESSION['role'] == 0) { ?>
 
