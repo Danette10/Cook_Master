@@ -17,4 +17,8 @@ include PATH_SCRIPT . 'functions.php';
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="https://js.stripe.com/v3/"></script>
 
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
 </head>
