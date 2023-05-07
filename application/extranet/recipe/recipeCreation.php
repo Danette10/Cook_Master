@@ -47,7 +47,7 @@ global $db;
                         <label for="recipeSteps" class="form-label">Nombre d'etapes de la recette</label>
                         <input type="number" class="form-control" id="recipeSteps" name="recipeSteps" oninput="generateStepsFields()" required></input>
                     </div>
-                    <div class="mb-3" id="stepsOfRecipe"></div>
+                    <div class="mb-3 container" id="stepsOfRecipe"></div>
                     <div class="mb-3">
                         <button type="submit" class="btn btn-primary">Créer la recette</button>
                     </div>

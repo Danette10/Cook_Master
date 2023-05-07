@@ -307,14 +307,14 @@
         }
 
         for(var i = 0; i < nbOfSteps; i++) {
-            const stepDescription = document.createElement("input");
-            stepDescription.type = "text";
+            const stepDescription = document.createElement("textarea");
             stepDescription.name = "step" + (i+1);
             stepDescription.id = "step" + (i+1);
             stepDescription.placeholder = "Etape " + (i+1) ;
             stepDescription.required = true;
             stepDescription.classList.add("form-control");
             stepDescription.classList.add("mb-3");
+            stepDescription.classList.add("col-3");
             
             const stepPicture = document.createElement("input");
             stepPicture.type = "file";
@@ -324,6 +324,7 @@
             stepPicture.accept = "image/jpeg, image/png, image/jpg";
             stepPicture.classList.add("form-control");
             stepPicture.classList.add("mb-3");
+            stepPicture.classList.add("col-3");
             
 
             document.getElementById("stepsOfRecipe").appendChild(stepDescription);
