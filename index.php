@@ -85,6 +85,10 @@ $routeur->get('/recettes', function (){
 $routeur->get('/recettes/creation', function (){
     require PATH_APPLICATION_EXTRANET . 'recipe/recipeCreation.php';
 });
+$routeur->post('/recettes/creationCheck', function (){
+    require PATH_FORM . 'recipeCreation.php';
+});
+
 
 // Routes -> Leçons
 $routeur->get('/leçons', function (){

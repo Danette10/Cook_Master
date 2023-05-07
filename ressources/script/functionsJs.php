@@ -333,4 +333,56 @@
         }
     }
 
+
+    function generateIngredientsFields() {
+        const ingredientValue = document.getElementById("recipeIngredients");
+        const ingredientMainField = document.getElementById("recipeIngredientsList");
+        const nbOfIngredients = ingredientValue.value;
+            
+            if (ingredientMainField.hasChildNodes()) {
+                while (ingredientMainField.firstChild) {
+                    ingredientMainField.removeChild(ingredientMainField.firstChild);
+                }
+            }
+
+            for(var i = 0; i < nbOfIngredients; i++) {
+                const alignementRow1 = document.createElement("div");
+                alignementRow1.classList.add("col-1");
+                const alignementRow2 = document.createElement("div");
+                alignementRow2.classList.add("col-10");
+                alignementRow2.classList.add("mb-3");
+                alignementRow2.classList.add("row");
+                const alignementRow3 = document.createElement("div");
+                alignementRow3.classList.add("col-1");
+                const ingredientRow = document.createElement("div");
+                ingredientRow.classList.add("row");
+                ingredientRow.classList.add("mb-3");
+                ingredientRow.classList.add("align-items-center");
+                
+                const ingredientName = document.createElement("input");
+                ingredientName.type = "text";
+                ingredientName.name = "ingredientName" + (i+1);
+                ingredientName.id = "ingredientName" + (i+1);
+                ingredientName.placeholder = "Nom de l'ingrédient " + (i+1) ;
+                ingredientName.required = true;
+                ingredientName.classList.add("form-control");
+                ingredientName.classList.add("col");
+
+                const ingredientQuantity = document.createElement("input");
+                ingredientQuantity.type = "number";
+                ingredientQuantity.name = "ingredientQuantity" + (i+1);
+                ingredientQuantity.id = "ingredientQuantity" + (i+1);
+                ingredientQuantity.placeholder = "Quantité de l'ingrédient " + (i+1) ;
+                ingredientQuantity.required = true;
+                ingredientQuantity.classList.add("form-control");
+                ingredientQuantity.classList.add("col");
+
+                ingredientMainField.appendChild(ingredientRow);
+                ingredientRow.appendChild(alignementRow1);
+                ingredientRow.appendChild(alignementRow2);
+                ingredientRow.appendChild(alignementRow3);
+                alignementRow2.appendChild(ingredientName);
+                alignementRow2.appendChild(ingredientQuantity);
+            }
+}
 </script>
