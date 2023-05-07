@@ -94,6 +94,14 @@ $routeur->get('/admin/dashboard', function (){
     require PATH_APPLICATION_EXTRANET . 'admin/dashboard.php';
 });
 
+// Routes -> Dashboard Admin -> Utilisateurs
+$routeur->get('/dashboard/admin/users', function (){
+    require PATH_APPLICATION_EXTRANET . 'admin/users.php';
+});
+$routeur->get('/dashboard/admin/users-pending', function (){
+    require PATH_APPLICATION_EXTRANET . 'admin/usersPending.php';
+});
+
 // Execution du routeur
 $routeur->run();
 
