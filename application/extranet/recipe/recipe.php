@@ -41,7 +41,9 @@ $recipes = getRecipes($offset,$perPage);
                     </select>
                 </div>
                 <div class="col-3">
-                    <button type="button" class="btn connexionLink shadow">Crée ta recette</button>
+                    <a href="<?php ADDRESS_SITE ?>recettes/creation">
+                        <button type="button" class="btn connexionLink shadow">Crée ta recette</button>
+                    </a>
                 </div>
                 
                 

@@ -82,6 +82,9 @@ $routeur->get('/profil/manage/invoice', function (){
 $routeur->get('/recettes', function (){
     require PATH_APPLICATION_EXTRANET . 'recipe/recipe.php';
 });
+$routeur->get('/recettes/creation', function (){
+    require PATH_APPLICATION_EXTRANET . 'recipe/recipeCreation.php';
+});
 
 // Routes -> Leçons
 $routeur->get('/leçons', function (){
