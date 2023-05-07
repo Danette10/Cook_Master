@@ -307,7 +307,7 @@
         }
 
         for(var i = 0; i < nbOfSteps; i++) {
-            var stepDescription = document.createElement("input");
+            const stepDescription = document.createElement("input");
             stepDescription.type = "text";
             stepDescription.name = "step" + (i+1);
             stepDescription.id = "step" + (i+1);
@@ -316,7 +316,7 @@
             stepDescription.classList.add("form-control");
             stepDescription.classList.add("mb-3");
             
-            var stepPicture = document.createElement("input");
+            const stepPicture = document.createElement("input");
             stepPicture.type = "file";
             stepPicture.name = "stepPicture" + i;
             stepPicture.id = "stepPicture" + i;
@@ -324,6 +324,7 @@
             stepPicture.accept = "image/jpeg, image/png, image/jpg";
             stepPicture.classList.add("form-control");
             stepPicture.classList.add("mb-3");
+            
 
             document.getElementById("stepsOfRecipe").appendChild(stepDescription);
             document.getElementById("stepsOfRecipe").appendChild(stepPicture);
