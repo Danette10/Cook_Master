@@ -45,9 +45,9 @@ $totalUsers = $selectTotalUsers->fetch();
 
     <?php include PATH_SCRIPT . 'messages.php'; ?>
 
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center dashboardAdmin">
 
-        <div id="usersInfos" class="col-md-4 me-3" style="background: white; padding: 10px; border: 1px solid lightgray; border-radius: 5px;">
+        <div id="usersInfos" class="col-md-4 me-3">
 
             <h5><strong>Informations utilisateurs</strong></h5>
 
@@ -97,7 +97,7 @@ $totalUsers = $selectTotalUsers->fetch();
 
         </div>
 
-        <div id="totalUsers" class="col-md-4" style="background: white; padding: 10px; border: 1px solid lightgray; border-radius: 5px;">
+        <div id="totalUsers" class="col-md-4">
 
             <h5 style="font-weight: bold;">Nombre total d'utilisateurs<span style="float: right; font-size: 1.2em;"><?= $totalUsers['totalUsers'] ?></span></h5>
 
@@ -105,7 +105,7 @@ $totalUsers = $selectTotalUsers->fetch();
 
                 <a class="col-md-6 text-dark" href="<?= ADDRESS_SITE ?>dashboard/admin/users">
 
-                    <div id="allUsers" class="d-flex align-items-center" style="background: white; padding: 5px; border: 1px solid lightgray; border-radius: 5px; margin-right: 5px; height: 100%;">
+                    <div id="allUsers" class="d-flex align-items-center">
 
                         <div class="d-flex flex-column ms-3" style="margin-bottom: 5px;">
 
@@ -121,7 +121,7 @@ $totalUsers = $selectTotalUsers->fetch();
 
                 <a class="col-md-6 text-dark" href="<?= ADDRESS_SITE ?>dashboard/admin/users-pending">
 
-                    <div id="usersPending" class="d-flex align-items-center" style="background: white; padding: 10px; border: 1px solid lightgray; border-radius: 5px; height: 100%;">
+                    <div id="usersPending" class="d-flex align-items-center">
 
                         <div class="d-flex flex-column ms-3" style="margin-bottom: 5px;">
 

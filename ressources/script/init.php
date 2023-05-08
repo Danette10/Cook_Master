@@ -34,6 +34,7 @@ define('PATH_RESET_PASSWORD_FORM', PATH_APPLICATION_EXTRANET . 'resetPasswordFor
 define('PATH_FILES', PATH_RESSOURCES . 'files/');
 define('PATH_PAIEMENT_FORM', PATH_APPLICATION_EXTRANET . 'paiement/');
 define('PATH_PAIEMENT_SCRIPT', PATH_SCRIPT . 'paiement/');
+define("PATH_ADMIN_SCRIPT", PATH_SCRIPT . "admin/");
 define('PATH_INVOICES', PATH_FILES . 'invoices/');
 
 define('MAIL', 'cookmasterpa.2023@gmail.com');

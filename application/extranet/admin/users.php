@@ -11,8 +11,11 @@ if (!isset($_SESSION['id']) || $_SESSION['role'] != 5) {
     exit();
 }
 
-$selectUsers = $db->prepare("SELECT * FROM users WHERE role > 0");
-$selectUsers->execute();
+$selectUsers = $db->prepare("SELECT * FROM users WHERE role != 0 AND idUser != :idUser");
+$selectUsers->execute([
+    'idUser' => $_SESSION['id']
+]);
+
 $allUsers = $selectUsers->fetchAll();
 
 ?>
@@ -28,7 +31,7 @@ $allUsers = $selectUsers->fetchAll();
 
     <div class="p-3">
 
-        <table class="table table-bordered table-hover">
+        <table class="table text-center table-bordered" id="active">
             <thead>
                 <tr>
                     <th scope="col">ID</th>
@@ -50,19 +53,21 @@ $allUsers = $selectUsers->fetchAll();
                     <td><?= $user['email'] ?></td>
                     <td><?= $user['creation'] ?></td>
                     <td>
-                        <?php if ($user['role'] != -2) { ?>
-                            <a href="<?= ADDRESS_SITE ?>dashboard/admin/users/ban/<?= $user['idUser'] ?>" class="btn btn-danger">Bannir</a>
-                        <?php } else { ?>
-                            <a href="<?= ADDRESS_SITE ?>dashboard/admin/users/unban/<?= $user['idUser'] ?>" class="btn btn-success">Débannir</a>
-                        <?php } ?>
+                        <div class="button_profil">
+                            <?php if ($user['role'] != -2) { ?>
+                                <a href="<?= ADDRESS_SITE ?>dashboard/admin/users/ban/<?= $user['idUser'] ?>" class="btn btn-danger">Bannir</a>
+                            <?php } else { ?>
+                                <a href="<?= ADDRESS_SITE ?>dashboard/admin/users/unban/<?= $user['idUser'] ?>" class="btn btn-success">Débannir</a>
+                            <?php } ?>
 
-                        <?php if ($user['role'] == 1) { ?>
-                            <a href="<?= ADDRESS_SITE ?>dashboard/admin/users/upgrade/<?= $user['idUser'] ?>" class="btn btn-secondary">Admin</a>
-                        <?php }else if ($user['role'] == 5) { ?>
-                            <a href="<?= ADDRESS_SITE ?>dashboard/admin/users/downgrade/<?= $user['idUser'] ?>" class="btn btn-secondary">Utilisateur</a>
-                        <?php } ?>
+                            <?php if ($user['role'] == 1) { ?>
+                                <a href="<?= ADDRESS_SITE ?>dashboard/admin/users/upgrade/<?= $user['idUser'] ?>" class="btn btn-secondary">Admin</a>
+                            <?php }else if ($user['role'] == 5) { ?>
+                                <a href="<?= ADDRESS_SITE ?>dashboard/admin/users/downgrade/<?= $user['idUser'] ?>" class="btn btn-secondary">Utilisateur</a>
+                            <?php } ?>
 
-                        <a href="<?= ADDRESS_SITE ?>dashboard/admin/users/view/<?= $user['idUser'] ?>" class="btn btn-primary">Voir</a>
+                            <a href="<?= ADDRESS_SITE ?>dashboard/admin/users/view/<?= $user['idUser'] ?>" class="btn btn-primary">Voir</a>
+                        </div>
                     </td>
                 </tr>
 

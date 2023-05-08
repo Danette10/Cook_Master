@@ -31,7 +31,7 @@ $usersProvider = $selectUsersProvider->fetchAll();
 
         <h3 class="mt-3 mb-3">Prestataires</h3>
 
-        <table class="table table-bordered table-hover">
+        <table class="table text-center table-bordered table-hover" id="active">
             <thead>
             <tr>
                 <th scope="col">ID</th>
@@ -39,6 +39,7 @@ $usersProvider = $selectUsersProvider->fetchAll();
                 <th scope="col">Prénom</th>
                 <th scope="col">Email</th>
                 <th scope="col">Date d'inscription</th>
+                <th scope="col">Justificatifs</th>
                 <th scope="col">Actions</th>
             </tr>
             </thead>
@@ -53,9 +54,15 @@ $usersProvider = $selectUsersProvider->fetchAll();
                     <td><?= $userProvider['email'] ?></td>
                     <td><?= $userProvider['creation'] ?></td>
                     <td>
-                        <a href="<?= ADDRESS_SITE ?>admin/usersPending.php?download=<?= $userProvider['idUser'] ?>" class="btn btn-primary">Justificatifs</a>
-                        <a href="<?= ADDRESS_SITE ?>admin/usersPending.php?accept=<?= $userProvider['idUser'] ?>" class="btn btn-success">Accepter</a>
-                        <a href="<?= ADDRESS_SITE ?>admin/usersPending.php?refuse=<?= $userProvider['idUser'] ?>" class="btn btn-danger">Refuser</a>
+                        <a href="<?= ADDRESS_FILES . 'serviceProvider/' . $userProvider['cardIdentity'] ?>" target="_blank">Carte d'identité</a> |
+                        <a href="<?= ADDRESS_FILES  . 'serviceProvider/' . $userProvider['diploma'] ?>" target="_blank">Diplôme</a>
+                    </td>
+                    <td>
+                        <div class="button_profil">
+                            <a href="<?= ADDRESS_SITE ?>dashboard/admin/users-pending/provider/validate/<?= $userProvider['idUser'] ?>" class="btn btn-success">Accepter</a>
+                            <a href="<?= ADDRESS_SITE ?>dashboard/admin/users-pending/provider/refuse/<?= $userProvider['idUser'] ?>" class="btn btn-danger">Refuser</a>
+                            <a href="<?= ADDRESS_SITE ?>dashboard/admin/users/view/<?= $userProvider['idUser'] ?>" class="btn btn-primary" target="_blank">Voir</a>
+                        </div>
                     </td>
                 </tr>
             <?php } ?>
