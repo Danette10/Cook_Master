@@ -42,7 +42,8 @@ $getInvoice = getUserInvoicesByYear($customerID['idConsumer']);
                 <div class="col-12">
                     <div class="row">
                         <div class="col-12">
-                            <h3 class="text-center">Factures</h3>
+                            <h3>Factures</h3>
+                            <hr>
                         </div>
                     </div>
                     <div class="row">
