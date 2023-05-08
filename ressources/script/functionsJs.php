@@ -377,12 +377,30 @@
                 ingredientQuantity.classList.add("form-control");
                 ingredientQuantity.classList.add("col");
 
-                ingredientMainField.appendChild(ingredientRow);
+                const ingredientUnit = document.createElement("select");
+                ingredientUnit.name = "ingredientUnit" + (i+1);
+                ingredientUnit.id = "ingredientUnit" + (i+1);
+                ingredientUnit.required = true;
+                ingredientUnit.classList.add("form-control");
+                ingredientUnit.classList.add("col");
+                ingredientUnit.options.add( new Option("g", "g"));
+                ingredientUnit.options.add( new Option("kg", "kg"));
+                ingredientUnit.options.add( new Option("ml", "ml"));
+                ingredientUnit.options.add( new Option("cl", "cl"));
+                ingredientUnit.options.add( new Option("l", "l"));
+                ingredientUnit.options.add( new Option("cuillère à café", "cuillère à café"));
+                ingredientUnit.options.add( new Option("cuillère à soupe", "cuillère à soupe"));
+                ingredientUnit.options.add( new Option("verre", "verre"));
+                ingredientUnit.options.add( new Option("pincée", "pincée"));
+                
+
+                ingredientMainField.appendChild(ingredientRow);         
                 ingredientRow.appendChild(alignementRow1);
                 ingredientRow.appendChild(alignementRow2);
                 ingredientRow.appendChild(alignementRow3);
                 alignementRow2.appendChild(ingredientName);
                 alignementRow2.appendChild(ingredientQuantity);
+                alignementRow2.appendChild(ingredientUnit);
             }
 }
 </script>
