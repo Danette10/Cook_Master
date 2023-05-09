@@ -1,4 +1,5 @@
 <?php 
+session_start();
 include "../init.php";
 include PATH_SCRIPT . "functions.php";
 
@@ -6,7 +7,7 @@ global $db;
 
 if(isset($_POST['title']) && isset($_FILES['recipeImage']) && isset($_POST['recipeDescription']) && isset($_POST['recipeIngredients']) && isset($_POST['recipeSteps'])) {
     $recipeTitle = $_POST['title'];
-    $recipeImage = $_POST['recipeImage'];
+    $recipeImage = $_FILES['recipeImage'];
     $recipeDescription = $_POST['recipeDescription'];
     $recipeIngredients = $_POST['recipeIngredients'];
     $recipeSteps = $_POST['recipeSteps'];
@@ -56,7 +57,7 @@ if(isset($_POST['title']) && isset($_FILES['recipeImage']) && isset($_POST['reci
 
         $date = date('Y-m-d H:i:s');
 
-        $addRecipe = $db->prepare("INSERT INTO recipes (recipeName, description, recipeImage, creator, creationDate) VALUES (:recipeName, :description, :recipeImage, :creator, :creationDate)");
+        $addRecipe = $db->prepare("INSERT INTO USERS_RECIPE (recipeName, description, recipeImage, idUser, creationDate) VALUES (:recipeName, :description, :recipeImage, :creator, :creationDate)");
         $addRecipe->execute([
             'recipeName' => $recipeTitle,
             'description' => $recipeDescription,
@@ -65,15 +66,17 @@ if(isset($_POST['title']) && isset($_FILES['recipeImage']) && isset($_POST['reci
             'creationDate' => $date
         ]);
 
-        $getRecipeId = $db->prepare("SELECT id FROM recipes WHERE recipeName = :recipeName AND creator = :creator AND creationDate = :creationDate");
+        $getRecipeId = $db->prepare("SELECT idRecipe FROM USERS_RECIPE WHERE recipeName = :recipeName AND idUser = :creator AND creationDate = :creationDate");
         $getRecipeId->execute([
             'recipeName' => $recipeTitle,
             'creator' => $creator,
             'creationDate' => $date
         ]);
 
-        $recipeId = $getRecipeId->fetch(PDO::FETCH_ASSOC);
-
+        $recipeId = $getRecipeId->fetch();
+        $recipeId = $recipeId['idRecipe'];
+        
+    
         for($i = 1; $i < $recipeIngredients; $i++) {
             if(!isset($_POST['ingredientName' . $i])) {
                 $errors[] = "Veuillez remplir tout les champs ingrédients.\nVeuillez remplir le champ nom de l'ingrédient " . $i;
@@ -100,12 +103,12 @@ if(isset($_POST['title']) && isset($_FILES['recipeImage']) && isset($_POST['reci
                     header("Location: " . ADDRESS_SITE . 'recettes');
                     exit();
                 }else {
-                    $addIngredient = $db->prepare("INSERT INTO ingredients (ingredientName, ingredientQuantity, unit, recipeId) VALUES (:ingredientName, :ingredientQuantity, :unit, :recipeId)");
+                    $addIngredient = $db->prepare("INSERT INTO RECIPE_INGREDIENTS (ingredientName, ingredientQuantity, unit, idRecipe) VALUES (:ingredientName, :ingredientQuantity, :unit, :idRecipe)");
                     $addIngredient->execute([
                         'ingredientName' => $ingredientName,
                         'ingredientQuantity' => $ingredientQuantity,
                         'unit' => $ingredientUnit,
-                        'recipeId' => $recipeId['id']
+                        'idRecipe' => $recipeId
                     ]);
                 }
             }
@@ -138,11 +141,11 @@ if(isset($_POST['title']) && isset($_FILES['recipeImage']) && isset($_POST['reci
                     header("Location: " . ADDRESS_SITE . 'recettes');
                     exit();
                 }else {
-                    $addStep = $db->prepare("INSERT INTO RECIPE_STEPS (step, stepImage, recipeId) VALUES (:step, :stepImage, :recipeId)");
+                    $addStep = $db->prepare("INSERT INTO RECIPE_STEPS (stepDescription, stepImg, idRecipe) VALUES (:step, :stepImage, :idRecipe)");
                     $addStep->execute([
                         'step' => $step,
                         'stepImage' => $stepImage,
-                        'recipeId' => $recipeId['id']
+                        'idRecipe' => $recipeId
                     ]);
                 }
             }

@@ -26,7 +26,7 @@ global $db;
         <div class="row">
             <div class="col-3"></div>
             <div class="col-6">
-                <form action="<?php ADDRESS_FORM ?>recipeForm" method="POST" id="recipeForm" enctype="multipart/form-data">
+                <form action="/Cook_Master/ressources/script/form/recipeForm.php" method="post" id="recipeForm" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="title" class="form-label">Titre de la recette</label>
                         <input type="text" class="form-control" id="title" name="title" required>

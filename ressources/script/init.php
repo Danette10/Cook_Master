@@ -55,7 +55,8 @@ define('ADDRESS_CSS', ADDRESS_RESSOURCES . 'css/');
 define('ADDRESS_JS', ADDRESS_RESSOURCES . 'js/');
 define('ADDRESS_IMG', ADDRESS_RESSOURCES . 'images/');
 define('ADDRESS_PRICING_ICON', ADDRESS_IMG . 'pricingIcon/');
-define('ADDRESS_IMG_PROFIL', ADDRESS_IMG . 'profilePicture/');;
+define('ADDRESS_IMG_PROFIL', ADDRESS_IMG . 'profilePicture/');
+define('ADDRESS_IMG_RECIPES', ADDRESS_IMG . 'recipesImages/');
 define('ADDRESS_DEFAULT_PROFIL', ADDRESS_IMG . 'defaultPicture.svg');
 
 define('ADDRESS_SCRIPT', ADDRESS_RESSOURCES . 'script/');
