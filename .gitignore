@@ -3,6 +3,6 @@
 .env
 /ressources/images/profilePicture/
 /ressources/files/invoices/*/*/*.pdf
-/log/.txt
+/log/*.txt
 /ressources/images/recipeImage/
 /ressources/files/serviceProvider/
