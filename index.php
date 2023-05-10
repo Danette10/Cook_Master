@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 include 'ressources/script/init.php';
@@ -85,8 +86,8 @@ $routeur->get('/recettes', function (){
 $routeur->get('/recettes/creation', function (){
     require PATH_APPLICATION_EXTRANET . 'recipe/recipeCreation.php';
 });
-$routeur->post('/recettes/creationCheck', function (){
-    require PATH_FORM . 'recipeCreation.php';
+$routeur->post('/recettes/creation/check', function (){
+    require PATH_FORM . 'recipeForm.php';
 });
 
 
