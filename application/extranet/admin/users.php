@@ -1,3 +1,4 @@
+<?php ob_start(); ?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -10,12 +11,10 @@ if (!isset($_SESSION['id']) || $_SESSION['role'] != 5) {
     header('Location: ' . ADDRESS_SITE);
     exit();
 }
+ob_end_flush();
 
-$selectUsers = $db->prepare("SELECT * FROM users WHERE role != 0 AND idUser != :idUser");
-$selectUsers->execute([
-    'idUser' => $_SESSION['id']
-]);
-
+$selectUsers = $db->prepare("SELECT * FROM users WHERE role != 0");
+$selectUsers->execute([]);
 $allUsers = $selectUsers->fetchAll();
 
 ?>

@@ -4,7 +4,7 @@ session_start();
 include 'ressources/script/init.php';
 require 'vendor/autoload.php';
 
-$url = isset($_GET['url']) ? $_GET['url'] : '/';
+$url = $_GET['url'] ?? '/';
 
 $routeur = new \App\Router\Router($url);
 
