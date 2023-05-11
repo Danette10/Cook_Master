@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 include 'ressources/script/init.php';
@@ -83,6 +84,13 @@ $routeur->get('/profil/manage/invoice', function (){
 $routeur->get('/recettes', function (){
     require PATH_APPLICATION_EXTRANET . 'recipe/recipe.php';
 });
+$routeur->get('/recettes/creation', function (){
+    require PATH_APPLICATION_EXTRANET . 'recipe/recipeCreation.php';
+});
+$routeur->post('/recettes/creation/check', function (){
+    require PATH_FORM . 'recipeForm.php';
+});
+
 
 // Routes -> Leçons
 $routeur->get('/leçons', function (){

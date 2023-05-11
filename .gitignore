@@ -3,5 +3,8 @@
 .env
 /ressources/images/profilePicture/
 /ressources/files/invoices/*/*/*.pdf
-/log/*.txt
-/ressources/files/serviceProvider/*/*/*.pdf
+/ressources/images/recipeImage/
+/ressources/files/serviceProvider/
+/log/
+
+.DS_Store
