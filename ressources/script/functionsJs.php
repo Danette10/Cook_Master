@@ -315,20 +315,8 @@
             stepDescription.classList.add("form-control");
             stepDescription.classList.add("mb-3");
             stepDescription.classList.add("col-3");
-            
-            const stepPicture = document.createElement("input");
-            stepPicture.type = "file";
-            stepPicture.name = "stepPicture" + i;
-            stepPicture.id = "stepPicture" + i;
-            stepPicture.required = false;
-            stepPicture.accept = "image/jpeg, image/png, image/jpg";
-            stepPicture.classList.add("form-control");
-            stepPicture.classList.add("mb-3");
-            stepPicture.classList.add("col-3");
-            
 
             document.getElementById("stepsOfRecipe").appendChild(stepDescription);
-            document.getElementById("stepsOfRecipe").appendChild(stepPicture);
 
         }
     }

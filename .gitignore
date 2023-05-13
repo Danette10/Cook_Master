@@ -3,5 +3,11 @@
 .env
 /ressources/images/profilePicture/
 /ressources/files/invoices/*/*/*.pdf
+<<<<<<< HEAD
 /log/*.txt
 .DS_Store
+=======
+/ressources/images/recipeImage/
+/ressources/files/serviceProvider/
+/log/
+>>>>>>> recipePage

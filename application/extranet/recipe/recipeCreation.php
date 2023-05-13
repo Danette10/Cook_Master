@@ -5,7 +5,7 @@ $title = "Cookorama - Création de recette";
 include 'ressources/script/head.php';
 
 if (!isset($_SESSION['id'])) {
-    header('Location: ' . ADDRESS_SITE."inscription");
+    header('Location: ' . ADDRESS_SITE);
     exit();
 }
 require_once PATH_SCRIPT . 'header.php';
@@ -26,7 +26,7 @@ global $db;
         <div class="row">
             <div class="col-3"></div>
             <div class="col-6">
-                <form action="/Cook_Master/ressources/script/form/recipeForm.php" method="post" id="recipeForm" enctype="multipart/form-data">
+                <form action="<?= ADDRESS_SITE ?>recettes/creation/check" method="post" id="recipeForm" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="title" class="form-label">Titre de la recette</label>
                         <input type="text" class="form-control" id="title" name="title" required>

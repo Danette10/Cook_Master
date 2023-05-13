@@ -160,7 +160,7 @@ function uploadRecipePicture($file) {
     // Create folder with year if not exist
     $year = date('Y');
     $month = date('m');
-    $path = PATH_IMG . 'recipesImages/' . $year . '/' . $month . '/';
+    $path = PATH_IMG . 'recipeImage/' . $year . '/' . $month . '/';
 
     // Check if the folder exists, if not, create it
     if (!file_exists($path)) {
@@ -461,7 +461,7 @@ function getUserInvoicesByYear($customerId) {
 function getRecipes($offset,$perPage) {
     global $db;
 
-    $selectRecipes = $db->prepare('SELECT * FROM USERS_RECIPE ORDER BY idRecipe DESC LIMIT :offset, :perPage');
+    $selectRecipes = $db->prepare('SELECT * FROM RECIPE ORDER BY idRecipe DESC LIMIT :offset, :perPage');
     $selectRecipes->bindValue(':offset', $offset, PDO::PARAM_INT);
     $selectRecipes->bindValue(':perPage', $perPage, PDO::PARAM_INT);
     $selectRecipes->execute();
@@ -475,7 +475,7 @@ function getRecipes($offset,$perPage) {
 function getNbrOfPages() {
     global $db;
 
-    $selectRecipes = $db->prepare('SELECT COUNT(*) FROM USERS_RECIPE');
+    $selectRecipes = $db->prepare('SELECT COUNT(*) FROM RECIPE');
     $selectRecipes->execute();
     $recipes = $selectRecipes->fetch();
 
