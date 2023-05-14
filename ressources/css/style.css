@@ -65,6 +65,10 @@ a {
     text-decoration: none !important;
 }
 
+tbody tr:hover{
+    background-color: #e7e6e6 !important;
+}
+
 nav ul li a:hover{
     color: #FF9B90 !important;
 }
@@ -153,6 +157,38 @@ form input[type="submit"]:hover{
     border: 2px solid #FF9B90 !important;
 }
 
+/* DASHBOARD ADMIN */
+
+.dashboardAdmin #usersInfos, .dashboardAdmin #totalUsers{
+    background: white;
+    padding: 10px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+}
+
+.dashboardAdmin #totalUsers #allUsers, .dashboardAdmin #totalUsers #usersPending{
+    background: white;
+    padding: 5px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    margin-right: 5px;
+    height: 100%;
+}
+
+.button_profil {
+    display: flex;
+}
+.button_profil a {
+    text-decoration: none;
+    color: white;
+    width: 100%;
+    margin-right: 10px;
+}
+.button_profil a:hover {
+    text-decoration: none;
+    color: white;
+}
+
 /* PROFIL DROPDOWN */
 
 #profileDropdown{
@@ -231,7 +267,7 @@ form input[type="submit"]:hover{
   }
 
 .dark-theme header nav ul li a:not(.dropdown-item){
-    color: white !important;
+    color: white;
 }
 
 .dark-theme{
@@ -258,6 +294,23 @@ form input[type="submit"]:hover{
 .dark-theme #inscriptionForm hr{
     border: 2px solid white !important;
 }
+
+.dark-theme .dashboardAdmin #usersInfos, .dark-theme .dashboardAdmin #totalUsers{
+    background: #7C8190;
+    box-shadow: 5px 5px 5px #63666e;
+}
+
+.dark-theme .dashboardAdmin #totalUsers #allUsers, .dark-theme .dashboardAdmin #totalUsers #usersPending{
+    background: #7C8190;
+    box-shadow: 5px 5px 5px #63666e;
+    color: white;
+}
+
+.dark-theme tbody tr:hover{
+    background-color: #737786 !important;
+    color: #FF9B90 !important;
+}
+
 
 .manageSubLink, .manageInvoice{
     color: white !important;

@@ -17,7 +17,8 @@ define('STARTER_MONTHLY', 'prod_NeXPCayzYQqXgS');
  *TODO: PATH
  */
 
-define('PATH_SITE', $_SERVER['DOCUMENT_ROOT'] . '/Cook_Master/');
+//define('PATH_SITE', $_SERVER['DOCUMENT_ROOT'] . '/Cook_Master/');
+define('PATH_SITE', $_SERVER['DOCUMENT_ROOT'] . '/');
 define('PATH_LOG', PATH_SITE . 'log/');
 define('PATH_RESSOURCES', PATH_SITE . 'ressources/');
 define('PATH_CSS', PATH_RESSOURCES . 'css/');
@@ -34,6 +35,7 @@ define('PATH_RESET_PASSWORD_FORM', PATH_APPLICATION_EXTRANET . 'resetPasswordFor
 define('PATH_FILES', PATH_RESSOURCES . 'files/');
 define('PATH_PAIEMENT_FORM', PATH_APPLICATION_EXTRANET . 'paiement/');
 define('PATH_PAIEMENT_SCRIPT', PATH_SCRIPT . 'paiement/');
+define("PATH_ADMIN_SCRIPT", PATH_SCRIPT . "admin/");
 define('PATH_INVOICES', PATH_FILES . 'invoices/');
 
 define('MAIL', 'cookmasterpa.2023@gmail.com');
@@ -48,14 +50,15 @@ $dotenv->load();
  * TODO ADDRESS
  */
 
-define('ADDRESS_SITE', 'http://' . $_SERVER['HTTP_HOST'] . '/Cook_Master/');
-
+//define('ADDRESS_SITE', 'http://' . $_SERVER['HTTP_HOST'] . '/Cook_Master/');
+define('ADDRESS_SITE', 'https://' . $_SERVER['HTTP_HOST'] . '/');
 define('ADDRESS_RESSOURCES', ADDRESS_SITE . 'ressources/');
 define('ADDRESS_CSS', ADDRESS_RESSOURCES . 'css/');
 define('ADDRESS_JS', ADDRESS_RESSOURCES . 'js/');
 define('ADDRESS_IMG', ADDRESS_RESSOURCES . 'images/');
 define('ADDRESS_PRICING_ICON', ADDRESS_IMG . 'pricingIcon/');
-define('ADDRESS_IMG_PROFIL', ADDRESS_IMG . 'profilePicture/');;
+define('ADDRESS_IMG_PROFIL', ADDRESS_IMG . 'profilePicture/');
+define('ADDRESS_IMG_RECIPES', ADDRESS_IMG . 'recipeImage/');
 define('ADDRESS_DEFAULT_PROFIL', ADDRESS_IMG . 'defaultPicture.svg');
 
 define('ADDRESS_SCRIPT', ADDRESS_RESSOURCES . 'script/');

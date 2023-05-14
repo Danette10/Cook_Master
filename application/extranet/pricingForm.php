@@ -5,6 +5,9 @@
 $title = "Cookorama - Pricing";
 include 'ressources/script/head.php';
 require_once PATH_SCRIPT . 'header.php';
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 global $db;
 
 $name = [];

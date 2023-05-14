@@ -39,6 +39,13 @@ if ($resultCount == 1 && $userExist['role'] == 0) {
     $error .= '<p class="text-danger">Vous n\'avez pas encore validé votre compte.</p>';
 
 }
+
+if ($resultCount == 1 && $userExist['role'] == -2) {
+
+    $error .= '<p class="text-danger">Vous avez été banni.</p>';
+
+}
+
 $password = hash('sha512', $password);
 $selectIfPasswordIsCorrect = $db->prepare('SELECT COUNT(*) AS passwordIsCorrect FROM users WHERE email = :email AND password = :password');
 $selectIfPasswordIsCorrect->execute(array(

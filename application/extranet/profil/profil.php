@@ -13,9 +13,15 @@ if (!isset($_SESSION['id'])) {
     exit();
 }
 
+if(isset($idUser)){
+    $userId = $idUser;
+}else{
+    $userId = $_SESSION['id'];
+}
+
 $selectInfo = $db->prepare('SELECT * FROM users WHERE users.idUser = :idUser');
 $selectInfo->execute(array(
-    'idUser' => $_SESSION['id']
+    'idUser' => $userId
 ));
 
 $infos = $selectInfo->fetch();
@@ -31,7 +37,7 @@ $profilePicture = ADDRESS_IMG_PROFIL . $infos['profilePicture'];
 
 $selectSubscription = $db->prepare('SELECT subscriptionStatus FROM stripe_consumer WHERE idUser = :idUser');
 $selectSubscription->execute(array(
-    'idUser' => $_SESSION['id']
+    'idUser' => $userId
 ));
 
 $subscription = $selectSubscription->fetch();
@@ -60,7 +66,7 @@ if($selectSubscription->rowCount() > 0){
 
                     <div class="editProfil">
 
-                        <a href="<?= ADDRESS_SITE ?>profil/modify/<?=$_SESSION['id'] ?>" data-bs-toggle="tooltip" data-bs-title="Modifier le profil" data-bs-placement="top">
+                        <a href="<?= ADDRESS_SITE ?>profil/modify/<?= $userId ?>" data-bs-toggle="tooltip" data-bs-title="Modifier le profil" data-bs-placement="top">
 
                             <i class="fa-solid fa-pen-to-square fa-2xl" style="color: #ff9b90;"></i>
 
