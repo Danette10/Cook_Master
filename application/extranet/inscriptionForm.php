@@ -114,16 +114,16 @@ require_once PATH_SCRIPT . 'header.php';
 
             <div class="mb-3">
                 <label for="diploma" class="form-label">Diplôme *</label>
-                <input type="file" class="form-control" id="diploma" name="diploma" accept="application/pdf" required>
+                <input type="file" class="form-control" id="diploma" name="diploma" accept="application/pdf">
             </div>
 
             <div class="mb-3">
                 <label for="cardId" class="form-label">Carte d'identité *</label>
-                <input type="file" class="form-control" id="cardId" name="cardId" accept="application/pdf" required>
+                <input type="file" class="form-control" id="cardId" name="cardId" accept="application/pdf">
             </div>
 
             <div class="mb-3 d-flex align-items-baseline">
-                <input type="checkbox" id="cgu" name="cgu" class="me-2" required>
+                <input type="checkbox" id="cgu" name="cgu" class="me-2">
                 <label for="cgu" class="form-label">J'accepte que Cookorama conserve mes données personnelles afin de pouvoir vérifier l'authenticité de mon profil professionnel, et ainsi me permettre de proposer mes services sur la plateforme. En cochant cette case, je certifie que les informations fournies sont exactes et sincères. *</label>
             </div>
         </div>

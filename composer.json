@@ -8,6 +8,7 @@
         "stripe/stripe-php": "*",
         "vlucas/phpdotenv": "*",
         "phpmailer/phpmailer": "*",
-        "tecnickcom/tcpdf": "*"
+        "tecnickcom/tcpdf": "*",
+      "ext-pdo": "*"
     }
 }

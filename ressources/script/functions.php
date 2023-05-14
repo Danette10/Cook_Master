@@ -252,7 +252,7 @@ function generateInvoice($invoiceData){
     $invoiceQuantity = $invoiceData['invoice_quantity'];
     $invoiceTotal = number_format($invoiceData['invoice_total'] / 100, 2, '.', '') . ' ' . getCurrency($invoiceData['price_id']);
     $invoicePriceUnit = number_format(getPriceDetails($invoiceData['price_id'])->unit_amount / 100, 2, '.', '') . ' ' . getCurrency($invoiceData['price_id']);
-    $subscriptionEndDate = date('d/m/Y', strtotime($invoiceData['next_invoice_date']));
+    $subscriptionEndDate = $invoiceData['next_invoice_date'];
 
     $logo = ADDRESS_IMG . 'logo.png';
 
@@ -460,7 +460,7 @@ function getUserInvoicesByYear($customerId) {
 function getRecipes($offset,$perPage) {
     global $db;
 
-    $selectRecipes = $db->prepare('SELECT * FROM RECIPE ORDER BY idRecipe DESC LIMIT :offset, :perPage');
+    $selectRecipes = $db->prepare('SELECT * FROM recipe ORDER BY idRecipe DESC LIMIT :offset, :perPage');
     $selectRecipes->bindValue(':offset', $offset, PDO::PARAM_INT);
     $selectRecipes->bindValue(':perPage', $perPage, PDO::PARAM_INT);
     $selectRecipes->execute();
@@ -474,7 +474,7 @@ function getRecipes($offset,$perPage) {
 function getNbrOfPages() {
     global $db;
 
-    $selectRecipes = $db->prepare('SELECT COUNT(*) FROM RECIPE');
+    $selectRecipes = $db->prepare('SELECT COUNT(*) FROM recipe');
     $selectRecipes->execute();
     $recipes = $selectRecipes->fetch();
 

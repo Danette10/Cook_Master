@@ -78,7 +78,7 @@ if($confirm == '0'){
         'amount' => $amount,
         'product_name' => $productName,
         'invoice_date' => $date,
-        'invoice_due_date' => $dateEnd,
+        'invoice_due_date' => $date,
         'invoice_number' => $invoiceNumber,
         'invoice_quantity' => $quantity,
         'invoice_total' => $total,
