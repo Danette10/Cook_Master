@@ -36,6 +36,12 @@
 
                     </li>
 
+                    <li>
+
+                        <a href="<?= ADDRESS_SITE ?>boutique" class="nav-link">Boutique</a>
+
+                    </li>
+
                     <?php
                     if(isset($_SESSION['role']) && $_SESSION['role'] == 5){?>
                     <li>
