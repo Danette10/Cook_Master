@@ -62,7 +62,7 @@ $recipes = getRecipes($offset,$perPage);
                 echo '
                 <div class="col-sm-3  mt-3">
                     <div class="card board" style="width: 18rem;">
-                        <img src="' . ADDRESS_IMG_RECIPES . $recipe['recipeImage'].'" class="card-img-top" alt="...">
+                        <img src="' . ADDRESS_IMG_RECIPES . $recipe['recipeImage'].'" class="card-img-top img-fluid" alt="...">
                         <div class="card-body">
                             <h4>'.$recipe['recipeName'].'</h4>
                             <p class="card-text">'.$recipe['description'].'</p>

@@ -296,99 +296,136 @@
         });
     }
 
-    function generateStepsFields() {
-        const steps = document.getElementById("stepsOfRecipe");
-        const nbOfSteps = recipeSteps.value;
+    function addStep() {
+        var currenNbOfSteps = parseInt(document.getElementById("nbOfSteps").value);
         
-        if (steps.hasChildNodes()) {
-            while (steps.firstChild) {
-                steps.removeChild(steps.firstChild);
-            }
-        }
+        currenNbOfSteps = parseInt(currenNbOfSteps + 1);
+        console.log(currenNbOfSteps);
+        document.getElementById("nbOfSteps").value = currenNbOfSteps;
+        console.log(currenNbOfSteps);
+        const newStepRow = document.getElementById("recipeStepsAddedRow");
 
-        for(var i = 0; i < nbOfSteps; i++) {
-            const stepDescription = document.createElement("textarea");
-            stepDescription.name = "step" + (i+1);
-            stepDescription.id = "step" + (i+1);
-            stepDescription.placeholder = "Etape " + (i+1) ;
-            stepDescription.required = true;
-            stepDescription.classList.add("form-control");
-            stepDescription.classList.add("mb-3");
-            stepDescription.classList.add("col-3");
+        const newStepDiv = document.createElement("div");
+        newStepDiv.classList.add("col-12");
+        const newStepTextLabel = document.createElement("label");
+        newStepTextLabel.setAttribute("for", "recipeStep" + currenNbOfSteps);
+        newStepTextLabel.classList.add("form-label");
+        newStepTextLabel.innerHTML = "Etape " + currenNbOfSteps;
 
-            document.getElementById("stepsOfRecipe").appendChild(stepDescription);
+        const newStepTextarea = document.createElement("textarea");
+        newStepTextarea.rows = "3";
+        newStepTextarea.placeholder = "Etape " + currenNbOfSteps;
+        newStepTextarea.classList.add("form-control");
+        newStepTextarea.classList.add("mb-3");
+        newStepTextarea.setAttribute("name", "recipeStep" + currenNbOfSteps);
+        newStepTextarea.setAttribute("id", "recipeStep" + currenNbOfSteps);
 
-        }
+        newStepRow.appendChild(newStepDiv);
+        newStepDiv.appendChild(newStepTextLabel);
+        newStepDiv.appendChild(newStepTextarea);
+
+            
+
     }
 
+    function addIngredient() {
 
-    function generateIngredientsFields() {
-        const ingredientValue = document.getElementById("recipeIngredients");
-        const ingredientMainField = document.getElementById("recipeIngredientsList");
-        const nbOfIngredients = ingredientValue.value;
-            
-            if (ingredientMainField.hasChildNodes()) {
-                while (ingredientMainField.firstChild) {
-                    ingredientMainField.removeChild(ingredientMainField.firstChild);
-                }
-            }
+        const currentNbrOfIngredients = parseInt(document.getElementById("nbOfIngredrients").value) +1;
+        const newIngredientRow = document.getElementById("recipeIngredientsAddedRow");
+        const lastIngredient = currentNbrOfIngredients - 1;
+        if (lastIngredient > 1) {
+            console.log("removeIngredient" + lastIngredient);
+            const btnToRemove = document.getElementById("removeIngredient" + lastIngredient);
+            btnToRemove.remove();
+        }
+        document.getElementById("nbOfIngredrients").value = currentNbrOfIngredients;
+        console.log(currentNbrOfIngredients);
+        
+        const removeIngredientBtn = document.createElement("button");
+        removeIngredientBtn.classList.add("col-2");
+        removeIngredientBtn.classList.add("btn");
+        removeIngredientBtn.classList.add("btn-danger");
+        removeIngredientBtn.classList.add("mb-3");
+        removeIngredientBtn.innerHTML = "Supprimer";
+        removeIngredientBtn.setAttribute("onclick", "removeIngredient("+currentNbrOfIngredients+")");
+        removeIngredientBtn.setAttribute("id", "removeIngredient" + currentNbrOfIngredients);
+        const newIngredientDiv1 = document.createElement("div");
+        newIngredientDiv1.classList.add("col-4");
+        newIngredientDiv1.setAttribute("id", "ingredientDiv1" + currentNbrOfIngredients);
+        const newIngredientDiv2 = document.createElement("div");
+        newIngredientDiv2.classList.add("col-3");
+        newIngredientDiv2.setAttribute("id", "ingredientDiv2" + currentNbrOfIngredients);
+        const newIngredientDiv3 = document.createElement("div");
+        newIngredientDiv3.classList.add("col-3");   
+        newIngredientDiv3.setAttribute("id", "ingredientDiv3" + currentNbrOfIngredients);
 
-            for(var i = 0; i < nbOfIngredients; i++) {
-                const alignementRow1 = document.createElement("div");
-                alignementRow1.classList.add("col-1");
-                const alignementRow2 = document.createElement("div");
-                alignementRow2.classList.add("col-10");
-                alignementRow2.classList.add("mb-3");
-                alignementRow2.classList.add("row");
-                const alignementRow3 = document.createElement("div");
-                alignementRow3.classList.add("col-1");
-                const ingredientRow = document.createElement("div");
-                ingredientRow.classList.add("row");
-                ingredientRow.classList.add("mb-3");
-                ingredientRow.classList.add("align-items-center");
-                
-                const ingredientName = document.createElement("input");
-                ingredientName.type = "text";
-                ingredientName.name = "ingredientName" + (i+1);
-                ingredientName.id = "ingredientName" + (i+1);
-                ingredientName.placeholder = "Nom de l'ingrédient " + (i+1) ;
-                ingredientName.required = true;
-                ingredientName.classList.add("form-control");
-                ingredientName.classList.add("col");
+        const newIngredientInput = document.createElement("input");
+        newIngredientInput.type = "text";
+        newIngredientInput.name = "recipeIngredient" + currentNbrOfIngredients;
+        newIngredientInput.id = "recipeIngredient" + currentNbrOfIngredients;
+        newIngredientInput.placeholder = "Nom de l'ingrédient";
+        newIngredientInput.required = true;
+        newIngredientInput.classList.add("form-control");
+        newIngredientInput.classList.add("mb-3");
 
-                const ingredientQuantity = document.createElement("input");
-                ingredientQuantity.type = "number";
-                ingredientQuantity.name = "ingredientQuantity" + (i+1);
-                ingredientQuantity.id = "ingredientQuantity" + (i+1);
-                ingredientQuantity.placeholder = "Quantité de l'ingrédient " + (i+1) ;
-                ingredientQuantity.required = true;
-                ingredientQuantity.classList.add("form-control");
-                ingredientQuantity.classList.add("col");
+        const newIngredientQuantityInput = document.createElement("input");
+        newIngredientQuantityInput.type = "number";
+        newIngredientQuantityInput.name = "recipeIngredientQuantity" + currentNbrOfIngredients;
+        newIngredientQuantityInput.id = "recipeIngredientQuantity" + currentNbrOfIngredients;
+        newIngredientQuantityInput.placeholder = "Quantité";
+        newIngredientQuantityInput.required = true;
+        newIngredientQuantityInput.classList.add("form-control");
 
-                const ingredientUnit = document.createElement("select");
-                ingredientUnit.name = "ingredientUnit" + (i+1);
-                ingredientUnit.id = "ingredientUnit" + (i+1);
-                ingredientUnit.required = true;
-                ingredientUnit.classList.add("form-control");
-                ingredientUnit.classList.add("col");
-                ingredientUnit.options.add( new Option("g", "g"));
-                ingredientUnit.options.add( new Option("kg", "kg"));
-                ingredientUnit.options.add( new Option("ml", "ml"));
-                ingredientUnit.options.add( new Option("cl", "cl"));
-                ingredientUnit.options.add( new Option("l", "l"));
-                ingredientUnit.options.add( new Option("cuillère à café", "cuillère à café"));
-                ingredientUnit.options.add( new Option("cuillère à soupe", "cuillère à soupe"));
-                ingredientUnit.options.add( new Option("verre", "verre"));
-                ingredientUnit.options.add( new Option("pincée", "pincée"));
-                
+        const newIngredientUnitSelect = document.createElement("select");
+        newIngredientUnitSelect.name = "recipeIngredientUnit" + currentNbrOfIngredients;
+        newIngredientUnitSelect.id = "recipeIngredientUnit" + currentNbrOfIngredients;
+        newIngredientUnitSelect.required = true;
+        newIngredientUnitSelect.classList.add("form-control");
+        newIngredientUnitSelect.options.add(new Option("g", "g"));
+        newIngredientUnitSelect.options.add(new Option("kg", "kg"));
+        newIngredientUnitSelect.options.add(new Option("ml", "ml"));
+        newIngredientUnitSelect.options.add(new Option("cl", "cl"));
+        newIngredientUnitSelect.options.add(new Option("l", "l"));
+        newIngredientUnitSelect.options.add(new Option("cuillère à café", "cuillère à café"));
+        newIngredientUnitSelect.options.add(new Option("cuillère à soupe", "cuillère à soupe"));
+        newIngredientUnitSelect.options.add(new Option("verre", "verre"));
+        newIngredientUnitSelect.options.add(new Option("pincée", "pincée"));
+        
+        
+        newIngredientRow.appendChild(newIngredientDiv1);
+        newIngredientRow.appendChild(newIngredientDiv2);
+        newIngredientRow.appendChild(newIngredientDiv3);
+        newIngredientRow.appendChild(removeIngredientBtn);
 
-                ingredientMainField.appendChild(ingredientRow);         
-                ingredientRow.appendChild(alignementRow1);
-                ingredientRow.appendChild(alignementRow2);
-                ingredientRow.appendChild(alignementRow3);
-                alignementRow2.appendChild(ingredientName);
-                alignementRow2.appendChild(ingredientQuantity);
-                alignementRow2.appendChild(ingredientUnit);
-            }
-}
+        newIngredientDiv1.appendChild(newIngredientInput);
+        newIngredientDiv2.appendChild(newIngredientQuantityInput);
+        newIngredientDiv3.appendChild(newIngredientUnitSelect);
+
+
+    }
+
+    function removeIngredient(x) {
+        document.getElementById("ingredientDiv1" + x).remove();
+        document.getElementById("ingredientDiv2" + x).remove();
+        document.getElementById("ingredientDiv3" + x).remove();
+        document.getElementById("removeIngredient" + x).remove();
+
+        document.getElementById("nbOfIngredrients").value = parseInt(document.getElementById("nbOfIngredrients").value) -1;
+
+        if (x > 2) {
+            const newIngredientRow = document.getElementById("recipeIngredientsAddedRow");
+            const lastIngredient = x - 1;
+            const removeIngredientBtn = document.createElement("button");
+            removeIngredientBtn.classList.add("col-2");
+            removeIngredientBtn.classList.add("btn");
+            removeIngredientBtn.classList.add("btn-danger");
+            removeIngredientBtn.classList.add("mb-3");
+            removeIngredientBtn.innerHTML = "Supprimer";
+            removeIngredientBtn.setAttribute("onclick", "removeIngredient("+lastIngredient+")");
+            removeIngredientBtn.setAttribute("id", "removeIngredient" + lastIngredient);
+            newIngredientRow.appendChild(removeIngredientBtn);
+        }
+    }
+        
+    
 </script>

@@ -51,10 +51,11 @@ if(isset($_POST['title']) && isset($_FILES['recipeImage']) && isset($_POST['reci
 
         $date = date('Y-m-d H:i:s');
 
-        $addRecipe = $db->prepare("INSERT INTO RECIPE (recipeName, description, recipeImage, idUser, creationDate) VALUES (:recipeName, :description, :recipeImage, :creator, :creationDate)");
+        $addRecipe = $db->prepare("INSERT INTO RECIPE (recipeName, description,nbIngredients, recipeImage, idUser, creationDate) VALUES (:recipeName, :description,:nbIngredients, :recipeImage, :creator, :creationDate)");
         $addRecipe->execute([
             'recipeName' => $recipeTitle,
             'description' => $recipeDescription,
+            'nbIngredients' => $recipeIngredients,
             'recipeImage' => $recipeImage,
             'creator' => $creator,
             'creationDate' => $date
