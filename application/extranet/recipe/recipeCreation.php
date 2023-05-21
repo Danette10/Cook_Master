@@ -74,9 +74,9 @@ global $db;
                     <div class="mb-3" id="recipeIngredientsList"></div>
                     <div class="mb-3">
                         <div class="row">
-                            <div class="col-12">
+                            <div class="col-10">
                                 <label for="recipeStep1" class="form-label">Etape 1</label>
-                                <textarea class="form-control mb-3" id="recipeStep1" name="recipeStep1" rows="3" placeholder="Etape 1" required></textarea>
+                                <textarea class="form-control mb-3" id="recipeStep1" name="recipeStep1" rows="3" placeholder="Description de l'étape 1..." required></textarea>
                             </div>
                         </div>
                         <div class="row" id="recipeStepsAddedRow"></div>

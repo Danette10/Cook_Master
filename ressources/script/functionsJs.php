@@ -297,32 +297,60 @@
     }
 
     function addStep() {
-        var currenNbOfSteps = parseInt(document.getElementById("nbOfSteps").value);
-        
-        currenNbOfSteps = parseInt(currenNbOfSteps + 1);
-        console.log(currenNbOfSteps);
+        var currenNbOfSteps = parseInt(document.getElementById("nbOfSteps").value)+1;
+        const lastStep = currenNbOfSteps -1;
+        if (lastStep > 1) {
+            document.getElementById("removeStep"+lastStep).remove();
+        }
         document.getElementById("nbOfSteps").value = currenNbOfSteps;
-        console.log(currenNbOfSteps);
+
         const newStepRow = document.getElementById("recipeStepsAddedRow");
 
-        const newStepDiv = document.createElement("div");
-        newStepDiv.classList.add("col-12");
+        const newStepDiv0 = document.createElement("div");
+        newStepDiv0.classList.add("col-12");
+        newStepDiv0.setAttribute("id", "recipeStepDiv0" + currenNbOfSteps);
+
+        const newStepDiv1 = document.createElement("div");
+        newStepDiv1.classList.add("col-10");
+        newStepDiv1.classList.add("mb-3");
+        newStepDiv1.id = "recipeStepDiv1" + currenNbOfSteps;
+
+        const newStepDiv2 = document.createElement("div");
+        newStepDiv2.classList.add("col-2");
+        newStepDiv2.classList.add("mb-3");
+        newStepDiv2.id = "recipeStepDiv2" + currenNbOfSteps;
+
+
+        const stepRemoveBtn = document.createElement("button");
+        stepRemoveBtn.classList.add("btn");
+        stepRemoveBtn.classList.add("btn-danger");
+        stepRemoveBtn.classList.add("mb-3");
+        stepRemoveBtn.classList.add("mt-4");
+        stepRemoveBtn.setAttribute("type", "button");
+        stepRemoveBtn.setAttribute("onclick", "removeStep(" + currenNbOfSteps + ")");
+        stepRemoveBtn.innerHTML = "Supprimer";
+        stepRemoveBtn.id = "removeStep" + currenNbOfSteps;
+        
         const newStepTextLabel = document.createElement("label");
         newStepTextLabel.setAttribute("for", "recipeStep" + currenNbOfSteps);
         newStepTextLabel.classList.add("form-label");
         newStepTextLabel.innerHTML = "Etape " + currenNbOfSteps;
+        newStepTextLabel.id = "recipeStepLabel" + currenNbOfSteps;
 
         const newStepTextarea = document.createElement("textarea");
         newStepTextarea.rows = "3";
         newStepTextarea.placeholder = "Etape " + currenNbOfSteps;
         newStepTextarea.classList.add("form-control");
-        newStepTextarea.classList.add("mb-3");
         newStepTextarea.setAttribute("name", "recipeStep" + currenNbOfSteps);
         newStepTextarea.setAttribute("id", "recipeStep" + currenNbOfSteps);
+        newStepTextarea.setAttribute("placeholder", "Description de l'étape " + currenNbOfSteps + "...");
 
-        newStepRow.appendChild(newStepDiv);
-        newStepDiv.appendChild(newStepTextLabel);
-        newStepDiv.appendChild(newStepTextarea);
+        newStepRow.appendChild(newStepDiv0);
+        newStepRow.appendChild(newStepDiv1);
+        newStepRow.appendChild(newStepDiv2);
+        newStepDiv0.appendChild(newStepTextLabel);
+        newStepDiv1.appendChild(newStepTextarea);
+        newStepDiv2.appendChild(stepRemoveBtn);
 
             
 
@@ -424,6 +452,32 @@
             removeIngredientBtn.setAttribute("onclick", "removeIngredient("+lastIngredient+")");
             removeIngredientBtn.setAttribute("id", "removeIngredient" + lastIngredient);
             newIngredientRow.appendChild(removeIngredientBtn);
+        }
+    }
+
+    function removeStep(x) {
+        document.getElementById("recipeStepDiv0" + x).remove();
+        document.getElementById("recipeStepDiv1" + x).remove();
+        document.getElementById("recipeStepDiv2" + x).remove();
+        document.getElementById("removeStep" + x).remove();
+
+        document.getElementById("nbOfSteps").value = parseInt(document.getElementById("nbOfSteps").value) -1;
+
+        if (x > 2) {
+            const lastStep = x - 1;
+            console.log(lastStep);
+            const newStepDiv2 = document.getElementById("recipeStepDiv2" + lastStep);
+            const removeStepBtn = document.createElement("button");
+            removeStepBtn.classList.add("col-2");
+            removeStepBtn.classList.add("btn");
+            removeStepBtn.classList.add("btn-danger");
+            removeStepBtn.classList.add("mb-3");
+            removeStepBtn.innerHTML = "Supprimer";
+            removeStepBtn.setAttribute("onclick", "removeStep("+lastStep+")");
+            removeStepBtn.setAttribute("id", "removeStep" + lastStep);
+            
+            newStepDiv2.appendChild(removeStepBtn);
+        
         }
     }
         
