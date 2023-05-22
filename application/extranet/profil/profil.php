@@ -35,15 +35,23 @@ $creation = date('d/m/Y', strtotime($infos['creation']));
 $birthdate = date('d/m/Y', strtotime($infos['birthdate']));
 $profilePicture = ADDRESS_IMG_PROFIL . $infos['profilePicture'];
 
-$selectSubscription = $db->prepare('SELECT subscriptionStatus FROM stripe_consumer WHERE idUser = :idUser');
-$selectSubscription->execute(array(
+$selectCountSub = $db->prepare('SELECT COUNT(*) AS countSub FROM stripe_consumer WHERE idUser = :idUser');
+$selectCountSub->execute(array(
     'idUser' => $userId
 ));
 
-$subscription = $selectSubscription->fetch();
+$countSub = $selectCountSub->fetch();
 
-if($selectSubscription->rowCount() > 0){
+if($countSub['countSub'] > 0){
+    $selectSubscription = $db->prepare('SELECT subscriptionStatus FROM stripe_consumer WHERE idUser = :idUser');
+    $selectSubscription->execute(array(
+        'idUser' => $userId
+    ));
+
+    $subscription = $selectSubscription->fetch();
+
     $subscribed = $subscription['subscriptionStatus'];
+
 }else{
     $subscribed = '';
 }

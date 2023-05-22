@@ -5,9 +5,6 @@
 $title = "Cookorama - Pricing";
 include 'ressources/script/head.php';
 require_once PATH_SCRIPT . 'header.php';
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 global $db;
 
 $name = [];
@@ -23,20 +20,31 @@ $linkStarter = '';
 if(isset($_SESSION['id'])){
 
     // Récupérer l'abonnement actuel
-    $selectSubscription = $db->prepare('SELECT idConsumer, subscriptionId FROM stripe_consumer WHERE idUser = :idUser AND subscriptionStatus = ' . "'active'");
-    $selectSubscription->execute(array(
-        'idUser' => $_SESSION['id'],
+    $selectCountSub = $db->prepare('SELECT COUNT(*) AS countSub FROM stripe_consumer WHERE idUser = :idUser');
+    $selectCountSub->execute(array(
+        'idUser' => $_SESSION['id']
     ));
 
-    $subscription = $selectSubscription->fetch();
+    $countSub = $selectCountSub->fetch();
 
-    if ($subscription) {
-        $subscription = \Stripe\Subscription::retrieve($subscription['subscriptionId']);
-        $subscriptionPlan = $subscription->items->data[0]->price->id;
-        $plan = \Stripe\Plan::retrieve($subscriptionPlan);
-        $product = \Stripe\Product::retrieve($plan->product);
-        $nameSubscription = $product->name;
-    }else {
+    if($countSub['countSub'] > 0){
+        $selectSubscription = $db->prepare('SELECT idConsumer, subscriptionId FROM stripe_consumer WHERE idUser = :idUser AND subscriptionStatus = ' . "'active'");
+        $selectSubscription->execute(array(
+            'idUser' => $_SESSION['id'],
+        ));
+
+        $subscription = $selectSubscription->fetch();
+
+        if ($subscription) {
+            $subscription = \Stripe\Subscription::retrieve($subscription['subscriptionId']);
+            $subscriptionPlan = $subscription->items->data[0]->price->id;
+            $plan = \Stripe\Plan::retrieve($subscriptionPlan);
+            $product = \Stripe\Product::retrieve($plan->product);
+            $nameSubscription = $product->name;
+        }else {
+            $nameSubscription = 'Free';
+        }
+    }else{
         $nameSubscription = 'Free';
     }
 
