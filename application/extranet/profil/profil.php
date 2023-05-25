@@ -13,11 +13,8 @@ if (!isset($_SESSION['id'])) {
     exit();
 }
 
-if(isset($idUser)){
-    $userId = $idUser;
-}else{
-    $userId = $_SESSION['id'];
-}
+
+$userId = $_SESSION['id'];
 
 $selectInfo = $db->prepare('SELECT * FROM users WHERE users.idUser = :idUser');
 $selectInfo->execute(array(
@@ -48,12 +45,14 @@ if($countSub['countSub'] > 0){
         'idUser' => $userId
     ));
 
-    $subscription = $selectSubscription->fetch();
+    $subscription = $selectSubscription->fetchAll(PDO::FETCH_ASSOC);
 
-    $subscribed = $subscription['subscriptionStatus'];
+    foreach($subscription as $sub){
+        $subscribed = $sub;
+    }
 
 }else{
-    $subscribed = '';
+    $subscribed = null;
 }
 
 ?>
@@ -98,7 +97,7 @@ if($countSub['countSub'] > 0){
                         <p><strong>Compte préstataire : </strong>Validé</p>
                     <?php } ?>
                     <?php
-                    if($subscribed == 'active'){
+                    if($subscribed['subscriptionStatus'] == 'active'){
                     ?>
                         <button class="manageSubLink btn">
                             <a href="<?= ADDRESS_SITE ?>profil/manage/subscription" class="nav-link">Gérer votre abonnement</a>

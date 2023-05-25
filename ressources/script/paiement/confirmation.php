@@ -10,7 +10,7 @@ require_once PATH_SCRIPT . 'header.php';
 global $db;
 
 \Stripe\Stripe::setApiKey($_ENV['API_PRIVATE_KEY']);
-$selectSubscription = $db->prepare("SELECT idInvoice FROM orders, stripe_consumer WHERE orders.idUser = :idUser AND orders.idUser = stripe_consumer.idUser");
+$selectSubscription = $db->prepare("SELECT idInvoice FROM orders, stripe_consumer WHERE orders.idUser = :idUser AND subscriptionStatus = 'active' ORDER BY idCart DESC LIMIT 1");
 $selectSubscription->execute(array(
     'idUser' => $_SESSION['id']
 ));
@@ -91,10 +91,11 @@ if($confirm == '0'){
 
     $pdfSuite = generateInvoice($invoiceData);
 
-    $updateInvoice = $db->prepare('UPDATE orders SET pathInvoice = :pathInvoice WHERE idUser = :idUser');
+    $updateInvoice = $db->prepare('UPDATE orders SET pathInvoice = :pathInvoice WHERE idUser = :idUser AND idInvoice = :idInvoice');
     $updateInvoice->execute([
         'pathInvoice' => $pdfSuite,
-        'idUser' => $_SESSION['id']
+        'idUser' => $_SESSION['id'],
+        'idInvoice' => $invoiceId
     ]);
 
     // Stocker le chemin de la facture dans les métadonnées de la facture

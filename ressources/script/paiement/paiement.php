@@ -99,6 +99,14 @@ if ($existingCard === null) {
     );
 }
 
+// Annuler tout les abonnements existants sur stripe
+$subscriptions = \Stripe\Subscription::all([
+    'customer' => $customer->id,
+]);
+
+foreach ($subscriptions->data as $subscription) {
+    $subscription->cancel();
+}
 
 
 // Créer l'abonnement associé au produit
@@ -172,6 +180,12 @@ $createOrder->execute([
     'idCart' => $cartId,
     'idInvoice' => $invoiceId,
     'pathInvoice' => ''
+]);
+
+$cancelSubscription = $db->prepare("UPDATE stripe_consumer SET subscriptionStatus = :subscriptionStatus WHERE idUser = :idUser");
+$cancelSubscription->execute([
+    'subscriptionStatus' => 'canceled',
+    'idUser' => $_SESSION['id']
 ]);
 
 $insertStripeCustomer = $db->prepare("INSERT INTO stripe_consumer (idConsumer, creation, idUser, subscriptionId, subscriptionStatus) VALUES (:idConsumer, :creation, :idUser, :subscriptionId, :subscriptionStatus)");
