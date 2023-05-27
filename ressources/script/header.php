@@ -52,10 +52,10 @@
                     <?php } ?>
 
                     <?php
-                    if(isset($_SESSION['role']) && $_SESSION['role'] == 2 || $_SESSION['role'] == 3 || $_SESSION['role'] == 4){?>
+                    if(isset($_SESSION['role']) && ($_SESSION['role'] == 2 || $_SESSION['role'] == 3 || $_SESSION['role'] == 4)){?>
                     <li>
 
-                        <a href="<?= ADDRESS_SITE ?>extranet/messages" class="nav-link">Messages</a>
+                        <a href="<?= ADDRESS_SITE ?>chat" class="nav-link">Messages</a>
 
                     </li>
                     <?php } ?>
