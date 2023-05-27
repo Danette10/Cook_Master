@@ -154,12 +154,12 @@ function uploadFileInscription($file, $type) {
  * TODO: Function to upload recipe picture
  */
 
-function uploadRecipePicture($file) {
+function uploadPicture($dir,$file) {
 
     // Create folder with year if not exist
     $year = date('Y');
     $month = date('m');
-    $path = PATH_IMG . 'recipeImage/' . $year . '/' . $month . '/';
+    $path = PATH_IMG . $dir . '/' . $year . '/' . $month . '/';
 
     // Check if the folder exists, if not, create it
     if (!file_exists($path)) {

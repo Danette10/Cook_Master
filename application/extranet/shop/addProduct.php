@@ -18,6 +18,8 @@ require_once PATH_SCRIPT . 'header.php';
 
         <main>
 
+            <?php include PATH_SCRIPT . 'messages.php'; ?>
+
             <div class="text-center mt-4">
                 <h1>Ajouter un produit</h1>
             </div>
@@ -32,14 +34,6 @@ require_once PATH_SCRIPT . 'header.php';
                         <label for="price" style="font-weight: bold;">Prix du produit <span style="color: red;">*</span></label>
                         <input type="number" class="form-control shadow" placeholder="Prix du produit" name="price" required>
                         <small class="form-text text-danger">Le prix doit être en euros</small>
-                    </div>
-                    <div class="col-6 mt-3">
-                        <label for="recurring" style="font-weight: bold;">Fréquence de paiement <span style="color: red;">*</span></label>
-                        <select class="form-control shadow" name="recurring" required>
-                            <option value="0">Unique</option>
-                            <option value="1">Mensuel</option>
-                            <option value="2">Annuel</option>
-                        </select>
                     </div>
                     <div class="col-6 mt-3">
                         <label for="quantity" style="font-weight: bold;">Quantité du produit <span style="color: red;">*</span></label>
