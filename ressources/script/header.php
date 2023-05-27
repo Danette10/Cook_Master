@@ -50,6 +50,15 @@
 
                     </li>
                     <?php } ?>
+
+                    <?php
+                    if(isset($_SESSION['role']) && $_SESSION['role'] == 2 || $_SESSION['role'] == 3 || $_SESSION['role'] == 4){?>
+                    <li>
+
+                        <a href="<?= ADDRESS_SITE ?>extranet/messages" class="nav-link">Messages</a>
+
+                    </li>
+                    <?php } ?>
                 </ul>
 
                 <div class="connexionInscriptionLinks">
