@@ -97,6 +97,21 @@ $routeur->get('/leçons', function (){
     require PATH_APPLICATION_EXTRANET . 'lesson/lesson.php';
 });
 
+// Routes -> Boutique
+$routeur->get('/boutique', function (){
+    require PATH_APPLICATION_EXTRANET . 'shop/shop.php';
+});
+$routeur->get('/boutique/ajout-produit', function (){
+    require PATH_APPLICATION_EXTRANET . 'shop/addProduct.php';
+});
+$routeur->post('/boutique/ajout-produit/check', function (){
+    require PATH_FORM . 'shop/addProductForm.php';
+});
+$routeur->get('/boutique/produit/:id', function ($id){
+    $idProduct = htmlspecialchars($id);
+    require PATH_APPLICATION_EXTRANET . 'shop/product.php';
+});
+
 // Routes -> Dashboard Admin
 $routeur->get('/admin/dashboard', function (){
     require PATH_APPLICATION_EXTRANET . 'admin/dashboard.php';

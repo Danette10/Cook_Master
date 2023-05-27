@@ -16,9 +16,16 @@ define('STARTER_MONTHLY', 'prod_NeXPCayzYQqXgS');
 /*
  *TODO: PATH
  */
+/*
+ * TODO: Link Local
+ */
+define('PATH_SITE', $_SERVER['DOCUMENT_ROOT'] . '/Cook_Master/');
 
-//define('PATH_SITE', $_SERVER['DOCUMENT_ROOT'] . '/Cook_Master/');
-define('PATH_SITE', $_SERVER['DOCUMENT_ROOT'] . '/');
+/*
+ * TODO: Link Prod
+ */
+//define('PATH_SITE', $_SERVER['DOCUMENT_ROOT'] . '/');
+
 define('PATH_LOG', PATH_SITE . 'log/');
 define('PATH_RESSOURCES', PATH_SITE . 'ressources/');
 define('PATH_CSS', PATH_RESSOURCES . 'css/');
@@ -50,8 +57,15 @@ $dotenv->load();
  * TODO ADDRESS
  */
 
-//define('ADDRESS_SITE', 'http://' . $_SERVER['HTTP_HOST'] . '/Cook_Master/');
-define('ADDRESS_SITE', 'https://' . $_SERVER['HTTP_HOST'] . '/');
+/*
+ * TODO: Link Local
+ */
+define('ADDRESS_SITE', 'http://' . $_SERVER['HTTP_HOST'] . '/Cook_Master/');
+
+/*
+ * TODO: Link Prod
+ */
+//define('ADDRESS_SITE', 'https://' . $_SERVER['HTTP_HOST'] . '/');
 define('ADDRESS_RESSOURCES', ADDRESS_SITE . 'ressources/');
 define('ADDRESS_CSS', ADDRESS_RESSOURCES . 'css/');
 define('ADDRESS_JS', ADDRESS_RESSOURCES . 'js/');

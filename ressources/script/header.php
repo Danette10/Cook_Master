@@ -36,11 +36,26 @@
 
                     </li>
 
+                    <li>
+
+                        <a href="<?= ADDRESS_SITE ?>boutique" class="nav-link">Boutique</a>
+
+                    </li>
+
                     <?php
                     if(isset($_SESSION['role']) && $_SESSION['role'] == 5){?>
                     <li>
 
                         <a href="<?= ADDRESS_SITE ?>admin/dashboard" class="nav-link">Dashboard</a>
+
+                    </li>
+                    <?php } ?>
+
+                    <?php
+                    if(isset($_SESSION['role']) && $_SESSION['role'] == 2 || $_SESSION['role'] == 3 || $_SESSION['role'] == 4){?>
+                    <li>
+
+                        <a href="<?= ADDRESS_SITE ?>extranet/messages" class="nav-link">Messages</a>
 
                     </li>
                     <?php } ?>

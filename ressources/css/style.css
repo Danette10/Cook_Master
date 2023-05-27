@@ -231,13 +231,28 @@ form input[type="submit"]:hover{
     border: 1px solid #FF9B90;
 }
 
+/* PRODUCT PAGE */
+
+.productLink{
+    color: black !important;
+}
+
+.product{
+    transition: .3s;
+}
+
+.product:hover{
+    transform: translateY(-5px) !important;
+    transition: .3s;
+}
+
 /* PROFIL PAGE */
 
 .allInfoProfil{
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 80px;
+    padding: 30px;
 }
 
 .allInfoProfil .imageProfil img{

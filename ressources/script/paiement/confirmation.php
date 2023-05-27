@@ -10,15 +10,15 @@ require_once PATH_SCRIPT . 'header.php';
 global $db;
 
 \Stripe\Stripe::setApiKey($_ENV['API_PRIVATE_KEY']);
-$selectSubscription = $db->prepare("SELECT idInvoice, idProduct FROM orders, cart_item, stripe_consumer WHERE orders.idUser = :idUser AND orders.idCart = cart_item.idCart AND orders.idUser = stripe_consumer.idUser AND stripe_consumer.subscriptionStatus = 'active'");
+$selectSubscription = $db->prepare("SELECT idInvoice FROM orders, stripe_consumer WHERE orders.idUser = :idUser AND subscriptionStatus = 'active' ORDER BY idCart DESC LIMIT 1");
 $selectSubscription->execute(array(
     'idUser' => $_SESSION['id']
 ));
 $subscription = $selectSubscription->fetch();
-$priceId = \Stripe\Product::retrieve($subscription['idProduct'])->default_price;
 $invoiceId = $subscription['idInvoice'];
 
 $invoice = \Stripe\Invoice::retrieve($invoiceId);
+$priceId = $invoice->lines->data[0]->price->id;
 $client = \Stripe\Customer::retrieve($invoice->customer);
 $subscription = \Stripe\Subscription::retrieve($invoice->subscription);
 $product = \Stripe\Product::retrieve($subscription->items->data[0]->price->product);
@@ -91,10 +91,11 @@ if($confirm == '0'){
 
     $pdfSuite = generateInvoice($invoiceData);
 
-    $updateInvoice = $db->prepare('UPDATE orders SET pathInvoice = :pathInvoice WHERE idUser = :idUser');
+    $updateInvoice = $db->prepare('UPDATE orders SET pathInvoice = :pathInvoice WHERE idUser = :idUser AND idInvoice = :idInvoice');
     $updateInvoice->execute([
         'pathInvoice' => $pdfSuite,
-        'idUser' => $_SESSION['id']
+        'idUser' => $_SESSION['id'],
+        'idInvoice' => $invoiceId
     ]);
 
     // Stocker le chemin de la facture dans les métadonnées de la facture

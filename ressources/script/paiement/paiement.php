@@ -99,6 +99,14 @@ if ($existingCard === null) {
     );
 }
 
+// Annuler tout les abonnements existants sur stripe
+$subscriptions = \Stripe\Subscription::all([
+    'customer' => $customer->id,
+]);
+
+foreach ($subscriptions->data as $subscription) {
+    $subscription->cancel();
+}
 
 
 // Créer l'abonnement associé au produit
@@ -124,75 +132,70 @@ $subscriptionPlan = $subscription->items->data[0]->price->id;
 $subscriptionStart = date('Y-m-d H:i:s', $subscription->current_period_start);
 $subscriptionEnd = date('Y-m-d H:i:s', $subscription->current_period_end);
 
-// Si il a déjà un abonnement actif, on le désactive
-$selectSubscription = $db->prepare("SELECT idConsumer, subscriptionId, subscriptionStatus FROM stripe_consumer WHERE idUser = :userId");
-$selectSubscription->execute([
-    'userId' => $userId
+
+// Si il existe un cart associé à l'utilisateur alors on le supprime pour le remplacer par le nouveau
+$checkCart = $db->prepare("SELECT * FROM cart WHERE idUser = :idUser");
+$checkCart->execute([
+    'idUser' => $_SESSION['id']
 ]);
-$existingSubscription = $selectSubscription->fetch();
 
-if($existingSubscription['subscriptionStatus'] == 'active') {
-    $updateSubscription = $db->prepare("UPDATE stripe_consumer SET subscriptionStatus = 'canceled' WHERE idUser = :idUser");
-    $updateSubscription->execute([
-        'idUser' => $userId
+if($checkCart->rowCount() > 0) {
+
+    $deleteCart = $db->prepare("DELETE FROM cart WHERE idUser = :idUser");
+    $deleteCart->execute([
+        'idUser' => $_SESSION['id']
     ]);
 
-    $subscriptionLast = \Stripe\Subscription::retrieve($existingSubscription['subscriptionId']);
-    try {
-        $subscriptionLast->cancel();
-    } catch (\Stripe\Exception\ApiErrorException $e) {
-        // The subscription has already been canceled.
-
-    }
 }
 
-// Si il a déjà eu le même abonnement, on update la ligne
-$selectSubscription = $db->prepare("SELECT * FROM stripe_consumer WHERE idUser = :idUser AND subscriptionId = :subscriptionId");
-$existingSubscription = $selectSubscription->fetch();
-if($existingSubscription) {
+// On crée le cart
+$createCart = $db->prepare("INSERT INTO cart (idUser) VALUES (:idUser)");
+$createCart->execute([
+    'idUser' => $_SESSION['id']
+]);
 
-    $updateSubscription = $db->prepare("UPDATE stripe_consumer SET subscriptionStatus = :subscriptionStatus WHERE idUser = :idUser AND subscriptionId = :subscriptionId");
-    $updateSubscription->execute([
-        'subscriptionStatus' => $subscriptionStatus,
-        'idUser' => $userId,
-        'subscriptionId' => $subscriptionId
-    ]);
+// On récupère l'id du cart
+$cartId = $db->lastInsertId();
 
-}else{
-    // Sinon on insert une nouvelle ligne
-    $insertCart = $db->prepare("INSERT INTO cart (idUser) VALUES (:idUser)");
-    $insertCart->execute([
-        'idUser' => $userId
-    ]);
+$productId = \Stripe\Price::retrieve($priceId)->product;
 
-    $cartId = $db->lastInsertId();
+$selectProduct = $db->prepare("SELECT id FROM products WHERE idProduct = :idProduct");
+$selectProduct->execute([
+    'idProduct' => $productId
+]);
 
-    $idProduct = \Stripe\Price::retrieve($priceId)->product;
+$productId = $selectProduct->fetch(PDO::FETCH_OBJ)->id;
 
-    $insertCartItem = $db->prepare("INSERT INTO cart_item (quantity, idProduct, idCart) VALUES (:quantity, :idProduct, :idCart)");
-    $insertCartItem->execute([
-        'quantity' => 1,
-        'idProduct' => $idProduct,
-        'idCart' => $cartId
-    ]);
+$createCartItem = $db->prepare("INSERT INTO cart_item (quantity, id, idCart) VALUES (:quantity, :idProduct, :idCart)");
+$createCartItem->execute([
+    'quantity' => 1,
+    'idProduct' => $productId,
+    'idCart' => $cartId
+]);
 
-    $insertSubscription = $db->prepare("INSERT INTO stripe_consumer (idConsumer, creation, idUser, subscriptionId, subscriptionStatus) VALUES (:idConsumer, :creation, :idUser, :subscriptionId, :subscriptionStatus)");
-    $insertSubscription->execute([
-        'idConsumer' => $customerID,
-        'creation' => date('Y-m-d H:i:s'),
-        'idUser' => $userId,
-        'subscriptionId' => $subscriptionId,
-        'subscriptionStatus' => 'active'
-    ]);
+// On crée la commande
+$createOrder = $db->prepare("INSERT INTO orders (idUser, idCart, idInvoice, pathInvoice) VALUES (:idUser, :idCart, :idInvoice, :pathInvoice)");
+$createOrder->execute([
+    'idUser' => $_SESSION['id'],
+    'idCart' => $cartId,
+    'idInvoice' => $invoiceId,
+    'pathInvoice' => ''
+]);
 
-    $insertOrder = $db->prepare("INSERT INTO orders (idUser, idCart, idInvoice, pathInvoice) VALUES (:idUser, :idCart, :idInvoice, :pathInvoice)");
-    $insertOrder->execute([
-        'idUser' => $userId,
-        'idCart' => $cartId,
-        'idInvoice' => $invoiceId,
-        'pathInvoice' => ''
-    ]);
-}
+$cancelSubscription = $db->prepare("UPDATE stripe_consumer SET subscriptionStatus = :subscriptionStatus WHERE idUser = :idUser");
+$cancelSubscription->execute([
+    'subscriptionStatus' => 'canceled',
+    'idUser' => $_SESSION['id']
+]);
+
+$insertStripeCustomer = $db->prepare("INSERT INTO stripe_consumer (idConsumer, creation, idUser, subscriptionId, subscriptionStatus) VALUES (:idConsumer, :creation, :idUser, :subscriptionId, :subscriptionStatus)");
+$insertStripeCustomer->execute([
+    'idConsumer' => $customerID,
+    'creation' => date('Y-m-d H:i:s'),
+    'idUser' => $userId,
+    'subscriptionId' => $subscriptionId,
+    'subscriptionStatus' => 'active'
+]);
 
 if($subscription->status == 'active') {
 
