@@ -32,7 +32,7 @@ require_once PATH_SCRIPT . 'header.php';
                     </div>
                     <div class="col-6 mt-3">
                         <label for="price" style="font-weight: bold;">Prix du produit <span style="color: red;">*</span></label>
-                        <input type="number" class="form-control shadow" placeholder="Prix du produit" name="price" required>
+                        <input type="text" class="form-control shadow" placeholder="Prix du produit" name="price" required>
                         <small class="form-text text-danger">Le prix doit être en euros</small>
                     </div>
                     <div class="col-6 mt-3">

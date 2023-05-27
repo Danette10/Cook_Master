@@ -107,6 +107,10 @@ $routeur->get('/boutique/ajout-produit', function (){
 $routeur->post('/boutique/ajout-produit/check', function (){
     require PATH_FORM . 'shop/addProductForm.php';
 });
+$routeur->get('/boutique/produit/:id', function ($id){
+    $idProduct = htmlspecialchars($id);
+    require PATH_APPLICATION_EXTRANET . 'shop/product.php';
+});
 
 // Routes -> Dashboard Admin
 $routeur->get('/admin/dashboard', function (){

@@ -7,7 +7,7 @@ global $db;
 
 $name = htmlspecialchars($_POST['name']);
 $description = htmlspecialchars($_POST['description']);
-$price = htmlspecialchars(intval($_POST['price']));
+$price = htmlspecialchars($_POST['price']);
 $quantity = htmlspecialchars(intval($_POST['quantity']));
 $image = $_FILES['image'];
 
@@ -42,7 +42,7 @@ if(!empty($name) && !empty($description) && !empty($price) && !empty($quantity) 
                         'currency' => 'eur',
                     ]);
 
-                    $addProduct = $db->prepare('INSERT INTO products (idProduct, name, description, image, type, price, creation) VALUES (:idProduct, :name, :description, :image, :type, :price, :creation)');
+                    $addProduct = $db->prepare('INSERT INTO products (idProduct, name, description, image, type, price, quantity, creation) VALUES (:idProduct, :name, :description, :image, :type, :price, :quantity, :creation)');
                     $addProduct->execute([
                         'idProduct' => $product->id,
                         'name' => $name,
@@ -50,6 +50,7 @@ if(!empty($name) && !empty($description) && !empty($price) && !empty($quantity) 
                         'image' => $file,
                         'type' => 2,
                         'price' => $price,
+                        'quantity' => $quantity,
                         'creation' => $date
                     ]);
 

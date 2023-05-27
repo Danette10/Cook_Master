@@ -483,4 +483,20 @@ function getNbrOfPages() {
     return $nbrOfPages;
 }
 
+/**
+ * Function to cut a string and add '...' at the end
+ *
+ * @param string $string
+ * @param int $length
+ *
+ * @return string
+ */
+
+function cutString($string, $length) {
+    if (strlen($string) > $length) {
+        $string = substr($string, 0, $length) . '...';
+    }
+
+    return $string;
+}
 ?>
