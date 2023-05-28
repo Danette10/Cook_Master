@@ -34,7 +34,7 @@ global $db;
                 $selectPresta->execute();
                 $prestaList = $selectPresta->fetchAll(PDO::FETCH_ASSOC);
             ?>
-            <ul>
+            <ul class="flex-column">
                 <?php
                 foreach ($prestaList as $presta){
                     ?>
@@ -70,7 +70,7 @@ global $db;
                 }
                 $idUsers = array_unique($idUsers);
                 ?>
-                <ul>
+                <ul class="flex-column">
                     <?php
                     foreach ($idUsers as $idUser){
                         $nameReceiver = $db->prepare('SELECT firstname, lastname FROM users WHERE idUser = :idUser');
