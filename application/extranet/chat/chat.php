@@ -39,7 +39,14 @@ global $db;
                 foreach ($prestaList as $presta){
                     ?>
                     <li>
-                        <p onclick="openChat(<?= $presta['idUser']; ?>)"><?= $presta['firstname'] . ' ' . $presta['lastname']; ?></p>
+                        <p onclick="openChat(<?= $presta['idUser']; ?>)" class="d-flex flex-column">
+                            <?= $presta['firstname'] . ' ' . $presta['lastname']; ?>
+                            <span class="typing d-none" id="isTyping_<?= $presta['idUser']; ?>">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </span>
+                        </p>
                     </li>
                     <?php
                 }
@@ -73,7 +80,14 @@ global $db;
                         $nameReceiver = $nameReceiver->fetch(PDO::FETCH_ASSOC);
                         ?>
                         <li>
-                            <p onclick="openChat(<?= $idUser; ?>)"><?= $nameReceiver['firstname'] . ' ' . $nameReceiver['lastname']; ?></p>
+                            <p onclick="openChat(<?= $idUser; ?>)" class="d-flex flex-column">
+                                <?= $nameReceiver['firstname'] . ' ' . $nameReceiver['lastname']; ?>
+                                <span class="typing d-none" id="isTyping_<?= $idUser; ?>">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </span>
+                            </p>
                         </li>
                         <?php
                     }
@@ -88,7 +102,7 @@ global $db;
                 <div class="chatContentMessages" id="chatContentMessages">
                 </div>
                 <div class="chatContentMessagesInput d-flex">
-                    <input type="text" name="message" id="message" placeholder="Votre message" class="flex-grow-1">
+                    <input type="text" name="message" id="message" placeholder="Votre message" class="flex-grow-1" onkeyup="isTyping()">
                     <img src="<?= ADDRESS_IMG; ?>send.png" alt="send" id="sendMessage" width="30px" onclick="sendMessage()">
                     <input type="hidden" name="idReceiver" id="idReceiver">
                 </div>
@@ -127,6 +141,11 @@ global $db;
 
         if(data.action === 'sendMessage'){
             openChat(data.idSender);
+        } else if(data.action === 'isTyping') {
+            document.getElementById('isTyping_' + data.idSender).classList.remove('d-none');
+            setTimeout(function () {
+                document.getElementById('isTyping_' + data.idSender).classList.add('d-none');
+            }, 5000);
         }
     };
 

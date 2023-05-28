@@ -404,7 +404,6 @@
         };
 
         if(socket.readyState === WebSocket.OPEN) {
-            // Si le message est vide, on ne l'envoie pas
             if (message === '') {
                 alert('Vous ne pouvez pas envoyer de message vide !');
                 return;
@@ -415,14 +414,12 @@
             console.error("WebSocket is not open. ReadyState is: ", socket.readyState);
         }
 
-        // Append the message to the chat
         let chatContentMessages = document.querySelector('.chatContentMessages');
         chatContentMessages.innerHTML += formatSentMessage(data);
 
         document.getElementById('message').value = '';
     }
 
-    // Function to format a sent message for appending to the chat
     function formatSentMessage(data) {
         return `<div class="messageSender">
                 <p>
@@ -452,6 +449,19 @@
                 $('.chatContentMessages').html(data);
             }
         });
+    }
+
+    function isTyping() {
+        let data = {
+            action: 'isTyping',
+            idSender: <?= $_SESSION['id'] ?? 0; ?>,
+        };
+
+        if(socket.readyState === WebSocket.OPEN) {
+            socket.send(JSON.stringify(data));
+        } else {
+            console.error("WebSocket is not open. ReadyState is: ", socket.readyState);
+        }
     }
 
 

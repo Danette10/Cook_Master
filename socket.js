@@ -17,7 +17,6 @@ db.connect(err => {
         console.error('Error connecting to the database:', err);
         return;
     }
-    // console.log('Connected to the database');
 });
 
 const wss = new WebSocket.Server({ port: 8081 });
@@ -26,32 +25,42 @@ wss.on('listening', function () {
     //console.log('WebSocket Server started');
 });
 
+function saveMessageToDB(message) {
+    db.query(
+        'INSERT INTO message (message, status, idSender, idReceiver, dateSend) VALUES (?, ?, ?, ?, ?)',
+        [message.message, 0, message.idSender, message.idReceiver, message.dateSend],
+        function(err, results) {
+            if (err) {
+                console.error('Error inserting the message into the database:', err);
+                return;
+            }
+            // console.log('Message inserted into the database');
+        }
+    );
+}
+
+function broadcast(data, sender) {
+    wss.clients.forEach(client => {
+        if (client !== sender && client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify(data));
+        }
+    });
+}
+
 wss.on('connection', ws => {
     ws.onmessage = function(event) {
         const message = JSON.parse(event.data);
         if (message.action === 'setUserId') {
             ws.id = message.userId;
             // console.log(`Client '${ws.id}' connected`);
+        } else if (message.action === 'isTyping') {
+            broadcast(message, ws);
         } else if (message.action === 'sendMessage') {
             // Insert the message into the database
-            db.query(
-                'INSERT INTO message (message, status, idSender, idReceiver, dateSend) VALUES (?, ?, ?, ?, ?)',
-                [message.message, 0, message.idSender, message.idReceiver, message.dateSend],
-                function(err, results) {
-                    if (err) {
-                        console.error('Error inserting the message into the database:', err);
-                        return;
-                    }
-                    // console.log('Message inserted into the database');
-                }
-            );
+            saveMessageToDB(message);
 
             // Broadcast the message to other clients
-            wss.clients.forEach(function each(client) {
-                if (client !== ws && client.readyState === WebSocket.OPEN) {
-                    client.send(JSON.stringify(message));
-                }
-            });
+            broadcast(message, ws);
         }
     };
 });
