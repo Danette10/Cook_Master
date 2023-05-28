@@ -1,33 +1,41 @@
+// LOCAL
+
 const WebSocket = require('ws');
 const https = require('https');
 const fs = require('fs');
 require('dotenv').config();
 
-// Function to generate a random 4 digit hexadecimal number
-function generateRandomHex() {
-    return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-}
+const wss = new WebSocket.Server({ port: 8081 });
 
-// Function to generate a unique ID
-function getUniqueID() {
-    return generateRandomHex() + generateRandomHex() + '-' + generateRandomHex();
-}
 
-// Function to handle incoming messages
-function handleIncomingMessages({data}, ws, wss) {
-    wss.clients.forEach(client => {
-        if (client !== ws && client.readyState === WebSocket.OPEN) {
-            client.send(`${data}`);
-        }
-    });
-}
+wss.on('listening', function () {
+    //console.log('WebSocket Server started');
+});
 
-// WebSocket server creation for LOCAL environment
-const wssLocal = new WebSocket.Server({ port: 8081 });
-wssLocal.on('connection', ws => {
-    ws.id = getUniqueID();
-    ws.on('message', (data) => handleIncomingMessages(data, ws, wssLocal));
-    ws.on('close', () => console.log(`Client ${ws.id} has disconnected!`));
+
+wss.getUniqueID = function () {
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+    }
+    return s4() + s4() + '-' + s4();
+};
+
+wss.on("connection", ws => {
+    ws.id = wss.getUniqueID();
+    //console.log(`New client connected with id: ${ws.id}`);
+
+    ws.onmessage = ({data}) => {
+        //console.log(`Client ${ws.id}: ${data}`);
+        wss.clients.forEach(function each(client) {
+            if (client !== ws && client.readyState === WebSocket.OPEN) {
+                client.send(`${data}`);
+            }
+        });
+    };
+
+    ws.onclose = function() {
+        //console.log(`Client ${ws.id} has disconnected!`);
+    };
 });
 
 // WebSocket server creation for PROD environment
@@ -37,9 +45,32 @@ wssLocal.on('connection', ws => {
 };
 
 const server = https.createServer(options);
-const wssProd = new WebSocket.Server({ server });
-wssProd.on('connection', ws => {
-    ws.id = getUniqueID();
-    ws.on('message', (data) => handleIncomingMessages(data, ws, wssProd));
+const wss = new WebSocket.Server({ server });
+
+wss.getUniqueID = function () {
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+    }
+    return s4() + s4() + '-' + s4();
+};
+
+wss.on("connection", ws => {
+    ws.id = wss.getUniqueID();
+
+    ws.onmessage = ({data}) => {
+
+        wss.clients.forEach(function each(client) {
+            if (client !== ws && client.readyState === WebSocket.OPEN) {
+                client.send(`${data}`);
+            }
+        });
+    };
+
+    ws.onclose = function() {
+
+    };
 });
-server.listen(9999, () => console.log('HTTPS Server started'));*/
+
+server.listen(9999, () => {
+
+});*/

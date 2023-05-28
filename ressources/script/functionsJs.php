@@ -327,68 +327,119 @@
         const ingredientMainField = document.getElementById("recipeIngredientsList");
         const nbOfIngredients = ingredientValue.value;
             
-            if (ingredientMainField.hasChildNodes()) {
-                while (ingredientMainField.firstChild) {
-                    ingredientMainField.removeChild(ingredientMainField.firstChild);
-                }
+        if (ingredientMainField.hasChildNodes()) {
+            while (ingredientMainField.firstChild) {
+                ingredientMainField.removeChild(ingredientMainField.firstChild);
             }
+        }
 
-            for(var i = 0; i < nbOfIngredients; i++) {
-                const alignementRow1 = document.createElement("div");
-                alignementRow1.classList.add("col-1");
-                const alignementRow2 = document.createElement("div");
-                alignementRow2.classList.add("col-10");
-                alignementRow2.classList.add("mb-3");
-                alignementRow2.classList.add("row");
-                const alignementRow3 = document.createElement("div");
-                alignementRow3.classList.add("col-1");
-                const ingredientRow = document.createElement("div");
-                ingredientRow.classList.add("row");
-                ingredientRow.classList.add("mb-3");
-                ingredientRow.classList.add("align-items-center");
-                
-                const ingredientName = document.createElement("input");
-                ingredientName.type = "text";
-                ingredientName.name = "ingredientName" + (i+1);
-                ingredientName.id = "ingredientName" + (i+1);
-                ingredientName.placeholder = "Nom de l'ingrédient " + (i+1) ;
-                ingredientName.required = true;
-                ingredientName.classList.add("form-control");
-                ingredientName.classList.add("col");
+        for(var i = 0; i < nbOfIngredients; i++) {
+            const alignementRow1 = document.createElement("div");
+            alignementRow1.classList.add("col-1");
+            const alignementRow2 = document.createElement("div");
+            alignementRow2.classList.add("col-10");
+            alignementRow2.classList.add("mb-3");
+            alignementRow2.classList.add("row");
+            const alignementRow3 = document.createElement("div");
+            alignementRow3.classList.add("col-1");
+            const ingredientRow = document.createElement("div");
+            ingredientRow.classList.add("row");
+            ingredientRow.classList.add("mb-3");
+            ingredientRow.classList.add("align-items-center");
 
-                const ingredientQuantity = document.createElement("input");
-                ingredientQuantity.type = "number";
-                ingredientQuantity.name = "ingredientQuantity" + (i+1);
-                ingredientQuantity.id = "ingredientQuantity" + (i+1);
-                ingredientQuantity.placeholder = "Quantité de l'ingrédient " + (i+1) ;
-                ingredientQuantity.required = true;
-                ingredientQuantity.classList.add("form-control");
-                ingredientQuantity.classList.add("col");
+            const ingredientName = document.createElement("input");
+            ingredientName.type = "text";
+            ingredientName.name = "ingredientName" + (i+1);
+            ingredientName.id = "ingredientName" + (i+1);
+            ingredientName.placeholder = "Nom de l'ingrédient " + (i+1) ;
+            ingredientName.required = true;
+            ingredientName.classList.add("form-control");
+            ingredientName.classList.add("col");
 
-                const ingredientUnit = document.createElement("select");
-                ingredientUnit.name = "ingredientUnit" + (i+1);
-                ingredientUnit.id = "ingredientUnit" + (i+1);
-                ingredientUnit.required = true;
-                ingredientUnit.classList.add("form-control");
-                ingredientUnit.classList.add("col");
-                ingredientUnit.options.add( new Option("g", "g"));
-                ingredientUnit.options.add( new Option("kg", "kg"));
-                ingredientUnit.options.add( new Option("ml", "ml"));
-                ingredientUnit.options.add( new Option("cl", "cl"));
-                ingredientUnit.options.add( new Option("l", "l"));
-                ingredientUnit.options.add( new Option("cuillère à café", "cuillère à café"));
-                ingredientUnit.options.add( new Option("cuillère à soupe", "cuillère à soupe"));
-                ingredientUnit.options.add( new Option("verre", "verre"));
-                ingredientUnit.options.add( new Option("pincée", "pincée"));
-                
+            const ingredientQuantity = document.createElement("input");
+            ingredientQuantity.type = "number";
+            ingredientQuantity.name = "ingredientQuantity" + (i+1);
+            ingredientQuantity.id = "ingredientQuantity" + (i+1);
+            ingredientQuantity.placeholder = "Quantité de l'ingrédient " + (i+1) ;
+            ingredientQuantity.required = true;
+            ingredientQuantity.classList.add("form-control");
+            ingredientQuantity.classList.add("col");
 
-                ingredientMainField.appendChild(ingredientRow);         
-                ingredientRow.appendChild(alignementRow1);
-                ingredientRow.appendChild(alignementRow2);
-                ingredientRow.appendChild(alignementRow3);
-                alignementRow2.appendChild(ingredientName);
-                alignementRow2.appendChild(ingredientQuantity);
-                alignementRow2.appendChild(ingredientUnit);
+            const ingredientUnit = document.createElement("select");
+            ingredientUnit.name = "ingredientUnit" + (i+1);
+            ingredientUnit.id = "ingredientUnit" + (i+1);
+            ingredientUnit.required = true;
+            ingredientUnit.classList.add("form-control");
+            ingredientUnit.classList.add("col");
+            ingredientUnit.options.add( new Option("g", "g"));
+            ingredientUnit.options.add( new Option("kg", "kg"));
+            ingredientUnit.options.add( new Option("ml", "ml"));
+            ingredientUnit.options.add( new Option("cl", "cl"));
+            ingredientUnit.options.add( new Option("l", "l"));
+            ingredientUnit.options.add( new Option("cuillère à café", "cuillère à café"));
+            ingredientUnit.options.add( new Option("cuillère à soupe", "cuillère à soupe"));
+            ingredientUnit.options.add( new Option("verre", "verre"));
+            ingredientUnit.options.add( new Option("pincée", "pincée"));
+
+
+            ingredientMainField.appendChild(ingredientRow);
+            ingredientRow.appendChild(alignementRow1);
+            ingredientRow.appendChild(alignementRow2);
+            ingredientRow.appendChild(alignementRow3);
+            alignementRow2.appendChild(ingredientName);
+            alignementRow2.appendChild(ingredientQuantity);
+            alignementRow2.appendChild(ingredientUnit);
+        }
+    }
+
+    function openChat(idUser){
+        $('#idUser').val(idUser);
+        $('.chat').removeClass('d-none');
+
+        $.ajax({
+            url: '<?= ADDRESS_SCRIPT ?>ajaxChat.php',
+            type: 'POST',
+            data: {
+                idReceiver: idUser,
+                idSender: <?= isset($_SESSION['id']) ? $_SESSION['id'] : 0; ?>,
+                action: 'getMessages'
+            },
+            success: function (data) {
+                $('#idReceiver').val(idUser);
+                $('.chatContentMessages').html(data);
             }
-}
+        });
+    }
+
+    function sendMessage() {
+        let message = document.getElementById('message').value;
+        let idUser = document.getElementById('idReceiver').value;
+        let data = {
+            action: 'sendMessage',
+            message: message,
+            idSender: <?= isset($_SESSION['id']) ? $_SESSION['id'] : 0; ?>,
+            idReceiver: idUser,
+            dateSend: new Date(new Date().getTime() + 2 * 3600 * 1000).toISOString().slice(0, 19).replace('T', ' ')
+        };
+        console.log("Data to send: ", data);
+
+        if(socket.readyState === WebSocket.OPEN) {
+            socket.send(JSON.stringify(data));
+        } else {
+            console.error("WebSocket is not open. ReadyState is: ", socket.readyState);
+        }
+
+        $.ajax({
+            url: '<?= ADDRESS_SCRIPT ?>ajaxChat.php',
+            type: 'POST',
+            data: data,
+            success: function (data) {
+                openChat(idUser);
+            }
+        });
+
+        document.getElementById('message').value = '';
+    }
+
+
 </script>

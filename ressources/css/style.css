@@ -246,6 +246,35 @@ form input[type="submit"]:hover{
     transition: .3s;
 }
 
+/* CHAT PAGE */
+
+.chatContentMessages{
+    max-height: 500px;
+    min-height: 500px;
+    overflow: overlay;
+}
+
+.messageReceiver, .messageSender{
+    padding: 10px;
+    margin: 25px;
+    border-radius: 15px;
+}
+
+.dateSendReceiver, .dateSendSender{
+    font-size: 12px;
+}
+
+.messageSender{
+    background-color: #FF9B90;
+    color: white;
+}
+
+.messageReceiver{
+    text-align: right;
+    background-color: #e7e6e6;
+    color: black;
+}
+
 /* PROFIL PAGE */
 
 .allInfoProfil{
