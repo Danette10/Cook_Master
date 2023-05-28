@@ -85,12 +85,12 @@ global $db;
         </div>
         <div class="chat col-md-6 d-none">
             <div class="chatContent">
-                <div class="chatContentMessages">
+                <div class="chatContentMessages" id="chatContentMessages">
                 </div>
-                <div class="chatContentMessagesInput">
-                    <input type="text" name="message" id="message" placeholder="Votre message" style="width: 100%;">
+                <div class="chatContentMessagesInput d-flex">
+                    <input type="text" name="message" id="message" placeholder="Votre message" class="flex-grow-1">
+                    <img src="<?= ADDRESS_IMG; ?>send.png" alt="send" id="sendMessage" width="30px" onclick="sendMessage()">
                     <input type="hidden" name="idReceiver" id="idReceiver">
-                    <button type="button" onclick="sendMessage()">Envoyer</button>
                 </div>
             </div>
         </div>
@@ -100,15 +100,26 @@ global $db;
 </main>
 
 <script>
-
     // LOCAL
+    const userId = <?= $_SESSION['id']; ?>;
     const socket = new WebSocket('ws://localhost:8081');
 
     // PROD
     //const socket = new WebSocket('wss://cookorama.fr:9999');
 
-    socket.onopen = function (e) {
-        console.log("Connection established!");
+    let messagesQueue = [];
+
+    socket.onopen = function() {
+        const message = {
+            action: 'setUserId',
+            userId: userId
+        };
+        socket.send(JSON.stringify(message));
+
+        while (messagesQueue.length > 0) {
+            let data = messagesQueue.shift();
+            socket.send(JSON.stringify(data));
+        }
     };
 
     socket.onmessage = function (event) {
@@ -128,6 +139,11 @@ global $db;
         console.log("onerror", event);
     };
 
+    document.getElementById('message').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
 
 </script>
 

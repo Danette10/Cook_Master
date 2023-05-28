@@ -1,42 +1,61 @@
-// LOCAL
-
 const WebSocket = require('ws');
 const https = require('https');
 const fs = require('fs');
+const mysql = require('mysql2');
 require('dotenv').config();
 
-const wss = new WebSocket.Server({ port: 8081 });
+// LOCAL
+const db = mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database : process.env.DB_NAME
+});
 
+db.connect(err => {
+    if(err) {
+        console.error('Error connecting to the database:', err);
+        return;
+    }
+    // console.log('Connected to the database');
+});
+
+const wss = new WebSocket.Server({ port: 8081 });
 
 wss.on('listening', function () {
     //console.log('WebSocket Server started');
 });
 
+wss.on('connection', ws => {
+    ws.onmessage = function(event) {
+        const message = JSON.parse(event.data);
+        if (message.action === 'setUserId') {
+            ws.id = message.userId;
+            // console.log(`Client '${ws.id}' connected`);
+        } else if (message.action === 'sendMessage') {
+            // Insert the message into the database
+            db.query(
+                'INSERT INTO message (message, status, idSender, idReceiver, dateSend) VALUES (?, ?, ?, ?, ?)',
+                [message.message, 0, message.idSender, message.idReceiver, message.dateSend],
+                function(err, results) {
+                    if (err) {
+                        console.error('Error inserting the message into the database:', err);
+                        return;
+                    }
+                    // console.log('Message inserted into the database');
+                }
+            );
 
-wss.getUniqueID = function () {
-    function s4() {
-        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-    }
-    return s4() + s4() + '-' + s4();
-};
-
-wss.on("connection", ws => {
-    ws.id = wss.getUniqueID();
-    //console.log(`New client connected with id: ${ws.id}`);
-
-    ws.onmessage = ({data}) => {
-        //console.log(`Client ${ws.id}: ${data}`);
-        wss.clients.forEach(function each(client) {
-            if (client !== ws && client.readyState === WebSocket.OPEN) {
-                client.send(`${data}`);
-            }
-        });
-    };
-
-    ws.onclose = function() {
-        //console.log(`Client ${ws.id} has disconnected!`);
+            // Broadcast the message to other clients
+            wss.clients.forEach(function each(client) {
+                if (client !== ws && client.readyState === WebSocket.OPEN) {
+                    client.send(JSON.stringify(message));
+                }
+            });
+        }
     };
 });
+
 
 // WebSocket server creation for PROD environment
 /*const options = {
@@ -47,15 +66,8 @@ wss.on("connection", ws => {
 const server = https.createServer(options);
 const wss = new WebSocket.Server({ server });
 
-wss.getUniqueID = function () {
-    function s4() {
-        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-    }
-    return s4() + s4() + '-' + s4();
-};
-
 wss.on("connection", ws => {
-    ws.id = wss.getUniqueID();
+
 
     ws.onmessage = ({data}) => {
 

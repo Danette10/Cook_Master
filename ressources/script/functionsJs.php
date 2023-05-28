@@ -392,6 +392,49 @@
         }
     }
 
+    function sendMessage() {
+        let message = document.getElementById('message').value;
+        let idUser = document.getElementById('idReceiver').value;
+        let data = {
+            action: 'sendMessage',
+            message: message,
+            idSender: <?= $_SESSION['id'] ?? 0; ?>,
+            idReceiver: parseInt(idUser),
+            dateSend: new Date(new Date().getTime() + 2 * 3600 * 1000).toISOString().slice(0, 19).replace('T', ' ')
+        };
+
+        if(socket.readyState === WebSocket.OPEN) {
+            // Si le message est vide, on ne l'envoie pas
+            if (message === '') {
+                alert('Vous ne pouvez pas envoyer de message vide !');
+                return;
+            }else{
+                socket.send(JSON.stringify(data));
+            }
+        } else {
+            console.error("WebSocket is not open. ReadyState is: ", socket.readyState);
+        }
+
+        // Append the message to the chat
+        let chatContentMessages = document.querySelector('.chatContentMessages');
+        chatContentMessages.innerHTML += formatSentMessage(data);
+
+        document.getElementById('message').value = '';
+    }
+
+    // Function to format a sent message for appending to the chat
+    function formatSentMessage(data) {
+        return `<div class="messageSender">
+                <p>
+                    <strong>Vous</strong><br>
+                    ${data.message}
+                </p>
+                <p class="dateSendSender">
+                    Le ${new Date(data.dateSend).toLocaleDateString('fr-FR')} à ${new Date(data.dateSend).toLocaleTimeString('fr-FR')}
+                </p>
+            </div>`;
+    }
+
     function openChat(idUser){
         $('#idUser').val(idUser);
         $('.chat').removeClass('d-none');
@@ -401,7 +444,7 @@
             type: 'POST',
             data: {
                 idReceiver: idUser,
-                idSender: <?= isset($_SESSION['id']) ? $_SESSION['id'] : 0; ?>,
+                idSender: <?= $_SESSION['id'] ?? 0; ?>,
                 action: 'getMessages'
             },
             success: function (data) {
@@ -411,35 +454,7 @@
         });
     }
 
-    function sendMessage() {
-        let message = document.getElementById('message').value;
-        let idUser = document.getElementById('idReceiver').value;
-        let data = {
-            action: 'sendMessage',
-            message: message,
-            idSender: <?= isset($_SESSION['id']) ? $_SESSION['id'] : 0; ?>,
-            idReceiver: idUser,
-            dateSend: new Date(new Date().getTime() + 2 * 3600 * 1000).toISOString().slice(0, 19).replace('T', ' ')
-        };
-        console.log("Data to send: ", data);
 
-        if(socket.readyState === WebSocket.OPEN) {
-            socket.send(JSON.stringify(data));
-        } else {
-            console.error("WebSocket is not open. ReadyState is: ", socket.readyState);
-        }
-
-        $.ajax({
-            url: '<?= ADDRESS_SCRIPT ?>ajaxChat.php',
-            type: 'POST',
-            data: data,
-            success: function (data) {
-                openChat(idUser);
-            }
-        });
-
-        document.getElementById('message').value = '';
-    }
 
 
 </script>

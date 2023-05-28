@@ -254,6 +254,36 @@ form input[type="submit"]:hover{
     overflow: overlay;
 }
 
+/*.chatContentMessagesInput{*/
+/*    position: relative;*/
+/*}*/
+
+/*.chatContentMessagesInput img{*/
+/*    position: absolute;*/
+/*    right: 0;*/
+/*    bottom: 0;*/
+/*}*/
+
+.chatContentMessagesInput {
+    align-items: center;
+}
+
+.chatContentMessagesInput img {
+    margin-left: 5px;
+}
+
+.chatContentMessagesInput img:hover {
+    cursor: pointer;
+}
+
+.chatContentMessagesInput #message{
+    width: 100%;
+    padding: 5px;
+    border: 2px solid #FF9B90;
+    border-radius: 15px;
+    margin-top: 10px;
+}
+
 .messageReceiver, .messageSender{
     padding: 10px;
     margin: 25px;
