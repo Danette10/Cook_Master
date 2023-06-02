@@ -246,6 +246,18 @@ form input[type="submit"]:hover{
     transition: .3s;
 }
 
+/* CART PAGE */
+
+#cartElement{
+    position: relative;
+}
+
+#nbElemCartSpan{
+    position: absolute;
+    top: -18px;
+    left: 12px;
+}
+
 /* PROFIL PAGE */
 
 .allInfoProfil{

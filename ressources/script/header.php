@@ -52,7 +52,7 @@
                     <?php } ?>
 
                     <?php
-                    if(isset($_SESSION['role']) && $_SESSION['role'] == 2 || $_SESSION['role'] == 3 || $_SESSION['role'] == 4){?>
+                    if(isset($_SESSION['role']) && ($_SESSION['role'] == 2 || $_SESSION['role'] == 3 || $_SESSION['role'] == 4)){?>
                     <li>
 
                         <a href="<?= ADDRESS_SITE ?>extranet/messages" class="nav-link">Messages</a>
@@ -65,8 +65,25 @@
 
                     <div class="me-3">
 
-                        <img  style="width:24px" src="<?= ADDRESS_IMG ?>moon.png" id="icon">
+                        <img style="width:24px" src="<?= ADDRESS_IMG ?>moon.png" id="icon">
 
+                    </div>
+
+                    <?php
+                    if(!isset($_SESSION['id'])){
+                        $attr = 'data-bs-toggle="tooltip" data-bs-title="Vous devez être connecté pour accéder à votre panier" data-bs-placement="bottom"';
+                        $style = 'style="cursor: not-allowed"';
+                    }else{
+                        $attr = '';
+                        $style = '';
+                    }
+                    ?>
+
+                    <div class="me-3" id="cartElement">
+                        <a href="<?= ADDRESS_SITE ?>panier" class="nav-link" <?= $attr ?> <?= $style ?> id="cartLink">
+                            <img src="<?= ADDRESS_IMG ?>shopping-cart.png" alt="Panier" width="30" height="30" id="cartIcon">
+                        </a>
+                        <span id="nbElemCartSpan"></span>
                     </div>
 
                     <?php
@@ -134,7 +151,6 @@
 
                 </ul>
             </div>
-
             <?php } ?>
 
 
@@ -144,28 +160,39 @@
     <script>
 
        let icon = document.getElementById("icon");
+       let cartIcon = document.getElementById("cartIcon");
 
        icon.onclick = function(){
+
            document.body.classList.toggle("dark-theme");
+
            if(document.body.classList.contains("dark-theme")){
+
                icon.src = '<?= ADDRESS_IMG ?>' + "sun.png";
+               cartIcon.src = '<?= ADDRESS_IMG ?>' + "shopping-cart-white.png";
                sessionStorage.setItem("theme", "dark");
 
            }else{
+
                icon.src = '<?= ADDRESS_IMG ?>' + "moon.png";
+               cartIcon.src = '<?= ADDRESS_IMG ?>' + "shopping-cart.png";
                sessionStorage.setItem("theme", "light");
+
            }
+
        }
 
          if(sessionStorage.getItem("theme") === "dark"){
 
              document.body.classList.add("dark-theme");
              icon.src = '<?= ADDRESS_IMG ?>' + "sun.png";
+             cartIcon.src = '<?= ADDRESS_IMG ?>' + "shopping-cart-white.png";
 
          }else{
 
             document.body.classList.remove("dark-theme");
             icon.src = '<?= ADDRESS_IMG ?>' + "moon.png";
+            cartIcon.src = '<?= ADDRESS_IMG ?>' + "shopping-cart.png";
 
          }
   </script>

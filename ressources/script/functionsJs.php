@@ -15,6 +15,15 @@
             }
 
         });
+
+        let cartLink = $("#cartLink");
+
+        <?php if (!isset($_SESSION['id'])): ?>
+
+        cartLink.removeAttr("href");
+
+        <?php endif; ?>
+
     });
 
     <?php

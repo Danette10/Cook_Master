@@ -112,6 +112,12 @@ $routeur->get('/boutique/produit/:id', function ($id){
     require PATH_APPLICATION_EXTRANET . 'shop/product.php';
 });
 
+// Routes -> Panier
+$routeur->get('/panier', function (){
+    require PATH_APPLICATION_EXTRANET . 'cart/cart.php';
+});
+
+
 // Routes -> Dashboard Admin
 $routeur->get('/admin/dashboard', function (){
     require PATH_APPLICATION_EXTRANET . 'admin/dashboard.php';
