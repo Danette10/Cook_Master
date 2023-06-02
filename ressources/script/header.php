@@ -14,7 +14,7 @@
 
             </li>
 
-            <div class="collapse navbar-collapse ms-3" id="navbarToggler" style="margin-right: 50px;">
+            <div class="collapse navbar-collapse ms-3" id="navbarToggler" style="margin-right: 60px;">
 
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="font-size: 22px; position: relative; top: -3px;">
 
@@ -79,12 +79,12 @@
                     }
                     ?>
 
-                    <div class="me-3" id="cartElement">
-                        <a href="<?= ADDRESS_SITE ?>panier" class="nav-link" <?= $attr ?> <?= $style ?> id="cartLink">
+                    <a href="<?= ADDRESS_SITE ?>panier" class="nav-link" <?= $attr ?> <?= $style ?> id="cartLink">
+                        <div class="me-3" id="cartElement">
                             <img src="<?= ADDRESS_IMG ?>shopping-cart.png" alt="Panier" width="30" height="30" id="cartIcon">
-                        </a>
-                        <span id="nbElemCartSpan"></span>
-                    </div>
+                            <span id="nbElemCartSpan"></span>
+                        </div>
+                    </a>
 
                     <?php
                     if(isset($_SESSION['role']) && $_SESSION['role'] != 5){?>

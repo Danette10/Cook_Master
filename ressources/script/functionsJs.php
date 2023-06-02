@@ -336,68 +336,149 @@
         const ingredientMainField = document.getElementById("recipeIngredientsList");
         const nbOfIngredients = ingredientValue.value;
             
-            if (ingredientMainField.hasChildNodes()) {
-                while (ingredientMainField.firstChild) {
-                    ingredientMainField.removeChild(ingredientMainField.firstChild);
+        if (ingredientMainField.hasChildNodes()) {
+            while (ingredientMainField.firstChild) {
+                ingredientMainField.removeChild(ingredientMainField.firstChild);
+            }
+        }
+
+        for(var i = 0; i < nbOfIngredients; i++) {
+            const alignementRow1 = document.createElement("div");
+            alignementRow1.classList.add("col-1");
+            const alignementRow2 = document.createElement("div");
+            alignementRow2.classList.add("col-10");
+            alignementRow2.classList.add("mb-3");
+            alignementRow2.classList.add("row");
+            const alignementRow3 = document.createElement("div");
+            alignementRow3.classList.add("col-1");
+            const ingredientRow = document.createElement("div");
+            ingredientRow.classList.add("row");
+            ingredientRow.classList.add("mb-3");
+            ingredientRow.classList.add("align-items-center");
+
+            const ingredientName = document.createElement("input");
+            ingredientName.type = "text";
+            ingredientName.name = "ingredientName" + (i+1);
+            ingredientName.id = "ingredientName" + (i+1);
+            ingredientName.placeholder = "Nom de l'ingrédient " + (i+1) ;
+            ingredientName.required = true;
+            ingredientName.classList.add("form-control");
+            ingredientName.classList.add("col");
+
+            const ingredientQuantity = document.createElement("input");
+            ingredientQuantity.type = "number";
+            ingredientQuantity.name = "ingredientQuantity" + (i+1);
+            ingredientQuantity.id = "ingredientQuantity" + (i+1);
+            ingredientQuantity.placeholder = "Quantité de l'ingrédient " + (i+1) ;
+            ingredientQuantity.required = true;
+            ingredientQuantity.classList.add("form-control");
+            ingredientQuantity.classList.add("col");
+
+            const ingredientUnit = document.createElement("select");
+            ingredientUnit.name = "ingredientUnit" + (i+1);
+            ingredientUnit.id = "ingredientUnit" + (i+1);
+            ingredientUnit.required = true;
+            ingredientUnit.classList.add("form-control");
+            ingredientUnit.classList.add("col");
+            ingredientUnit.options.add( new Option("g", "g"));
+            ingredientUnit.options.add( new Option("kg", "kg"));
+            ingredientUnit.options.add( new Option("ml", "ml"));
+            ingredientUnit.options.add( new Option("cl", "cl"));
+            ingredientUnit.options.add( new Option("l", "l"));
+            ingredientUnit.options.add( new Option("cuillère à café", "cuillère à café"));
+            ingredientUnit.options.add( new Option("cuillère à soupe", "cuillère à soupe"));
+            ingredientUnit.options.add( new Option("verre", "verre"));
+            ingredientUnit.options.add( new Option("pincée", "pincée"));
+
+
+            ingredientMainField.appendChild(ingredientRow);
+            ingredientRow.appendChild(alignementRow1);
+            ingredientRow.appendChild(alignementRow2);
+            ingredientRow.appendChild(alignementRow3);
+            alignementRow2.appendChild(ingredientName);
+            alignementRow2.appendChild(ingredientQuantity);
+            alignementRow2.appendChild(ingredientUnit);
+        }
+    }
+
+    /**
+     * TODO: Function to add quantity on cart page
+     * @param productId
+     * @param cartId
+     *
+     * @return void
+     */
+    function addProductQuantity(cartId, productId) {
+
+        $.ajax({
+            url: '<?= ADDRESS_SCRIPT ?>ajaxCart.php',
+            type: 'POST',
+            data: {
+                productId: productId,
+                cartId: cartId,
+                type: 'addProductQuantity'
+            },
+            success: function (data) {
+                if (data !== 'error') {
+                    $('#productQuantity_' + productId).html(data);
+                    $('#nbProducts').html(parseInt($('#nbProducts').html()) + 1);
+                    calculateTotalPrice(productId, cartId);
                 }
             }
+        });
+    }
 
-            for(var i = 0; i < nbOfIngredients; i++) {
-                const alignementRow1 = document.createElement("div");
-                alignementRow1.classList.add("col-1");
-                const alignementRow2 = document.createElement("div");
-                alignementRow2.classList.add("col-10");
-                alignementRow2.classList.add("mb-3");
-                alignementRow2.classList.add("row");
-                const alignementRow3 = document.createElement("div");
-                alignementRow3.classList.add("col-1");
-                const ingredientRow = document.createElement("div");
-                ingredientRow.classList.add("row");
-                ingredientRow.classList.add("mb-3");
-                ingredientRow.classList.add("align-items-center");
-                
-                const ingredientName = document.createElement("input");
-                ingredientName.type = "text";
-                ingredientName.name = "ingredientName" + (i+1);
-                ingredientName.id = "ingredientName" + (i+1);
-                ingredientName.placeholder = "Nom de l'ingrédient " + (i+1) ;
-                ingredientName.required = true;
-                ingredientName.classList.add("form-control");
-                ingredientName.classList.add("col");
+    /**
+     * TODO: Function to remove quantity on cart page
+     * @param productId
+     * @param cartId
+     *
+     * @return void
+     */
+    function removeProductQuantity(cartId, productId) {
 
-                const ingredientQuantity = document.createElement("input");
-                ingredientQuantity.type = "number";
-                ingredientQuantity.name = "ingredientQuantity" + (i+1);
-                ingredientQuantity.id = "ingredientQuantity" + (i+1);
-                ingredientQuantity.placeholder = "Quantité de l'ingrédient " + (i+1) ;
-                ingredientQuantity.required = true;
-                ingredientQuantity.classList.add("form-control");
-                ingredientQuantity.classList.add("col");
-
-                const ingredientUnit = document.createElement("select");
-                ingredientUnit.name = "ingredientUnit" + (i+1);
-                ingredientUnit.id = "ingredientUnit" + (i+1);
-                ingredientUnit.required = true;
-                ingredientUnit.classList.add("form-control");
-                ingredientUnit.classList.add("col");
-                ingredientUnit.options.add( new Option("g", "g"));
-                ingredientUnit.options.add( new Option("kg", "kg"));
-                ingredientUnit.options.add( new Option("ml", "ml"));
-                ingredientUnit.options.add( new Option("cl", "cl"));
-                ingredientUnit.options.add( new Option("l", "l"));
-                ingredientUnit.options.add( new Option("cuillère à café", "cuillère à café"));
-                ingredientUnit.options.add( new Option("cuillère à soupe", "cuillère à soupe"));
-                ingredientUnit.options.add( new Option("verre", "verre"));
-                ingredientUnit.options.add( new Option("pincée", "pincée"));
-                
-
-                ingredientMainField.appendChild(ingredientRow);         
-                ingredientRow.appendChild(alignementRow1);
-                ingredientRow.appendChild(alignementRow2);
-                ingredientRow.appendChild(alignementRow3);
-                alignementRow2.appendChild(ingredientName);
-                alignementRow2.appendChild(ingredientQuantity);
-                alignementRow2.appendChild(ingredientUnit);
+        $.ajax({
+            url: '<?= ADDRESS_SCRIPT ?>ajaxCart.php',
+            type: 'POST',
+            data: {
+                productId: productId,
+                cartId: cartId,
+                type: 'removeProductQuantity'
+            },
+            success: function (data) {
+                if (data !== 'error') {
+                    $('#productQuantity_' + productId).html(data);
+                    $('#nbProducts').html(parseInt($('#nbProducts').html()) - 1);
+                    calculateTotalPrice(productId, cartId);
+                }
             }
-}
+        });
+
+    }
+
+    /**
+     * TODO: Function to calculate total price on cart page
+     * @param productId
+     * @param cartId
+     *
+     * @return void
+     */
+    function calculateTotalPrice(productId, cartId) {
+
+        $.ajax({
+            url: '<?= ADDRESS_SCRIPT ?>ajaxCart.php',
+            type: 'POST',
+            data: {
+                type: 'calculateTotalPrice',
+                cartId: cartId,
+                productId: productId
+            },
+            success: function (data) {
+                if (data !== 'error') {
+                    $('#priceTotal').html(data);
+                    $('#priceTotalPerProduct_' + productId).html(parseFloat($('#productPrice_' + productId).html()) * parseInt($('#productQuantity_' + productId).html()));
+                }
+            }
+        });
+    }
 </script>

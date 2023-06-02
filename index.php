@@ -111,6 +111,10 @@ $routeur->get('/boutique/produit/:id', function ($id){
     $idProduct = htmlspecialchars($id);
     require PATH_APPLICATION_EXTRANET . 'shop/product.php';
 });
+$routeur->get('/boutique/ajout-panier/:id', function ($id){
+    $idProduct = htmlspecialchars($id);
+    require PATH_SCRIPT_CART . 'addProduct.php';
+});
 
 // Routes -> Panier
 $routeur->get('/panier', function (){

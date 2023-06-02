@@ -44,6 +44,7 @@ define('PATH_PAIEMENT_FORM', PATH_APPLICATION_EXTRANET . 'paiement/');
 define('PATH_PAIEMENT_SCRIPT', PATH_SCRIPT . 'paiement/');
 define("PATH_ADMIN_SCRIPT", PATH_SCRIPT . "admin/");
 define('PATH_INVOICES', PATH_FILES . 'invoices/');
+define('PATH_SCRIPT_CART', PATH_SCRIPT . 'cart/');
 
 define('MAIL', 'cookmasterpa.2023@gmail.com');
 
