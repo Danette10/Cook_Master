@@ -67,7 +67,8 @@ wss.on('connection', ws => {
 
 
 // WebSocket server creation for PROD environment
-/*const options = {
+/*
+const options = {
     key: fs.readFileSync(process.env.CERTIFICAT_KEY),
     cert: fs.readFileSync(process.env.CERTIFICAT_CERT)
 };
@@ -75,23 +76,30 @@ wss.on('connection', ws => {
 const server = https.createServer(options);
 const wss = new WebSocket.Server({ server });
 
-wss.on("connection", ws => {
+wss.on('listening', function () {
+    //console.log('WebSocket Server started');
+});
 
+wss.on('connection', ws => {
 
-    ws.onmessage = ({data}) => {
+    ws.onmessage = function(event) {
+        const message = JSON.parse(event.data);
+        if (message.action === 'setUserId') {
+            ws.id = message.userId;
+            // console.log(`Client '${ws.id}' connected`);
+        } else if (message.action === 'isTyping') {
+            broadcast(message, ws);
+        } else if (message.action === 'sendMessage') {
+            // Insert the message into the database
+            saveMessageToDB(message);
 
-        wss.clients.forEach(function each(client) {
-            if (client !== ws && client.readyState === WebSocket.OPEN) {
-                client.send(`${data}`);
-            }
-        });
-    };
-
-    ws.onclose = function() {
-
+            // Broadcast the message to other clients
+            broadcast(message, ws);
+        }
     };
 });
 
 server.listen(9999, () => {
-
-});*/
+    console.log('Server started');
+});
+*/
