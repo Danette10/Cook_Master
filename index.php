@@ -96,6 +96,10 @@ $routeur->post('/recettes/creation/check', function (){
 $routeur->get('/cours', function (){
     require PATH_APPLICATION_EXTRANET . 'course/course.php';
 });
+$routeur->get('/cours/add/:date', function ($date){
+    $date = htmlspecialchars($date);
+    require PATH_APPLICATION_EXTRANET . 'course/addCourse.php';
+});
 
 // Routes -> Boutique
 $routeur->get('/boutique', function (){
