@@ -20,7 +20,7 @@ if (!isset($_SESSION['id'])) {
 
 if(!empty($_FILES['profilePicture']) && $_FILES['profilePicture']['error'] == 0){
 
-    $file = uploadProfilePicture($_FILES['profilePicture']);
+    $file = uploadPicture('profilePicture', $_FILES['profilePicture']);
 
     if(is_int($file)){
         $errors[] = "Erreur lors de l'upload de l'image";

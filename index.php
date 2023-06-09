@@ -169,6 +169,55 @@ $routeur->get('dashboard/admin/users-pending/:type/refuse/:id', function ($type,
     require PATH_ADMIN_SCRIPT . 'refuseUser.php';
 });
 
+
+
+// API
+// Get all products
+$routeur->get('/api/products', function (){
+    require PATH_API . 'routes/shop/getProducts.php';
+    die();
+});
+
+// Get one product
+$routeur->get('/api/product/:id', function ($id){
+    $idProduct = htmlspecialchars($id);
+    require PATH_API . 'routes/shop/getOneProduct.php';
+    die();
+});
+
+// Get user by name, firstname or email
+$routeur->get('/api/user/:search', function ($search){
+    $search = htmlspecialchars($search);
+    require PATH_API . 'routes/users/getUser.php';
+    die();
+});
+
+// Post to connect user
+$routeur->post('/api/user/connect', function (){
+    require PATH_API . 'routes/users/connectUser.php';
+    die();
+});
+
+// Get all recipes
+$routeur->get('/api/recipes', function (){
+    require PATH_API . 'routes/recipes/getRecipes.php';
+    die();
+});
+
+// Get one recipe
+$routeur->get('/api/recipe/:id', function ($id){
+    $idRecipe = htmlspecialchars($id);
+    require PATH_API . 'routes/recipes/getOneRecipe.php';
+    die();
+});
+
+// Get recipes by search
+$routeur->get('/api/recipes/:search', function ($search){
+    $search = htmlspecialchars($search);
+    require PATH_API . 'routes/recipes/getRecipesSearch.php';
+    die();
+});
+
 // Execution du routeur
 $routeur->run();
 
