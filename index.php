@@ -92,9 +92,9 @@ $routeur->post('/recettes/creation/check', function (){
 });
 
 
-// Routes -> Leçons
-$routeur->get('/leçons', function (){
-    require PATH_APPLICATION_EXTRANET . 'lesson/lesson.php';
+// Routes -> Cours
+$routeur->get('/cours', function (){
+    require PATH_APPLICATION_EXTRANET . 'course/course.php';
 });
 
 // Routes -> Boutique
