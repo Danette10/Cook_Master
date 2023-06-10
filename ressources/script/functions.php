@@ -3,6 +3,21 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
+
+/*
+ * TODO: Function to redirect user
+ */
+
+function redirectUser($path = '/')
+{
+    $defaultRedirect = 'https://cookorama.fr' . $path;
+    header("Location: $defaultRedirect");
+    exit();
+}
+
+
+
+
 /*
  * TODO: Function to send mail
  */

@@ -5,5 +5,4 @@ $updateUser->execute(array(
     'idUser' => $idUser
 ));
 
-header('Location: ' . $_SERVER['HTTP_REFERER']);
-exit();
+redirectUser('/admin/dashboard/users-pending');

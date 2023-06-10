@@ -15,11 +15,16 @@ switch ($type) {
             'idUser' => $id
         ));
 
-        $profilePicture = $select->fetch();
-        $profilePicture = $profilePicture['profilePicture'];
+        $profilePicture = $select->fetchColumn();
+        if ($profilePicture !== false) {
+            $profilePicture = basename($profilePicture);
 
-        if($profilePicture != '') {
-            unlink(PATH_IMG . 'profilePicture/' . $profilePicture);
+            if (!empty($profilePicture)) {
+                $filePath = PATH_IMG . 'profilePicture/' . $profilePicture;
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
+            }
         }
 
         $req = $db->prepare('UPDATE users SET profilePicture = NULL WHERE idUser = :idUser');
