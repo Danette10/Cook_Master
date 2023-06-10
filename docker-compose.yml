@@ -14,16 +14,15 @@ services:
     working_dir: ${PHP_USER_HOME_DIRECTORY}
     restart: always
     volumes:
-      - ./docker/nginx/prod:/etc/nginx/conf.d
+      - ./docker/nginx/dev:/etc/nginx/conf.d
       - .:${PHP_USER_HOME_DIRECTORY}
-#      - ./ssl:/etc/letsencrypt/live/togetherandstronger.site
     ports:
       - '80:80'
       - '443:443'
 
   php:
     depends_on:
-      - mysql
+      - mariadb
     build:
       context: docker/php
       dockerfile: Dockerfile
@@ -37,17 +36,16 @@ services:
     volumes:
       - .:${PHP_USER_HOME_DIRECTORY}
 
-  mysql:
-    container_name: mysql
+  mariadb:
+    container_name: mariadb
     restart: always
-    build:
-      context: docker/mysql
+    image: mariadb:latest
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
     volumes:
-      - ./init.sql:/docker-entrypoint-init/db.d/init.sql
-      - ./docker/mysql/conf.d:/etc/mysql/conf.d
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./docker/mariadb/conf.d:/etc/mysql/conf.d
     ports:
       - ${DB_PORT}:${DB_PORT}
     expose:
@@ -58,7 +56,7 @@ services:
     image: adminer:latest
     restart: always
     environment:
-      ADMINER_DEFAULT_SERVER: mysql
+      ADMINER_DEFAULT_SERVER: mariadb
       ADMINER_DESIGN: arcs-material
     ports:
       - '${ADMINER_PORT}:${ADMINER_PORT}'
