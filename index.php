@@ -1,8 +1,8 @@
-
+<?php ob_start(); ?>
 <?php
 session_start();
 include 'ressources/script/init.php';
-require 'vendor/autoload.php';
+require '/home/php/vendor/autoload.php';
 
 $url = $_GET['url'] ?? '/';
 
@@ -10,7 +10,7 @@ $routeur = new \App\Router\Router($url);
 
 // Route -> Accueil
 $routeur->get('/', function (){
-    require PATH_APPLICATION_EXTRANET . 'index.php';
+    require PATH_APPLICATION_EXTRANET . 'home.php';
 });
 
 // Routes -> Inscription
@@ -93,8 +93,17 @@ $routeur->post('/recettes/creation/check', function (){
 
 
 // Routes -> Leçons
-$routeur->get('/leçons', function (){
-    require PATH_APPLICATION_EXTRANET . 'lesson/lesson.php';
+$routeur->get('/cours', function (){
+    require PATH_APPLICATION_EXTRANET . 'course/course.php';
+});
+
+// Routes -> Evènements
+$routeur->get('/évènements', function (){
+    require PATH_APPLICATION_EXTRANET . 'event/event.php';
+});
+$routeur->get('/évènements/ajout/:date', function ($date){
+    $date = htmlspecialchars($date);
+    require PATH_APPLICATION_EXTRANET . 'event/addEvent.php';
 });
 
 // Routes -> Boutique
@@ -111,6 +120,16 @@ $routeur->get('/boutique/produit/:id', function ($id){
     $idProduct = htmlspecialchars($id);
     require PATH_APPLICATION_EXTRANET . 'shop/product.php';
 });
+$routeur->get('/boutique/ajout-panier/:id', function ($id){
+    $idProduct = htmlspecialchars($id);
+    require PATH_SCRIPT_CART . 'addProduct.php';
+});
+
+// Routes -> Panier
+$routeur->get('/panier', function (){
+    require PATH_APPLICATION_EXTRANET . 'cart/cart.php';
+});
+
 
 // Routes -> Dashboard Admin
 $routeur->get('/admin/dashboard', function (){
