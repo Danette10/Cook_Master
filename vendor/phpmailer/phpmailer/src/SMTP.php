@@ -632,7 +632,7 @@ class SMTP
     protected function hmac($data, $key)
     {
         if (function_exists('hash_hmac')) {
-            return hash_hmac('md5', $data, $key);
+            return hash_hmac('sha256', $data, $key);
         }
 
         //The following borrowed from
