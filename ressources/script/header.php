@@ -38,6 +38,12 @@
 
                     <li>
 
+                        <a href="<?= ADDRESS_SITE ?>évènements" class="nav-link">Évènements</a>
+
+                    </li>
+
+                    <li>
+
                         <a href="<?= ADDRESS_SITE ?>boutique" class="nav-link">Boutique</a>
 
                     </li>

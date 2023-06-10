@@ -19,7 +19,7 @@ define('STARTER_MONTHLY', 'prod_NeXPCayzYQqXgS');
 /*
  * TODO: Link Local
  */
-define('PATH_SITE', $_SERVER['DOCUMENT_ROOT'] . '/Cook_Master/');
+define('PATH_SITE', $_SERVER['DOCUMENT_ROOT'] . '/');
 
 /*
  * TODO: Link Prod
@@ -62,7 +62,7 @@ $dotenv->load();
 /*
  * TODO: Link Local
  */
-define('ADDRESS_SITE', 'http://' . $_SERVER['HTTP_HOST'] . '/Cook_Master/');
+define('ADDRESS_SITE', 'http://' . $_SERVER['HTTP_HOST'] . '/');
 
 /*
  * TODO: Link Prod
