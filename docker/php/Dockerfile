@@ -13,6 +13,8 @@ SHELL ["/bin/sh", "-o", "pipefail", "-c"]
 RUN apk update \
     && apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
     && apk add --no-cache php-openssl \
+    && apk add --no-cache openssl \
+    && apk add --no-cache --upgrade openssl \
     && apk add --no-cache libjpeg-turbo-dev libpng-dev \
     && apk add --no-cache linux-headers \
     && docker-php-ext-configure gd --with-jpeg=/usr/include/ \
