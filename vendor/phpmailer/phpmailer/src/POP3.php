@@ -393,8 +393,16 @@ class POP3
     protected function sendString($string)
     {
         if ($this->pop_conn) {
-            if ($this->do_debug >= self::DEBUG_CLIENT) { //Show client messages when debug >= 2
-                echo 'Client -> Server: ', $string;
+            if ($this->do_debug >= self::DEBUG_CLIENT) { // Afficher les messages clients lorsque debug >= 2
+
+                $clientMessage = 'Client -> Server: ' . $string;
+
+                $encryptionKey = random_bytes(32);
+
+                $encryptedMessage = openssl_encrypt($clientMessage, 'AES-256-CBC', $encryptionKey, 0, substr($encryptionKey, 0, 16));
+
+                error_log($encryptedMessage);
+
             }
 
             return fwrite($this->pop_conn, $string, strlen($string));
