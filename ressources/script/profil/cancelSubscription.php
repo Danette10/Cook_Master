@@ -33,8 +33,8 @@ $header = "Cookorama < " . MAIL . " >";
 
 mailHtml($_SESSION['email'], $subject, $mailHTML, $header);
 
-header('Location: ' . $_SERVER['HTTP_REFERER']);
-exit();
+redirectUser();
+
 ob_end_flush();
 
 ?>
