@@ -137,42 +137,42 @@ $routeur->get('/admin/dashboard', function (){
 });
 
 // Routes -> Dashboard Admin -> Utilisateurs
-$routeur->get('/dashboard/admin/users', function (){
+$routeur->get('/admin/dashboard/users', function (){
     require PATH_APPLICATION_EXTRANET . 'admin/users.php';
 });
-$routeur->get('/dashboard/admin/users-pending', function (){
+$routeur->get('/admin/dashboard/users-pending', function (){
     require PATH_APPLICATION_EXTRANET . 'admin/usersPending.php';
 });
 
 // Routes -> Dashboard Admin -> Actions Utilisateurs
-$routeur->get('/dashboard/admin/users/ban/:id', function ($id){
+$routeur->get('/admin/dashboard/users/ban/:id', function ($id){
     $idUser = htmlspecialchars($id);
     require PATH_ADMIN_SCRIPT . 'ban.php';
 });
-$routeur->get('/dashboard/admin/users/unban/:id', function ($id){
+$routeur->get('/admin/dashboard/users/unban/:id', function ($id){
     $idUser = htmlspecialchars($id);
     require PATH_ADMIN_SCRIPT . 'ban.php';
 });
-$routeur->get('/dashboard/admin/users/upgrade/:id', function ($id){
+$routeur->get('/admin/dashboard/users/upgrade/:id', function ($id){
     $idUser = htmlspecialchars($id);
     require PATH_ADMIN_SCRIPT . 'upgrade.php';
 });
-$routeur->get('/dashboard/admin/users/downgrade/:id', function ($id){
+$routeur->get('/admin/dashboard/users/downgrade/:id', function ($id){
     $idUser = htmlspecialchars($id);
     require PATH_ADMIN_SCRIPT . 'upgrade.php';
 });
-$routeur->get('/dashboard/admin/users/view/:id', function ($id){
+$routeur->get('/admin/dashboard/users/view/:id', function ($id){
     $idUser = htmlspecialchars($id);
     require PATH_APPLICATION_EXTRANET . 'profil/profil.php';
 });
 
 // Routes -> Dashboard Admin -> Users Pending
-$routeur->get('dashboard/admin/users-pending/:type/validate/:id', function ($type, $id){
+$routeur->get('admin/dashboard/users-pending/:type/validate/:id', function ($type, $id){
     $type = htmlspecialchars($type);
     $idUser = htmlspecialchars($id);
     require PATH_ADMIN_SCRIPT . 'validateUser.php';
 });
-$routeur->get('dashboard/admin/users-pending/:type/refuse/:id', function ($type, $id){
+$routeur->get('admin/dashboard/users-pending/:type/refuse/:id', function ($type, $id){
     $type = htmlspecialchars($type);
     $idUser = htmlspecialchars($id);
     require PATH_ADMIN_SCRIPT . 'refuseUser.php';
