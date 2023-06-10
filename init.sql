@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS cookmaster;
-ALTER DATABASE cookmaster CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS cookorama;
+ALTER DATABASE cookorama CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 SET GLOBAL time_zone = 'Europe/Paris';
 
 CREATE TABLE users
