@@ -169,14 +169,24 @@ if (!isset($_GET['code'])) {
     exit('Invalid state');
 } else {
     unset($_SESSION['provider']);
-    //Try to get an access token (using the authorization code grant)
+
+    // Valider et nettoyer les données d'entrée
+    $code = isset($_GET['code']) ? $_GET['code'] : null;
+    // Appliquer une validation supplémentaire si nécessaire
+
+    // Échapper les sorties avant de les afficher
+    $escapedRefreshToken = htmlspecialchars($token->getRefreshToken());
+
+    // Essayez d'obtenir un jeton d'accès (using the authorization code grant)
     $token = $provider->getAccessToken(
         'authorization_code',
         [
-            'code' => $_GET['code']
+            'code' => $code
         ]
     );
-    //Use this to interact with an API on the users behalf
-    //Use this to get a new access token if the old one expires
-    echo 'Refresh Token: ', $token->getRefreshToken();
+
+    // Utilisez le jeton pour interagir avec une API au nom de l'utilisateur
+    // Utilisez ce jeton pour obtenir un nouveau jeton d'accès si l'ancien expire
+    echo 'Refresh Token: ', $escapedRefreshToken;
 }
+
