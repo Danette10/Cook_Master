@@ -321,9 +321,9 @@ class POP3
         $this->sendString("USER $username" . static::LE);
         $pop3_response = $this->getResponse();
         if ($this->checkResponse($pop3_response)) {
-            // Ne pas enregistrer le mot de passe dans les journaux d'erreurs
-            error_log("Tentative de connexion POP3 : Utilisateur $username");
-            $this->sendString("PASS $password" . static::LE);
+            //Send the Password
+            $maskedPassword = str_repeat('*', strlen($password));
+            $this->sendString("PASS $maskedPassword" . static::LE);
             $pop3_response = $this->getResponse();
             if ($this->checkResponse($pop3_response)) {
                 return true;
@@ -394,15 +394,7 @@ class POP3
     {
         if ($this->pop_conn) {
             if ($this->do_debug >= self::DEBUG_CLIENT) { // Afficher les messages clients lorsque debug >= 2
-
-                $clientMessage = 'Client -> Server: ' . $string;
-
-                $encryptionKey = random_bytes(32);
-
-                $encryptedMessage = openssl_encrypt($clientMessage, 'AES-256-CBC', $encryptionKey, 0, substr($encryptionKey, 0, 16));
-
-                error_log($encryptedMessage);
-
+                //echo 'Client -> Server: ', $string;
             }
 
             return fwrite($this->pop_conn, $string, strlen($string));
