@@ -645,7 +645,7 @@ class SMTP
 
         $bytelen = 64; //byte length for md5
         if (strlen($key) > $bytelen) {
-            $key = pack('H*', md5($key));
+            $key = pack('H*', hash('sha256',$key));
         }
         $key = str_pad($key, $bytelen, chr(0x00));
         $ipad = str_pad('', $bytelen, chr(0x36));
@@ -653,7 +653,7 @@ class SMTP
         $k_ipad = $key ^ $ipad;
         $k_opad = $key ^ $opad;
 
-        return md5($k_opad . pack('H*', md5($k_ipad . $data)));
+        return hash('sha256',$k_opad . pack('H*', hash('sha256',$k_ipad . $data)));
     }
 
     /**
