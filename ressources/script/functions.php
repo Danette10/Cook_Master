@@ -8,17 +8,26 @@ use PHPMailer\PHPMailer\Exception;
  * TODO: Function to redirect user
  */
 
-function redirectUser($defaultRedirect = 'https://cookorama.fr')
+function redirectUser($defaultPath = '/')
 {
-    $referer = $_SERVER['HTTP_REFERER'] ?? $defaultRedirect;
+    $defaultRedirect = 'https://cookorama.fr' . $defaultPath;
 
-    if (str_contains($referer, 'cookorama.fr')) {
-        header("Location: $referer");
+    if (isset($_SERVER['HTTP_REFERER'])) {
+        $parsedUrl = parse_url($_SERVER['HTTP_REFERER']);
+
+        if (isset($parsedUrl['host']) && $parsedUrl['host'] === 'cookorama.fr') {
+            $referer = 'https://cookorama.fr' . $parsedUrl['path'];
+        } else {
+            $referer = $defaultRedirect;
+        }
     } else {
-        header("Location: $defaultRedirect");
+        $referer = $defaultRedirect;
     }
+
+    header("Location: $referer");
     exit();
 }
+
 
 
 /*
