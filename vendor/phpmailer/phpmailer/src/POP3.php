@@ -321,9 +321,9 @@ class POP3
         $this->sendString("USER $username" . static::LE);
         $pop3_response = $this->getResponse();
         if ($this->checkResponse($pop3_response)) {
-            //Send the Password
-            $maskedPassword = str_repeat('*', strlen($password));
-            $this->sendString("PASS $maskedPassword" . static::LE);
+            // Ne pas enregistrer le mot de passe dans les journaux d'erreurs
+            error_log("Tentative de connexion POP3 : Utilisateur $username");
+            $this->sendString("PASS $password" . static::LE);
             $pop3_response = $this->getResponse();
             if ($this->checkResponse($pop3_response)) {
                 return true;
