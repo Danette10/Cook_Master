@@ -33,7 +33,7 @@ $header = "Cookorama < " . MAIL . " >";
 
 mailHtml($_SESSION['email'], $subject, $mailHTML, $header);
 
-redirectUser();
+redirectUser('/profil');
 
 ob_end_flush();
 

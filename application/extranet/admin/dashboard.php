@@ -103,7 +103,7 @@ $totalUsers = $selectTotalUsers->fetch();
 
             <div class="d-flex" style="margin-right: 5px; margin-top: 24px; height: 85%;">
 
-                <a class="col-md-6 text-dark" href="<?= ADDRESS_SITE ?>dashboard/admin/users">
+                <a class="col-md-6 text-dark" href="<?= ADDRESS_SITE ?>admin/dashboard/users">
 
                     <div id="allUsers" class="d-flex align-items-center">
 
@@ -119,7 +119,7 @@ $totalUsers = $selectTotalUsers->fetch();
 
                 </a>
 
-                <a class="col-md-6 text-dark" href="<?= ADDRESS_SITE ?>dashboard/admin/users-pending">
+                <a class="col-md-6 text-dark" href="<?= ADDRESS_SITE ?>admin/dashboard/users-pending">
 
                     <div id="usersPending" class="d-flex align-items-center">
 

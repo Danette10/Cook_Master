@@ -13,4 +13,4 @@ $updateUser->execute(array(
     'idUser' => $idUser
 ));
 
-redirectUser();
+redirectUser('/admin/dashboard/users-pending');
