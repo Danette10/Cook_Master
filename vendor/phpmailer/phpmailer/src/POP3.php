@@ -393,8 +393,9 @@ class POP3
     {
         if ($this->pop_conn) {
             if ($this->do_debug >= self::DEBUG_CLIENT) { //Show client messages when debug >= 2
-                $message = bcrypt($string, 10);
-                echo 'Client -> Server: ', $message;
+                // Sécurisation des données sensibles
+                $string = preg_replace('/PASS (.*)/i', 'PASS ***', $string);
+                echo 'Client -> Server: ', $string;
             }
 
             return fwrite($this->pop_conn, $string, strlen($string));
