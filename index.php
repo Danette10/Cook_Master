@@ -136,7 +136,7 @@ $routeur->get('/boutique/ajout-panier/:id', function ($id){
 });
 
 // Routes -> Chat
-$routeur->get('/chat', function (){
+$routeur->get('/messages', function (){
     require PATH_APPLICATION_EXTRANET . 'chat/chat.php';
 });
 
