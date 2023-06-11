@@ -46,9 +46,9 @@ CREATE TABLE events
     address           VARCHAR(50),
     postalCode        CHAR(5),
     city              VARCHAR(40),
-    nbDaysInscription INT          NOT NULL,
     startEvent        DATETIME     NOT NULL,
     endEvent          DATETIME     NOT NULL,
+    status INT          NOT NULL,
     idPresta          INT          NOT NULL,
     PRIMARY KEY (idEvent),
     FOREIGN KEY (idPresta) REFERENCES users (idUser)

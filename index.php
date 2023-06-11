@@ -105,6 +105,10 @@ $routeur->get('/évènements/ajout/:date', function ($date){
     $date = htmlspecialchars($date);
     require PATH_APPLICATION_EXTRANET . 'event/addEvent.php';
 });
+$routeur->post('/évènements/ajout/:date/verification', function ($date){
+    $date = htmlspecialchars($date);
+    require PATH_FORM . 'event/eventForm.php';
+});
 
 // Routes -> Boutique
 $routeur->get('/boutique', function (){
