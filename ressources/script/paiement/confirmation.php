@@ -91,7 +91,7 @@ if($confirm == '0'){
 
     $pdfSuite = generateInvoice($invoiceData);
 
-    $updateInvoice = $db->prepare('UPDATE orders SET pathInvoice = :pathInvoice WHERE idUser = :idUser AND idInvoice = :idInvoice');
+    $updateInvoice = $db->prepare('UPDATE orders SET pathInvoice = :pathInvoice, status = 1 WHERE idUser = :idUser AND idInvoice = :idInvoice');
     $updateInvoice->execute([
         'pathInvoice' => $pdfSuite,
         'idUser' => $_SESSION['id'],

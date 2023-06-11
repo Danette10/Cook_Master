@@ -60,7 +60,7 @@ global $db;
                         endif;
                         ?>
                         <a href="<?= ADDRESS_SITE ?>boutique/ajout-panier/<?= $product['id'] ?>">
-                            <button type="button" class="btn connexionLink shadow">Ajouter au panier</button>
+                            <img src="<?= ADDRESS_IMG ?>shopping-cart.png" alt="Ajouter au panier" width="30" class="img-responsive rounded">
                         </a>
                     </div>
                 </div>

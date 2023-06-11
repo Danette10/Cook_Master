@@ -21,4 +21,7 @@ include PATH_SCRIPT . 'functions.php';
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
+    <link rel="stylesheet" type="text/css" href="<?= ADDRESS_SITE ?>ressources/css/evo-calendar.css"/>
+    <link rel="stylesheet" type="text/css" href="<?= ADDRESS_SITE ?>ressources/css/evo-calendar.orange-coral.css"/>
+
 </head>

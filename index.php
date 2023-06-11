@@ -1,7 +1,8 @@
+<?php ob_start(); ?>
 <?php
 session_start();
 include 'ressources/script/init.php';
-require 'vendor/autoload.php';
+require '/home/php/vendor/autoload.php';
 
 $url = $_GET['url'] ?? '/';
 
@@ -9,7 +10,7 @@ $routeur = new \App\Router\Router($url);
 
 // Route -> Accueil
 $routeur->get('/', function (){
-    require PATH_APPLICATION_EXTRANET . 'index.php';
+    require PATH_APPLICATION_EXTRANET . 'home.php';
 });
 
 // Routes -> Inscription
@@ -92,9 +93,28 @@ $routeur->post('/recettes/creation/check', function (){
 
 
 // Routes -> Leçons
-$routeur->get('/leçons', function (){
-    require PATH_APPLICATION_EXTRANET . 'lesson/lesson.php';
+$routeur->get('/cours', function (){
+    require PATH_APPLICATION_EXTRANET . 'course/course.php';
 });
+
+// Routes -> Evènements
+$routeur->get('/évènements', function (){
+    require PATH_APPLICATION_EVENT . 'event.php';
+});
+$routeur->get('/évènements/ajout/:date', function ($date){
+    $date = htmlspecialchars($date);
+    require PATH_APPLICATION_EVENT . 'addEvent.php';
+});
+$routeur->post('/évènements/ajout/:date/verification', function ($date){
+    $date = htmlspecialchars($date);
+    require PATH_SCRIPT_EVENT . 'event/eventForm.php';
+});
+$routeur->get('/évènements/get/:id', function ($id){
+    $idEvent = htmlspecialchars($id);
+    require PATH_SCRIPT_EVENT . 'getEvent.php';
+    die();
+});
+
 
 // Routes -> Boutique
 $routeur->get('/boutique', function (){
@@ -110,11 +130,21 @@ $routeur->get('/boutique/produit/:id', function ($id){
     $idProduct = htmlspecialchars($id);
     require PATH_APPLICATION_EXTRANET . 'shop/product.php';
 });
+$routeur->get('/boutique/ajout-panier/:id', function ($id){
+    $idProduct = htmlspecialchars($id);
+    require PATH_SCRIPT_CART . 'addProduct.php';
+});
 
 // Routes -> Chat
 $routeur->get('/chat', function (){
     require PATH_APPLICATION_EXTRANET . 'chat/chat.php';
 });
+
+// Routes -> Panier
+$routeur->get('/panier', function (){
+    require PATH_APPLICATION_EXTRANET . 'cart/cart.php';
+});
+
 
 // Routes -> Dashboard Admin
 $routeur->get('/admin/dashboard', function (){
@@ -122,42 +152,42 @@ $routeur->get('/admin/dashboard', function (){
 });
 
 // Routes -> Dashboard Admin -> Utilisateurs
-$routeur->get('/dashboard/admin/users', function (){
+$routeur->get('/admin/dashboard/users', function (){
     require PATH_APPLICATION_EXTRANET . 'admin/users.php';
 });
-$routeur->get('/dashboard/admin/users-pending', function (){
+$routeur->get('/admin/dashboard/users-pending', function (){
     require PATH_APPLICATION_EXTRANET . 'admin/usersPending.php';
 });
 
 // Routes -> Dashboard Admin -> Actions Utilisateurs
-$routeur->get('/dashboard/admin/users/ban/:id', function ($id){
+$routeur->get('/admin/dashboard/users/ban/:id', function ($id){
     $idUser = htmlspecialchars($id);
     require PATH_ADMIN_SCRIPT . 'ban.php';
 });
-$routeur->get('/dashboard/admin/users/unban/:id', function ($id){
+$routeur->get('/admin/dashboard/users/unban/:id', function ($id){
     $idUser = htmlspecialchars($id);
     require PATH_ADMIN_SCRIPT . 'ban.php';
 });
-$routeur->get('/dashboard/admin/users/upgrade/:id', function ($id){
+$routeur->get('/admin/dashboard/users/upgrade/:id', function ($id){
     $idUser = htmlspecialchars($id);
     require PATH_ADMIN_SCRIPT . 'upgrade.php';
 });
-$routeur->get('/dashboard/admin/users/downgrade/:id', function ($id){
+$routeur->get('/admin/dashboard/users/downgrade/:id', function ($id){
     $idUser = htmlspecialchars($id);
     require PATH_ADMIN_SCRIPT . 'upgrade.php';
 });
-$routeur->get('/dashboard/admin/users/view/:id', function ($id){
+$routeur->get('/admin/dashboard/users/view/:id', function ($id){
     $idUser = htmlspecialchars($id);
     require PATH_APPLICATION_EXTRANET . 'profil/profil.php';
 });
 
 // Routes -> Dashboard Admin -> Users Pending
-$routeur->get('dashboard/admin/users-pending/:type/validate/:id', function ($type, $id){
+$routeur->get('admin/dashboard/users-pending/:type/validate/:id', function ($type, $id){
     $type = htmlspecialchars($type);
     $idUser = htmlspecialchars($id);
     require PATH_ADMIN_SCRIPT . 'validateUser.php';
 });
-$routeur->get('dashboard/admin/users-pending/:type/refuse/:id', function ($type, $id){
+$routeur->get('admin/dashboard/users-pending/:type/refuse/:id', function ($type, $id){
     $type = htmlspecialchars($type);
     $idUser = htmlspecialchars($id);
     require PATH_ADMIN_SCRIPT . 'refuseUser.php';

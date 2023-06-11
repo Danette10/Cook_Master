@@ -9,3 +9,5 @@
 
 .DS_Store
 /ressources/images/shopImage/
+/.ash_history
+/ssl/

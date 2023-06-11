@@ -54,18 +54,18 @@ $allUsers = $selectUsers->fetchAll();
                     <td>
                         <div class="button_profil">
                             <?php if ($user['role'] != -2) { ?>
-                                <a href="<?= ADDRESS_SITE ?>dashboard/admin/users/ban/<?= $user['idUser'] ?>" class="btn btn-danger">Bannir</a>
+                                <a href="<?= ADDRESS_SITE ?>admin/dashboard/users/ban/<?= $user['idUser'] ?>" class="btn btn-danger">Bannir</a>
                             <?php } else { ?>
-                                <a href="<?= ADDRESS_SITE ?>dashboard/admin/users/unban/<?= $user['idUser'] ?>" class="btn btn-success">Débannir</a>
+                                <a href="<?= ADDRESS_SITE ?>admin/dashboard/users/unban/<?= $user['idUser'] ?>" class="btn btn-success">Débannir</a>
                             <?php } ?>
 
                             <?php if ($user['role'] == 1) { ?>
-                                <a href="<?= ADDRESS_SITE ?>dashboard/admin/users/upgrade/<?= $user['idUser'] ?>" class="btn btn-secondary">Admin</a>
+                                <a href="<?= ADDRESS_SITE ?>admin/dashboard/users/upgrade/<?= $user['idUser'] ?>" class="btn btn-secondary">Admin</a>
                             <?php }else if ($user['role'] == 5) { ?>
-                                <a href="<?= ADDRESS_SITE ?>dashboard/admin/users/downgrade/<?= $user['idUser'] ?>" class="btn btn-secondary">Utilisateur</a>
+                                <a href="<?= ADDRESS_SITE ?>admin/dashboard/users/downgrade/<?= $user['idUser'] ?>" class="btn btn-secondary">Utilisateur</a>
                             <?php } ?>
 
-                            <a href="<?= ADDRESS_SITE ?>dashboard/admin/users/view/<?= $user['idUser'] ?>" class="btn btn-primary">Voir</a>
+                            <a href="<?= ADDRESS_SITE ?>admin/dashboard/users/view/<?= $user['idUser'] ?>" class="btn btn-primary">Voir</a>
                         </div>
                     </td>
                 </tr>

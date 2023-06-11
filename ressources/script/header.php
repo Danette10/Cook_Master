@@ -14,7 +14,7 @@
 
             </li>
 
-            <div class="collapse navbar-collapse ms-3" id="navbarToggler" style="margin-right: 50px;">
+            <div class="collapse navbar-collapse ms-3" id="navbarToggler" style="margin-right: 60px;">
 
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="font-size: 22px; position: relative; top: -3px;">
 
@@ -32,7 +32,13 @@
 
                     <li>
 
-                        <a href="<?= ADDRESS_SITE ?>leçons" class="nav-link">Leçons</a>
+                        <a href="<?= ADDRESS_SITE ?>cours" class="nav-link">Cours</a>
+
+                    </li>
+
+                    <li>
+
+                        <a href="<?= ADDRESS_SITE ?>évènements" class="nav-link">Évènements</a>
 
                     </li>
 
@@ -65,9 +71,26 @@
 
                     <div class="me-3">
 
-                        <img  style="width:24px" src="<?= ADDRESS_IMG ?>moon.png" id="icon">
+                        <img style="width:24px" src="<?= ADDRESS_IMG ?>moon.png" id="icon">
 
                     </div>
+
+                    <?php
+                    if(!isset($_SESSION['id'])){
+                        $attr = 'data-bs-toggle="tooltip" data-bs-title="Vous devez être connecté pour accéder à votre panier" data-bs-placement="bottom"';
+                        $style = 'style="cursor: not-allowed"';
+                    }else{
+                        $attr = '';
+                        $style = '';
+                    }
+                    ?>
+
+                    <a href="<?= ADDRESS_SITE ?>panier" class="nav-link" <?= $attr ?> <?= $style ?> id="cartLink">
+                        <div class="me-3" id="cartElement">
+                            <img src="<?= ADDRESS_IMG ?>shopping-cart.png" alt="Panier" width="30" height="30" id="cartIcon">
+                            <span id="nbElemCartSpan"></span>
+                        </div>
+                    </a>
 
                     <?php
                     if(isset($_SESSION['role']) && $_SESSION['role'] != 5){?>
@@ -134,7 +157,6 @@
 
                 </ul>
             </div>
-
             <?php } ?>
 
 
@@ -144,28 +166,39 @@
     <script>
 
        let icon = document.getElementById("icon");
+       let cartIcon = document.getElementById("cartIcon");
 
        icon.onclick = function(){
+
            document.body.classList.toggle("dark-theme");
+
            if(document.body.classList.contains("dark-theme")){
+
                icon.src = '<?= ADDRESS_IMG ?>' + "sun.png";
+               cartIcon.src = '<?= ADDRESS_IMG ?>' + "shopping-cart-white.png";
                sessionStorage.setItem("theme", "dark");
 
            }else{
+
                icon.src = '<?= ADDRESS_IMG ?>' + "moon.png";
+               cartIcon.src = '<?= ADDRESS_IMG ?>' + "shopping-cart.png";
                sessionStorage.setItem("theme", "light");
+
            }
+
        }
 
          if(sessionStorage.getItem("theme") === "dark"){
 
              document.body.classList.add("dark-theme");
              icon.src = '<?= ADDRESS_IMG ?>' + "sun.png";
+             cartIcon.src = '<?= ADDRESS_IMG ?>' + "shopping-cart-white.png";
 
          }else{
 
             document.body.classList.remove("dark-theme");
             icon.src = '<?= ADDRESS_IMG ?>' + "moon.png";
+            cartIcon.src = '<?= ADDRESS_IMG ?>' + "shopping-cart.png";
 
          }
   </script>

@@ -15,6 +15,15 @@
             }
 
         });
+
+        let cartLink = $("#cartLink");
+
+        <?php if (!isset($_SESSION['id'])): ?>
+
+        cartLink.removeAttr("href");
+
+        <?php endif; ?>
+
     });
 
     <?php
@@ -392,79 +401,84 @@
         }
     }
 
-    function sendMessage() {
-        let message = document.getElementById('message').value;
-        let idUser = document.getElementById('idReceiver').value;
-        let data = {
-            action: 'sendMessage',
-            message: message,
-            idSender: <?= $_SESSION['id'] ?? 0; ?>,
-            idReceiver: parseInt(idUser),
-            dateSend: new Date(new Date().getTime() + 2 * 3600 * 1000).toISOString().slice(0, 19).replace('T', ' ')
-        };
-
-        if(socket.readyState === WebSocket.OPEN) {
-            if (message === '') {
-                alert('Vous ne pouvez pas envoyer de message vide !');
-                return;
-            }else{
-                socket.send(JSON.stringify(data));
-            }
-        } else {
-            console.error("WebSocket is not open. ReadyState is: ", socket.readyState);
-        }
-
-        let chatContentMessages = document.querySelector('.chatContentMessages');
-        chatContentMessages.innerHTML += formatSentMessage(data);
-
-        document.getElementById('message').value = '';
-    }
-
-    function formatSentMessage(data) {
-        return `<div class="messageSender">
-                <p>
-                    <strong>Vous</strong><br>
-                    ${data.message}
-                </p>
-                <p class="dateSendSender">
-                    Le ${new Date(data.dateSend).toLocaleDateString('fr-FR')} à ${new Date(data.dateSend).toLocaleTimeString('fr-FR')}
-                </p>
-            </div>`;
-    }
-
-    function openChat(idUser){
-        $('#idUser').val(idUser);
-        $('.chat').removeClass('d-none');
+    /**
+     * TODO: Function to add quantity on cart page
+     * @param productId
+     * @param cartId
+     *
+     * @return void
+     */
+    function addProductQuantity(cartId, productId) {
 
         $.ajax({
-            url: '<?= ADDRESS_SCRIPT ?>ajaxChat.php',
+            url: '<?= ADDRESS_SCRIPT ?>ajaxCart.php',
             type: 'POST',
             data: {
-                idReceiver: idUser,
-                idSender: <?= $_SESSION['id'] ?? 0; ?>,
-                action: 'getMessages'
+                productId: productId,
+                cartId: cartId,
+                type: 'addProductQuantity'
             },
             success: function (data) {
-                $('#idReceiver').val(idUser);
-                $('.chatContentMessages').html(data);
+                if (data !== 'error') {
+                    $('#productQuantity_' + productId).html(data);
+                    $('#nbProducts').html(parseInt($('#nbProducts').html()) + 1);
+                    calculateTotalPrice(productId, cartId);
+                }
             }
         });
     }
 
-    function isTyping() {
-        let data = {
-            action: 'isTyping',
-            idSender: <?= $_SESSION['id'] ?? 0; ?>,
-        };
+    /**
+     * TODO: Function to remove quantity on cart page
+     * @param productId
+     * @param cartId
+     *
+     * @return void
+     */
+    function removeProductQuantity(cartId, productId) {
 
-        if(socket.readyState === WebSocket.OPEN) {
-            socket.send(JSON.stringify(data));
-        } else {
-            console.error("WebSocket is not open. ReadyState is: ", socket.readyState);
-        }
+        $.ajax({
+            url: '<?= ADDRESS_SCRIPT ?>ajaxCart.php',
+            type: 'POST',
+            data: {
+                productId: productId,
+                cartId: cartId,
+                type: 'removeProductQuantity'
+            },
+            success: function (data) {
+                if (data !== 'error') {
+                    $('#productQuantity_' + productId).html(data);
+                    $('#nbProducts').html(parseInt($('#nbProducts').html()) - 1);
+                    calculateTotalPrice(productId, cartId);
+                }
+            }
+        });
+
     }
 
+    /**
+     * TODO: Function to calculate total price on cart page
+     * @param productId
+     * @param cartId
+     *
+     * @return void
+     */
+    function calculateTotalPrice(productId, cartId) {
 
-
-
+        $.ajax({
+            url: '<?= ADDRESS_SCRIPT ?>ajaxCart.php',
+            type: 'POST',
+            data: {
+                type: 'calculateTotalPrice',
+                cartId: cartId,
+                productId: productId
+            },
+            success: function (data) {
+                if (data !== 'error') {
+                    $('#priceTotal').html(data);
+                    $('#priceTotalPerProduct_' + productId).html(parseFloat($('#productPrice_' + productId).html()) * parseInt($('#productQuantity_' + productId).html()));
+                }
+            }
+        });
+    }
 </script>
