@@ -31,7 +31,7 @@ RUN addgroup -g "$PHP_USER_IDENTIFIER" "$PHP_USER_NAME" \
 
 USER "$PHP_USER_NAME"
 
-RUN composer install --no-dev
+RUN composer install
 
 EXPOSE 80
 EXPOSE 9000
