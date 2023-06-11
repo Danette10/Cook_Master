@@ -64,7 +64,7 @@ if($_POST['typeInscription'] == '1' || $_POST['typeInscription'] == '2'){
 
             if(isset($_FILES['profilePicture']) && $_FILES['profilePicture']['error'] == 0){
 
-                $file = uploadFileInscription($_FILES['profilePicture'], 'image');
+                $file = uploadPicture('profilePicture',$_FILES['profilePicture']);
 
                 // Si file retourne un entier, c'est qu'il y a une erreur
                 if(is_int($file)){

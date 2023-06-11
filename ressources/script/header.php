@@ -32,7 +32,13 @@
 
                     <li>
 
-                        <a href="<?= ADDRESS_SITE ?>leçons" class="nav-link">Leçons</a>
+                        <a href="<?= ADDRESS_SITE ?>cours" class="nav-link">Cours</a>
+
+                    </li>
+
+                    <li>
+
+                        <a href="<?= ADDRESS_SITE ?>évènements" class="nav-link">Évènements</a>
 
                     </li>
 

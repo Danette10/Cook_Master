@@ -59,9 +59,9 @@ $usersProvider = $selectUsersProvider->fetchAll();
                     </td>
                     <td>
                         <div class="button_profil">
-                            <a href="<?= ADDRESS_SITE ?>dashboard/admin/users-pending/provider/validate/<?= $userProvider['idUser'] ?>" class="btn btn-success">Accepter</a>
-                            <a href="<?= ADDRESS_SITE ?>dashboard/admin/users-pending/provider/refuse/<?= $userProvider['idUser'] ?>" class="btn btn-danger">Refuser</a>
-                            <a href="<?= ADDRESS_SITE ?>dashboard/admin/users/view/<?= $userProvider['idUser'] ?>" class="btn btn-primary" target="_blank">Voir</a>
+                            <a href="<?= ADDRESS_SITE ?>admin/dashboard/users-pending/provider/validate/<?= $userProvider['idUser'] ?>" class="btn btn-success">Accepter</a>
+                            <a href="<?= ADDRESS_SITE ?>admin/dashboard/users-pending/provider/refuse/<?= $userProvider['idUser'] ?>" class="btn btn-danger">Refuser</a>
+                            <a href="<?= ADDRESS_SITE ?>admin/dashboard/users/view/<?= $userProvider['idUser'] ?>" class="btn btn-primary" target="_blank">Voir</a>
                         </div>
                     </td>
                 </tr>

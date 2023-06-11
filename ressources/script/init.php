@@ -19,7 +19,7 @@ define('STARTER_MONTHLY', 'prod_NeXPCayzYQqXgS');
 /*
  * TODO: Link Local
  */
-define('PATH_SITE', $_SERVER['DOCUMENT_ROOT'] . '/Cook_Master/');
+define('PATH_SITE', $_SERVER['DOCUMENT_ROOT'] . '/');
 
 /*
  * TODO: Link Prod
@@ -45,6 +45,10 @@ define('PATH_PAIEMENT_SCRIPT', PATH_SCRIPT . 'paiement/');
 define("PATH_ADMIN_SCRIPT", PATH_SCRIPT . "admin/");
 define('PATH_INVOICES', PATH_FILES . 'invoices/');
 define('PATH_SCRIPT_CART', PATH_SCRIPT . 'cart/');
+define('PATH_API', PATH_SITE . 'api/');
+define('PATH_SCRIPT_EVENT', PATH_FORM . 'event/');
+define('PATH_APPLICATION_EVENT', PATH_APPLICATION_EXTRANET . 'event/');
+
 
 define('MAIL', 'cookmasterpa.2023@gmail.com');
 
@@ -61,7 +65,7 @@ $dotenv->load();
 /*
  * TODO: Link Local
  */
-define('ADDRESS_SITE', 'http://' . $_SERVER['HTTP_HOST'] . '/Cook_Master/');
+define('ADDRESS_SITE', 'http://' . $_SERVER['HTTP_HOST'] . '/');
 
 /*
  * TODO: Link Prod
@@ -85,6 +89,8 @@ define('ADDRESS_RESET_PASSWORD', ADDRESS_SITE . 'resetPassword.php');
 define('ADDRESS_PAIEMENT_FORM', ADDRESS_APPLICATION_EXTRANET . 'paiement/');
 define('ADDRESS_FILES', ADDRESS_RESSOURCES . 'files/');
 define('ADDRESS_INVOICES', ADDRESS_FILES . 'invoices/');
+define('ADDRESS_SCRIPT_EVENT', ADDRESS_FORM . 'event/');
+define('ADDRESS_APPLICATION_EVENT', ADDRESS_APPLICATION_EXTRANET . 'event/');
 
 
 require_once(PATH_SCRIPT . 'connectDB.php');
