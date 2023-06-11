@@ -40,12 +40,10 @@ CREATE TABLE events
 (
     idEvent           INT AUTO_INCREMENT,
     type              INT          NOT NULL,
+    typePlace         INT          NOT NULL,
     name              VARCHAR(30)  NOT NULL,
     description       VARCHAR(150) NOT NULL,
     maxParticipant    INT          NOT NULL,
-    address           VARCHAR(50),
-    postalCode        CHAR(5),
-    city              VARCHAR(40),
     startEvent        DATETIME     NOT NULL,
     endEvent          DATETIME     NOT NULL,
     status INT          NOT NULL,
@@ -75,14 +73,25 @@ CREATE TABLE courses
     name           VARCHAR(30)  NOT NULL,
     description    VARCHAR(150) NOT NULL,
     type           INT          NOT NULL,
+    typePlace      INT          NOT NULL,
     image          VARCHAR(100) NOT NULL,
-    address        VARCHAR(50),
-    postalCode     CHAR(5),
-    city           VARCHAR(40),
     maxParticipant INT          NOT NULL,
     idPresta       INT          NOT NULL,
     PRIMARY KEY (idCourse),
     FOREIGN KEY (idPresta) REFERENCES users (idUser)
+);
+
+CREATE TABLE place
+(
+    idPlace   INT AUTO_INCREMENT,
+    address           VARCHAR(50),
+    postalCode        CHAR(5),
+    city              VARCHAR(40),
+    idEvent           INT,
+    idCourse          INT,
+    PRIMARY KEY (idPlace),
+    FOREIGN KEY (idEvent) REFERENCES events (idEvent),
+    FOREIGN KEY (idCourse) REFERENCES courses (idCourse)
 );
 
 CREATE TABLE cart
