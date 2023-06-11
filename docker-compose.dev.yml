@@ -6,7 +6,7 @@ services:
       - php
     build:
       context: docker/nginx
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     container_name: nginx
     tty: true
     stdin_open: true
@@ -14,21 +14,19 @@ services:
     working_dir: ${PHP_USER_HOME_DIRECTORY}
     restart: always
     volumes:
-      - ./docker/nginx/prod/:/etc/nginx/conf.d
+      - ./docker/nginx/dev:/etc/nginx/conf.d
       - .:${PHP_USER_HOME_DIRECTORY}
-      - ./ssl:/etc/letsencrypt/live/cookorama.fr
     ports:
       - '80:80'
       - '443:443'
     command: [nginx, '-g', 'daemon off;']
-
 
   php:
     depends_on:
       - mariadb
     build:
       context: docker/php
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     container_name: php
     restart: always
     tty: true
