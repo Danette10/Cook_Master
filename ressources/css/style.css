@@ -61,6 +61,29 @@ ul, li{
     letter-spacing: 0.5px;
 }
 
+.calendar-months{
+    display: block;
+}
+
+#calendar tr:hover{
+    background-color: transparent !important;
+}
+
+#addEventButton{
+    margin-top: 30px;
+    padding: 8px;
+    color: white;
+    background: #FF9B90;
+    border: 1px solid #FF9B90;
+    border-radius: 10px;
+    transition: .4s;
+}
+
+#addEventButton:hover{
+    transform: translate3d(0, -10px, 0);
+    transition: .4s;
+}
+
 a {
     text-decoration: none !important;
 }

@@ -14,11 +14,14 @@ services:
     working_dir: ${PHP_USER_HOME_DIRECTORY}
     restart: always
     volumes:
-      - ./docker/nginx/dev:/etc/nginx/conf.d
+      - ./docker/nginx/prod/:/etc/nginx/conf.d
       - .:${PHP_USER_HOME_DIRECTORY}
+      - ./ssl:/etc/letsencrypt/live/cookorama.fr
     ports:
       - '80:80'
       - '443:443'
+    command: [nginx, '-g', 'daemon off;']
+
 
   php:
     depends_on:

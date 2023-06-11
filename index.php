@@ -99,12 +99,22 @@ $routeur->get('/cours', function (){
 
 // Routes -> Evènements
 $routeur->get('/évènements', function (){
-    require PATH_APPLICATION_EXTRANET . 'event/event.php';
+    require PATH_APPLICATION_EVENT . 'event.php';
 });
 $routeur->get('/évènements/ajout/:date', function ($date){
     $date = htmlspecialchars($date);
-    require PATH_APPLICATION_EXTRANET . 'event/addEvent.php';
+    require PATH_APPLICATION_EVENT . 'addEvent.php';
 });
+$routeur->post('/évènements/ajout/:date/verification', function ($date){
+    $date = htmlspecialchars($date);
+    require PATH_SCRIPT_EVENT . 'event/eventForm.php';
+});
+$routeur->get('/évènements/get/:id', function ($id){
+    $idEvent = htmlspecialchars($id);
+    require PATH_SCRIPT_EVENT . 'getEvent.php';
+    die();
+});
+
 
 // Routes -> Boutique
 $routeur->get('/boutique', function (){
