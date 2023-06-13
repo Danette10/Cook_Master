@@ -5,38 +5,41 @@
 namespace Stripe;
 
 /**
- * Invoices are statements of amounts owed by a customer, and are either
- * generated one-off, or generated periodically from a subscription.
+ * Invoice are statements of amounts owed by a customer, and are either generated
+ * one-off, or generated periodically from a subscription.
  *
- * They contain <a href="https://stripe.com/docs/api#invoiceitems">invoice items</a>, and proration adjustments
- * that may be caused by subscription upgrades/downgrades (if necessary).
+ * They contain <a href="https://stripe.com/docs/api#invoiceitems">invoice
+ * items</a>, and proration adjustments that may be caused by subscription
+ * upgrades/downgrades (if necessary).
  *
- * If your invoice is configured to be billed through automatic charges,
- * Stripe automatically finalizes your invoice and attempts payment. Note
- * that finalizing the invoice,
- * <a href="https://stripe.com/docs/billing/invoices/workflow/#auto_advance">when automatic</a>, does
- * not happen immediately as the invoice is created. Stripe waits
- * until one hour after the last webhook was successfully sent (or the last
+ * If your invoice is configured to be billed through automatic charges, Stripe
+ * automatically finalizes your invoice and attempts payment. Note that finalizing
+ * the invoice, <a
+ * href="https://stripe.com/docs/billing/invoices/workflow/#auto_advance">when
+ * automatic</a>, does not happen immediately as the invoice is created. Stripe
+ * waits until one hour after the last webhook was successfully sent (or the last
  * webhook timed out after failing). If you (and the platforms you may have
- * connected to) have no webhooks configured, Stripe waits one hour after
- * creation to finalize the invoice.
+ * connected to) have no webhooks configured, Stripe waits one hour after creation
+ * to finalize the invoice.
  *
- * If your invoice is configured to be billed by sending an email, then based on your
- * <a href="https://dashboard.stripe.com/account/billing/automatic">email settings</a>,
- * Stripe will email the invoice to your customer and await payment. These
- * emails can contain a link to a hosted page to pay the invoice.
+ * If your invoice is configured to be billed by sending an email, then based on
+ * your <a href="https://dashboard.stripe.com/account/billing/automatic">email
+ * settings</a>, Stripe will email the invoice to your customer and await payment.
+ * These emails can contain a link to a hosted page to pay the invoice.
  *
- * Stripe applies any customer credit on the account before determining the
- * amount due for the invoice (i.e., the amount that will be actually
- * charged). If the amount due for the invoice is less than Stripe's <a href="/docs/currencies#minimum-and-maximum-charge-amounts">minimum allowed charge
- * per currency</a>, the
- * invoice is automatically marked paid, and we add the amount due to the
- * customer's credit balance which is applied to the next invoice.
+ * Stripe applies any customer credit on the account before determining the amount
+ * due for the invoice (i.e., the amount that will be actually charged). If the
+ * amount due for the invoice is less than Stripe's <a
+ * href="/docs/currencies#minimum-and-maximum-charge-amounts">minimum allowed
+ * charge per currency</a>, the invoice is automatically marked paid, and we add
+ * the amount due to the customer's credit balance which is applied to the next
+ * invoice.
  *
- * More details on the customer's credit balance are
- * <a href="https://stripe.com/docs/billing/customer/balance">here</a>.
+ * More details on the customer's credit balance are <a
+ * href="https://stripe.com/docs/billing/customer/balance">here</a>.
  *
- * Related guide: <a href="https://stripe.com/docs/billing/invoices/sending">Send invoices to customers</a>
+ * Related guide: <a href="https://stripe.com/docs/billing/invoices/sending">Send
+ * Invoice to Customers</a>.
  *
  * @property null|string $id Unique identifier for the object. This property is always present unless the invoice is an upcoming invoice. See <a href="https://stripe.com/docs/api/invoices/upcoming">Retrieve an upcoming invoice</a> for more details.
  * @property string $object String representing the object's type. Objects of the same type share the same value.
@@ -74,7 +77,7 @@ namespace Stripe;
  * @property null|\Stripe\Discount $discount Describes the current discount applied to this invoice, if there is one. Not populated if there are multiple discounts.
  * @property null|(string|\Stripe\Discount)[] $discounts The discounts applied to the invoice. Line item discounts are applied before invoice discounts. Use <code>expand[]=discounts</code> to expand each discount.
  * @property null|int $due_date The date on which payment for this invoice is due. This value will be <code>null</code> for invoices where <code>collection_method=charge_automatically</code>.
- * @property null|int $ending_balance Ending customer balance after the invoice is finalized. Invoices are finalized approximately an hour after successful webhook delivery or when payment collection is attempted for the invoice. If the invoice has not been finalized yet, this will be null.
+ * @property null|int $ending_balance Ending customer balance after the invoice is finalized. Invoice are finalized approximately an hour after successful webhook delivery or when payment collection is attempted for the invoice. If the invoice has not been finalized yet, this will be null.
  * @property null|string $footer Footer displayed on the invoice.
  * @property null|\Stripe\StripeObject $from_invoice Details of the invoice that was cloned. See the <a href="https://stripe.com/docs/invoicing/invoice-revisions">revision documentation</a> for more details.
  * @property null|string $hosted_invoice_url The URL for the hosted invoice page, which allows customers to view and pay an invoice. If the invoice has not been finalized yet, this will be null.
@@ -86,7 +89,7 @@ namespace Stripe;
  * @property null|\Stripe\StripeObject $metadata Set of <a href="https://stripe.com/docs/api/metadata">key-value pairs</a> that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
  * @property null|int $next_payment_attempt The time at which payment will next be attempted. This value will be <code>null</code> for invoices where <code>collection_method=send_invoice</code>.
  * @property null|string $number A unique, identifying string that appears on emails sent to the customer for this invoice. This starts with the customer's unique invoice_prefix if it is specified.
- * @property null|string|\Stripe\Account $on_behalf_of The account (if any) for which the funds of the invoice payment are intended. If set, the invoice will be presented with the branding and support information of the specified account. See the <a href="https://stripe.com/docs/billing/invoices/connect">Invoices with Connect</a> documentation for details.
+ * @property null|string|\Stripe\Account $on_behalf_of The account (if any) for which the funds of the invoice payment are intended. If set, the invoice will be presented with the branding and support information of the specified account. See the <a href="https://stripe.com/docs/billing/invoices/connect">Invoice with Connect</a> documentation for details.
  * @property bool $paid Whether payment was successfully collected for this invoice. An invoice can be paid (most commonly) with a charge or with credit from the customer's account balance.
  * @property bool $paid_out_of_band Returns true if the invoice was manually marked paid, returns false if the invoice hasn't been paid yet or was paid on Stripe.
  * @property null|string|\Stripe\PaymentIntent $payment_intent The PaymentIntent associated with this invoice. The PaymentIntent is generated when the invoice is finalized, and can then be used to pay the invoice. Note that voiding an invoice will cancel the PaymentIntent.
@@ -116,7 +119,7 @@ namespace Stripe;
  * @property null|int $total_excluding_tax The integer amount in %s representing the total amount of the invoice including all discounts but excluding all tax.
  * @property \Stripe\StripeObject[] $total_tax_amounts The aggregate amounts calculated per tax rate for all line items.
  * @property null|\Stripe\StripeObject $transfer_data The account (if any) the payment will be attributed to for tax reporting, and where funds from the payment will be transferred to for the invoice.
- * @property null|int $webhooks_delivered_at Invoices are automatically paid or sent 1 hour after webhooks are delivered, or until all webhook delivery attempts have <a href="https://stripe.com/docs/billing/webhooks#understand">been exhausted</a>. This field tracks the time when webhooks for this invoice were successfully delivered. If the invoice had no webhooks to deliver, this will be set while the invoice is being created.
+ * @property null|int $webhooks_delivered_at Invoice are automatically paid or sent 1 hour after webhooks are delivered, or until all webhook delivery attempts have <a href="https://stripe.com/docs/billing/webhooks#understand">been exhausted</a>. This field tracks the time when webhooks for this invoice were successfully delivered. If the invoice had no webhooks to deliver, this will be set while the invoice is being created.
  */
 class Invoice extends ApiResource
 {
