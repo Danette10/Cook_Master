@@ -94,6 +94,9 @@ foreach ($events as $event) {
                     <div class="mb-3">
                         <label for="eventDuration" class="form-label"><strong>Durée de l'événement :</strong> <span id="eventDuration"></span></label>
                     </div>
+                    <div id="allPlaceInfo">
+                        <label for="placeInformation" class="form-label"><strong id="labelPlaceInfo"></strong> <span id="placeInformation"></span></label>
+                    </div>
                     <div class="mb-3">
                         <label for="eventPresta" class="form-label"><strong>Prestataire :</strong> <span id="eventPresta"></span></label>
                     </div>
@@ -221,6 +224,14 @@ foreach ($events as $event) {
                     $('#eventPresta').text(data.presta);
 
                     $('#start').val(datetimeValue);
+
+                    if(data.place !== null) {
+                        $('#allPlaceInfo').classList.add('mb-3');
+                        $('#labelPlaceInfo').text('Adresse de l\'événement :');
+                        $('#placeInformation').text(data.place);
+                    }else{
+                        $('#allPlaceInfo').remove();
+                    }
 
                     $('#eventModal').modal('show');
 
