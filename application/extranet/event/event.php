@@ -94,6 +94,9 @@ foreach ($events as $event) {
                     <div class="mb-3">
                         <label for="eventDuration" class="form-label"><strong>Durée de l'événement :</strong> <span id="eventDuration"></span></label>
                     </div>
+                    <div id="allPlaceInfo">
+                        <label for="placeInformation" class="form-label"><strong id="labelPlaceInfo"></strong> <span id="placeInformation"></span></label>
+                    </div>
                     <div class="mb-3">
                         <label for="eventPresta" class="form-label"><strong>Prestataire :</strong> <span id="eventPresta"></span></label>
                     </div>
@@ -222,6 +225,14 @@ foreach ($events as $event) {
 
                     $('#start').val(datetimeValue);
 
+                    if(data.place !== null) {
+                        $('#allPlaceInfo').classList.add('mb-3');
+                        $('#labelPlaceInfo').text('Adresse de l\'événement :');
+                        $('#placeInformation').text(data.place);
+                    }else{
+                        $('#allPlaceInfo').remove();
+                    }
+
                     $('#eventModal').modal('show');
 
                 }
@@ -230,6 +241,91 @@ foreach ($events as $event) {
         });
 
     });
+
+    function selectedPlace(select) {
+
+        if(parseInt(select) === 3){
+
+            // Ajouter ce span (<span style="color: red;">*</span>) à la fin de chaque label
+
+            /** LABELS **/
+
+            let labelAddress = $('<label>')
+                .attr('for', 'address')
+                .attr('class', 'form-label')
+                .text('Adresse :');
+
+            let labelCity = $('<label>')
+                .attr('for', 'city')
+                .attr('class', 'form-label')
+                .text('Ville :');
+
+            let labelZip = $('<label>')
+                .attr('for', 'zip')
+                .attr('class', 'form-label')
+                .text('Code postal :');
+
+            /** SPANS **/
+            labelAddress.append($('<span>').attr('style', 'color: red;').text('*'));
+            labelCity.append($('<span>').attr('style', 'color: red;').text('*'));
+            labelZip.append($('<span>').attr('style', 'color: red;').text('*'));
+
+            /** INPUTS **/
+            let inputAddress = $('<input>')
+                .attr('type', 'text')
+                .attr('name', 'address')
+                .attr('id', 'address')
+                .attr('class', 'form-control')
+                .attr('placeholder', 'Adresse')
+                .attr('required', 'required');
+
+            let inputCity = $('<input>')
+                .attr('type', 'text')
+                .attr('name', 'city')
+                .attr('id', 'city')
+                .attr('class', 'form-control')
+                .attr('placeholder', 'Ville')
+                .attr('required', 'required');
+
+            let inputZip = $('<input>')
+                .attr('type', 'text')
+                .attr('name', 'zip')
+                .attr('id', 'zip')
+                .attr('class', 'form-control')
+                .attr('placeholder', 'Code postal')
+                .attr('required', 'required');
+
+            /** DIVS **/
+            let divAddress = $('<div>')
+                .attr('class', 'mb-3');
+
+            let divCity = $('<div>')
+                .attr('class', 'mb-3');
+
+            let divZip = $('<div>')
+                .attr('class', 'mb-3');
+
+            /** APPENDS **/
+            divAddress.append(labelAddress);
+            divAddress.append(inputAddress);
+
+            divCity.append(labelCity);
+            divCity.append(inputCity);
+
+            divZip.append(labelZip);
+            divZip.append(inputZip);
+
+            $('#placeForm').append(divAddress);
+            $('#placeForm').append(divCity);
+            $('#placeForm').append(divZip);
+
+        } else {
+
+            $('#placeForm').empty();
+
+        }
+
+    }
 
 </script>
 
