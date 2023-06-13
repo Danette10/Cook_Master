@@ -26,12 +26,14 @@ $presta = $selectPresta->fetchAll(PDO::FETCH_ASSOC);
 
     <div class="mb-3">
         <label for="typePlace" class="form-label">Lieu de l'évènement <span style="color: red;">*</span></label>
-        <select class="form-select" id="typePlace" name="typePlace" required>
+        <select class="form-select" id="typePlace" name="typePlace" onchange="selectedPlace(this.value)" required>
       <!-- <option value="1" selected>A domicile</option> -->
             <option value="2">En ligne</option>
             <option value="3">Sur site</option>
         </select>
     </div>
+
+    <div id="placeForm" class="mb-3"></div>
 
     <div class="mb-3">
         <label for="presta" class="form-label">Prestataire <span style="color: red;">*</span></label>

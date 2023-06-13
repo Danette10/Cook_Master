@@ -16,6 +16,19 @@ $selectPresta->execute(array(
 
 $presta = $selectPresta->fetch(PDO::FETCH_ASSOC);
 
+$selectPlace = $db->prepare("SELECT * FROM place WHERE idPlace = :idPlace");
+$selectPlace->execute(array(
+    'idPlace' => $event['idPlace']
+));
+
+$place = $selectPlace->fetch(PDO::FETCH_ASSOC);
+
+if ($place) {
+    $place = $place['address'] . ', ' . $place['postalCode'] . ' ' . $place['city'];
+}else{
+    $place = null;
+}
+
 $start = new DateTime($event['startEvent']);
 $end = new DateTime($event['endEvent']);
 $interval = $start->diff($end);
@@ -25,7 +38,8 @@ echo json_encode([
     "id" => $event['idEvent'],
     "name" => $event['name'],
     "date" => date('Y-m-d', strtotime($event['startEvent'])),
-    "description" => $event['description'],
+    "description" => html_entity_decode($event['description']),
     "presta" => $presta['firstname'] . ' ' . $presta['lastname'],
-    "duration" => $duration
+    "duration" => $duration,
+    "place" => $place,
 ]);

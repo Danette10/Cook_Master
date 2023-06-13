@@ -48,8 +48,10 @@ CREATE TABLE events
     endEvent          DATETIME     NOT NULL,
     status INT          NOT NULL,
     idPresta          INT          NOT NULL,
+    idPlace           INT,
     PRIMARY KEY (idEvent),
-    FOREIGN KEY (idPresta) REFERENCES users (idUser)
+    FOREIGN KEY (idPresta) REFERENCES users (idUser),
+    FOREIGN KEY (idPlace) REFERENCES place (idPlace)
 );
 
 CREATE TABLE products
@@ -77,8 +79,10 @@ CREATE TABLE courses
     image          VARCHAR(100) NOT NULL,
     maxParticipant INT          NOT NULL,
     idPresta       INT          NOT NULL,
+    idPlace        INT,
     PRIMARY KEY (idCourse),
-    FOREIGN KEY (idPresta) REFERENCES users (idUser)
+    FOREIGN KEY (idPresta) REFERENCES users (idUser),
+    FOREIGN KEY (idPlace) REFERENCES place (idPlace)
 );
 
 CREATE TABLE place
@@ -87,11 +91,7 @@ CREATE TABLE place
     address           VARCHAR(50),
     postalCode        CHAR(5),
     city              VARCHAR(40),
-    idEvent           INT,
-    idCourse          INT,
-    PRIMARY KEY (idPlace),
-    FOREIGN KEY (idEvent) REFERENCES events (idEvent),
-    FOREIGN KEY (idCourse) REFERENCES courses (idCourse)
+    PRIMARY KEY (idPlace)
 );
 
 CREATE TABLE cart
