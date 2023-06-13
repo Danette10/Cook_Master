@@ -25,7 +25,7 @@ echo json_encode([
     "id" => $event['idEvent'],
     "name" => $event['name'],
     "date" => date('Y-m-d', strtotime($event['startEvent'])),
-    "description" => $event['description'],
+    "description" => html_entity_decode($event['description']),
     "presta" => $presta['firstname'] . ' ' . $presta['lastname'],
     "duration" => $duration
 ]);

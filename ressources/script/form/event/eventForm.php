@@ -47,6 +47,7 @@ if (empty($maxParticipants)) {
 }
 
 if (empty($errors)) {
+
     $addEvent = $db->prepare("INSERT INTO events (name, type, typePlace, idPresta, description, startEvent, endEvent, maxParticipant, status) VALUES (:name, :type, :typePlace, :idPresta, :description, :startEvent, :endEvent, :maxParticipant, :status)");
     $addEvent->execute([
         'name' => $name,
@@ -59,6 +60,53 @@ if (empty($errors)) {
         'maxParticipant' => $maxParticipants,
         'status' => 1
     ]);
+
+    $eventId = $db->lastInsertId();
+
+    if($typePlace == 3){
+        $address = isset($_POST['address']) ? htmlspecialchars($_POST['address']) : null;
+        $city = isset($_POST['city']) ? htmlspecialchars($_POST['city']) : null;
+        $zipCode = isset($_POST['zip']) ? htmlspecialchars($_POST['zip']) : null;
+
+        if (empty($address)) {
+            $errors['address'] = "Veuillez renseigner l'adresse de l'évènement";
+        }
+
+        if (empty($city)) {
+            $errors['city'] = "Veuillez renseigner la ville de l'évènement";
+        }
+
+        if (empty($zipCode)) {
+            $errors['zip'] = "Veuillez renseigner le code postal de l'évènement";
+        }
+
+        if (empty($errors)) {
+            $addPlace = $db->prepare("INSERT INTO place (address, city, postalCode) VALUES (:address, :city, :postalCode)");
+            $addPlace->execute([
+                'address' => $address,
+                'city' => $city,
+                'postalCode' => $zipCode
+            ]);
+
+            if ($addPlace->rowCount() > 0) {
+                $idPlace = $db->lastInsertId();
+                $updateEvent = $db->prepare("UPDATE events SET idPlace = :idPlace WHERE idEvent = :idEvent");
+                $updateEvent->execute([
+                    'idPlace' => $idPlace,
+                    'idEvent' => $eventId
+                ]);
+
+                if ($updateEvent->rowCount() > 0) {
+                    $success = "L'évènement a bien été ajouté";
+                } else {
+                    $errors['add'] = "Une erreur est survenue lors de l'ajout du lieu";
+                }
+
+            } else {
+                $errors['add'] = "Une erreur est survenue lors de l'ajout du lieu";
+            }
+        }
+    }
 
     if ($addEvent->rowCount() > 0) {
         $success = "L'évènement a bien été ajouté";
