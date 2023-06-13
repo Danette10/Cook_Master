@@ -36,6 +36,15 @@ CREATE TABLE message
     FOREIGN KEY (idReceiver) REFERENCES users (idUser)
 );
 
+CREATE TABLE place
+(
+    idPlace   INT AUTO_INCREMENT,
+    address           VARCHAR(50),
+    postalCode        CHAR(5),
+    city              VARCHAR(40),
+    PRIMARY KEY (idPlace)
+);
+
 CREATE TABLE events
 (
     idEvent           INT AUTO_INCREMENT,
@@ -83,15 +92,6 @@ CREATE TABLE courses
     PRIMARY KEY (idCourse),
     FOREIGN KEY (idPresta) REFERENCES users (idUser),
     FOREIGN KEY (idPlace) REFERENCES place (idPlace)
-);
-
-CREATE TABLE place
-(
-    idPlace   INT AUTO_INCREMENT,
-    address           VARCHAR(50),
-    postalCode        CHAR(5),
-    city              VARCHAR(40),
-    PRIMARY KEY (idPlace)
 );
 
 CREATE TABLE cart

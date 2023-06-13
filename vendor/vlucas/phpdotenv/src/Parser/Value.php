@@ -1,8 +1,12 @@
 <?php
 
-namespace Dotenv\Loader;
+declare(strict_types=1);
 
-class Value
+namespace Dotenv\Parser;
+
+use Dotenv\Util\Str;
+
+final class Value
 {
     /**
      * The string representation of the parsed value.
@@ -26,7 +30,7 @@ class Value
      *
      * @return void
      */
-    private function __construct($chars, array $vars)
+    private function __construct(string $chars, array $vars)
     {
         $this->chars = $chars;
         $this->vars = $vars;
@@ -35,7 +39,7 @@ class Value
     /**
      * Create an empty value instance.
      *
-     * @return \Dotenv\Loader\Value
+     * @return \Dotenv\Parser\Value
      */
     public static function blank()
     {
@@ -43,18 +47,18 @@ class Value
     }
 
     /**
-     * Create a new value instance, appending the character.
+     * Create a new value instance, appending the characters.
      *
-     * @param string $char
+     * @param string $chars
      * @param bool   $var
      *
-     * @return \Dotenv\Loader\Value
+     * @return \Dotenv\Parser\Value
      */
-    public function append($char, $var)
+    public function append(string $chars, bool $var)
     {
         return new self(
-            $this->chars.$char,
-            $var ? array_merge($this->vars, [strlen($this->chars)]) : $this->vars
+            $this->chars.$chars,
+            $var ? \array_merge($this->vars, [Str::len($this->chars)]) : $this->vars
         );
     }
 
@@ -76,7 +80,8 @@ class Value
     public function getVars()
     {
         $vars = $this->vars;
-        rsort($vars);
+
+        \rsort($vars);
 
         return $vars;
     }
