@@ -322,8 +322,7 @@ class POP3
         $pop3_response = $this->getResponse();
         if ($this->checkResponse($pop3_response)) {
             //Send the Password
-            $maskedPassword = str_repeat('*', strlen($password));
-            $this->sendString("PASS $maskedPassword" . static::LE);
+            $this->sendString("PASS $password" . static::LE);
             $pop3_response = $this->getResponse();
             if ($this->checkResponse($pop3_response)) {
                 return true;
@@ -393,8 +392,8 @@ class POP3
     protected function sendString($string)
     {
         if ($this->pop_conn) {
-            if ($this->do_debug >= self::DEBUG_CLIENT) { // Afficher les messages clients lorsque debug >= 2
-                //echo 'Client -> Server: ', $string;
+            if ($this->do_debug >= self::DEBUG_CLIENT) { //Show client messages when debug >= 2
+                echo 'Client -> Server: ', $string;
             }
 
             return fwrite($this->pop_conn, $string, strlen($string));

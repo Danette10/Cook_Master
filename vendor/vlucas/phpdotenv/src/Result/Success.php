@@ -1,17 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
-/*
- * This file is part of Result Type.
- *
- * (c) Graham Campbell <hello@gjcampbell.co.uk>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-namespace GrahamCampbell\ResultType;
+namespace Dotenv\Result;
 
 use PhpOption\None;
 use PhpOption\Some;
@@ -19,9 +8,9 @@ use PhpOption\Some;
 /**
  * @template T
  * @template E
- * @extends \GrahamCampbell\ResultType\Result<T,E>
+ * @extends \Dotenv\Result\Result<T,E>
  */
-final class Success extends Result
+class Success extends Result
 {
     /**
      * @var T
@@ -47,7 +36,7 @@ final class Success extends Result
      *
      * @param S $value
      *
-     * @return \GrahamCampbell\ResultType\Result<S,E>
+     * @return \Dotenv\Result\Result<S,E>
      */
     public static function create($value)
     {
@@ -71,26 +60,11 @@ final class Success extends Result
      *
      * @param callable(T):S $f
      *
-     * @return \GrahamCampbell\ResultType\Result<S,E>
+     * @return \Dotenv\Result\Result<S,E>
      */
-    public function map(callable $f)
+    public function mapSuccess(callable $f)
     {
         return self::create($f($this->value));
-    }
-
-    /**
-     * Flat map over the success value.
-     *
-     * @template S
-     * @template F
-     *
-     * @param callable(T):\GrahamCampbell\ResultType\Result<S,F> $f
-     *
-     * @return \GrahamCampbell\ResultType\Result<S,F>
-     */
-    public function flatMap(callable $f)
-    {
-        return $f($this->value);
     }
 
     /**
@@ -110,10 +84,11 @@ final class Success extends Result
      *
      * @param callable(E):F $f
      *
-     * @return \GrahamCampbell\ResultType\Result<T,F>
+     * @return \Dotenv\Result\Result<T,F>
      */
     public function mapError(callable $f)
     {
+        /** @var \Dotenv\Result\Result<T,F> */
         return self::create($this->value);
     }
 }

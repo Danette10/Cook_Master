@@ -263,7 +263,7 @@ class TCPDF_STATIC {
 	 * @public static
 	 */
 	public static function getObjFilename($type='tmp', $file_id='') {
-		return tempnam(K_PATH_CACHE, '__tcpdf_'.$file_id.'_'.$type.'_'.hash('sha256',TCPDF_STATIC::getRandomSeed()).'_');
+		return tempnam(K_PATH_CACHE, '__tcpdf_'.$file_id.'_'.$type.'_'.md5(TCPDF_STATIC::getRandomSeed()).'_');
 	}
 
 	/**
@@ -398,7 +398,7 @@ class TCPDF_STATIC {
 	 * @public static
 	 */
 	public static function _md5_16($str) {
-		return pack('H*', hash('sha256',$str));
+		return pack('H*', md5($str));
 	}
 
 	/**

@@ -1,30 +1,13 @@
 <?php
 
-declare(strict_types=1);
+namespace Dotenv\Loader;
 
-namespace Dotenv\Parser;
-
-use Dotenv\Util\Regex;
-use Dotenv\Util\Str;
-
-final class Lines
+class Lines
 {
-    /**
-     * This class is a singleton.
-     *
-     * @codeCoverageIgnore
-     *
-     * @return void
-     */
-    private function __construct()
-    {
-        //
-    }
-
     /**
      * Process the array of lines of environment variables.
      *
-     * This will produce an array of raw entries, one per variable.
+     * This will produce an array of entries, one per variable.
      *
      * @param string[] $lines
      *
@@ -37,7 +20,7 @@ final class Lines
         $multilineBuffer = [];
 
         foreach ($lines as $line) {
-            [$multiline, $line, $multilineBuffer] = self::multilineProcess($multiline, $line, $multilineBuffer);
+            list($multiline, $line, $multilineBuffer) = self::multilineProcess($multiline, $line, $multilineBuffer);
 
             if (!$multiline && !self::isCommentOrWhitespace($line)) {
                 $output[] = $line;
@@ -56,7 +39,7 @@ final class Lines
      *
      * @return array{bool,string,string[]}
      */
-    private static function multilineProcess(bool $multiline, string $line, array $buffer)
+    private static function multilineProcess($multiline, $line, array $buffer)
     {
         $startsOnCurrentLine = $multiline ? false : self::looksLikeMultilineStart($line);
 
@@ -66,11 +49,11 @@ final class Lines
         }
 
         if ($multiline) {
-            \array_push($buffer, $line);
+            array_push($buffer, $line);
 
             if (self::looksLikeMultilineStop($line, $startsOnCurrentLine)) {
                 $multiline = false;
-                $line = \implode("\n", $buffer);
+                $line = implode("\n", $buffer);
                 $buffer = [];
             }
         }
@@ -85,11 +68,13 @@ final class Lines
      *
      * @return bool
      */
-    private static function looksLikeMultilineStart(string $line)
+    private static function looksLikeMultilineStart($line)
     {
-        return Str::pos($line, '="')->map(static function () use ($line) {
-            return self::looksLikeMultilineStop($line, true) === false;
-        })->getOrElse(false);
+        if (strpos($line, '="') === false) {
+            return false;
+        }
+
+        return self::looksLikeMultilineStop($line, true) === false;
     }
 
     /**
@@ -100,15 +85,36 @@ final class Lines
      *
      * @return bool
      */
-    private static function looksLikeMultilineStop(string $line, bool $started)
+    private static function looksLikeMultilineStop($line, $started)
     {
         if ($line === '"') {
             return true;
         }
 
-        return Regex::occurrences('/(?=([^\\\\]"))/', \str_replace('\\\\', '', $line))->map(static function (int $count) use ($started) {
-            return $started ? $count > 1 : $count >= 1;
-        })->success()->getOrElse(false);
+        $seen = $started ? 0 : 1;
+
+        foreach (self::getCharPairs(str_replace('\\\\', '', $line)) as $pair) {
+            if ($pair[0] !== '\\' && $pair[1] === '"') {
+                $seen++;
+            }
+        }
+
+        return $seen > 1;
+    }
+
+    /**
+     * Get all pairs of adjacent characters within the line.
+     *
+     * @param string $line
+     *
+     * @return array{array{string,string|null}}
+     */
+    private static function getCharPairs($line)
+    {
+        $chars = str_split($line);
+
+        /** @var array{array{string,string|null}} */
+        return array_map(null, $chars, array_slice($chars, 1));
     }
 
     /**
@@ -118,10 +124,14 @@ final class Lines
      *
      * @return bool
      */
-    private static function isCommentOrWhitespace(string $line)
+    private static function isCommentOrWhitespace($line)
     {
-        $line = \trim($line);
+        if (trim($line) === '') {
+            return true;
+        }
 
-        return $line === '' || (isset($line[0]) && $line[0] === '#');
+        $line = ltrim($line);
+
+        return isset($line[0]) && $line[0] === '#';
     }
 }

@@ -160,34 +160,23 @@ if (!isset($_GET['code'])) {
     //If we don't have an authorization code then get one
     $authUrl = $provider->getAuthorizationUrl($options);
     $_SESSION['oauth2state'] = $provider->getState();
-
-    $expectedProviderHost = 'accounts.google.com';
-    if (parse_url($authUrl, PHP_URL_HOST) === $expectedProviderHost) {
-        header('Location: ' . $authUrl);
-    } elseif (empty($_GET['state']) || ($_GET['state'] !== $_SESSION['oauth2state'])) {
+    header('Location: ' . $authUrl);
+    exit;
+    //Check given state against previously stored one to mitigate CSRF attack
+} elseif (empty($_GET['state']) || ($_GET['state'] !== $_SESSION['oauth2state'])) {
     unset($_SESSION['oauth2state']);
     unset($_SESSION['provider']);
     exit('Invalid state');
 } else {
     unset($_SESSION['provider']);
-
-    // Valider et nettoyer les données d'entrée
-    $code = isset($_GET['code']) ? $_GET['code'] : null;
-    // Appliquer une validation supplémentaire si nécessaire
-
-    // Échapper les sorties avant de les afficher
-    $escapedRefreshToken = htmlspecialchars($token->getRefreshToken());
-
-    // Essayez d'obtenir un jeton d'accès (using the authorization code grant)
+    //Try to get an access token (using the authorization code grant)
     $token = $provider->getAccessToken(
         'authorization_code',
         [
-            'code' => $code
+            'code' => $_GET['code']
         ]
     );
-
-    // Utilisez le jeton pour interagir avec une API au nom de l'utilisateur
-    // Utilisez ce jeton pour obtenir un nouveau jeton d'accès si l'ancien expire
-    echo 'Refresh Token: ', $escapedRefreshToken;
+    //Use this to interact with an API on the users behalf
+    //Use this to get a new access token if the old one expires
+    echo 'Refresh Token: ', $token->getRefreshToken();
 }
-

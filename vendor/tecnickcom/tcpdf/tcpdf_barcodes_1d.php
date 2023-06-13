@@ -98,7 +98,7 @@ class TCPDFBarcode {
 		header('Pragma: public');
 		header('Expires: Sat, 26 Jul 1997 05:00:00 GMT'); // Date in the past
 		header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
-		header('Content-Disposition: inline; filename="'.hash('sha256',$code).'.svg";');
+		header('Content-Disposition: inline; filename="'.md5($code).'.svg";');
 		//header('Content-Length: '.strlen($code));
 		echo $code;
 	}

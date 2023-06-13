@@ -1877,8 +1877,8 @@ class TCPDF {
 	public function __construct($orientation='P', $unit='mm', $format='A4', $unicode=true, $encoding='UTF-8', $diskcache=false, $pdfa=false) {
 		// set file ID for trailer
 		$serformat = (is_array($format) ? json_encode($format) : $format);
-        $this->file_id = hash('sha256', TCPDF_STATIC::getRandomSeed('TCPDF'.$orientation.$unit.$serformat.$encoding));
-        $this->font_obj_ids = array();
+		$this->file_id = md5(TCPDF_STATIC::getRandomSeed('TCPDF'.$orientation.$unit.$serformat.$encoding));
+		$this->font_obj_ids = array();
 		$this->page_obj_id = array();
 		$this->form_obj_id = array();
 
@@ -6990,8 +6990,8 @@ class TCPDF {
 			}
 		}
 		// file hash
-        $filehash = hash('sha256', $file);
-        // get original image width and height in pixels
+		$filehash = md5($file);
+		// get original image width and height in pixels
 		list($pixw, $pixh) = $imsize;
 		// calculate image width and height on document
 		if (($w <= 0) AND ($h <= 0)) {
@@ -7329,8 +7329,8 @@ class TCPDF {
 	protected function ImagePngAlpha($file, $x, $y, $wpx, $hpx, $w, $h, $type, $link, $align, $resize, $dpi, $palign, $filehash='') {
 		// create temp images
 		if (empty($filehash)) {
-            $filehash = hash('sha256', $file);
-        }
+			$filehash = md5($file);
+		}
 		// create temp image file (without alpha channel)
 		$tempfile_plain = K_PATH_CACHE.'__tcpdf_'.$this->file_id.'_imgmask_plain_'.$filehash;
 		// create temp alpha file
@@ -10898,8 +10898,8 @@ class TCPDF {
 			}
 		} else { // Public-Key mode
 			// random 20-byte seed
-            $seed = hash('sha256', TCPDF_STATIC::getRandomSeed(), true);
-            $recipient_bytes = '';
+			$seed = sha1(TCPDF_STATIC::getRandomSeed(), true);
+			$recipient_bytes = '';
 			foreach ($this->encryptdata['pubkeys'] as $pubkey) {
 				// for each public certificate
 				if (isset($pubkey['p'])) {
@@ -10944,8 +10944,8 @@ class TCPDF {
 			if ($this->encryptdata['mode'] == 3) { // AES-256
 				$this->encryptdata['key'] = substr(hash('sha256', $seed.$recipient_bytes, true), 0, $keybytelen);
 			} else { // RC4-40, RC4-128, AES-128
-                $this->encryptdata['key'] = substr(hash('sha256', $seed.$recipient_bytes, true), 0, $keybytelen);
-            }
+				$this->encryptdata['key'] = substr(sha1($seed.$recipient_bytes, true), 0, $keybytelen);
+			}
 		}
 	}
 
@@ -11007,7 +11007,7 @@ class TCPDF {
 			}
 		}
 		if ($owner_pass === null) {
-			$owner_pass = hash('sha256', TCPDF_STATIC::getRandomSeed());
+			$owner_pass = md5(TCPDF_STATIC::getRandomSeed());
 		}
 		$this->encryptdata['user_password'] = $user_pass;
 		$this->encryptdata['owner_password'] = $owner_pass;
@@ -17200,7 +17200,7 @@ class TCPDF {
 	 * @public static
 	 */
 	protected function getHashForTCPDFtagParams($data) {
-		return hash('sha256',strlen($data).$this->file_id.$data);
+		return md5(strlen($data).$this->file_id.$data);
 	}
 
 	/**

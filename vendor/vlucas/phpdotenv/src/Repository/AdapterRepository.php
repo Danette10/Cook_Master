@@ -1,107 +1,86 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Dotenv\Repository;
 
-use Dotenv\Repository\Adapter\ReaderInterface;
-use Dotenv\Repository\Adapter\WriterInterface;
-use InvalidArgumentException;
-
-final class AdapterRepository implements RepositoryInterface
+class AdapterRepository extends AbstractRepository
 {
     /**
-     * The reader to use.
+     * The set of readers to use.
      *
-     * @var \Dotenv\Repository\Adapter\ReaderInterface
+     * @var \Dotenv\Repository\Adapter\ReaderInterface[]
      */
-    private $reader;
+    protected $readers;
 
     /**
-     * The writer to use.
+     * The set of writers to use.
      *
-     * @var \Dotenv\Repository\Adapter\WriterInterface
+     * @var \Dotenv\Repository\Adapter\WriterInterface[]
      */
-    private $writer;
+    protected $writers;
 
     /**
      * Create a new adapter repository instance.
      *
-     * @param \Dotenv\Repository\Adapter\ReaderInterface $reader
-     * @param \Dotenv\Repository\Adapter\WriterInterface $writer
+     * @param \Dotenv\Repository\Adapter\ReaderInterface[] $readers
+     * @param \Dotenv\Repository\Adapter\WriterInterface[] $writers
+     * @param bool                                         $immutable
      *
      * @return void
      */
-    public function __construct(ReaderInterface $reader, WriterInterface $writer)
+    public function __construct(array $readers, array $writers, $immutable)
     {
-        $this->reader = $reader;
-        $this->writer = $writer;
-    }
-
-    /**
-     * Determine if the given environment variable is defined.
-     *
-     * @param string $name
-     *
-     * @return bool
-     */
-    public function has(string $name)
-    {
-        return '' !== $name && $this->reader->read($name)->isDefined();
+        $this->readers = $readers;
+        $this->writers = $writers;
+        parent::__construct($immutable);
     }
 
     /**
      * Get an environment variable.
      *
-     * @param string $name
+     * We do this by querying our readers sequentially.
      *
-     * @throws \InvalidArgumentException
+     * @param non-empty-string $name
      *
      * @return string|null
      */
-    public function get(string $name)
+    protected function getInternal($name)
     {
-        if ('' === $name) {
-            throw new InvalidArgumentException('Expected name to be a non-empty string.');
+        foreach ($this->readers as $reader) {
+            $result = $reader->get($name);
+            if ($result->isDefined()) {
+                return $result->get();
+            }
         }
 
-        return $this->reader->read($name)->getOrElse(null);
+        return null;
     }
 
     /**
      * Set an environment variable.
      *
-     * @param string $name
-     * @param string $value
+     * @param non-empty-string $name
+     * @param string|null      $value
      *
-     * @throws \InvalidArgumentException
-     *
-     * @return bool
+     * @return void
      */
-    public function set(string $name, string $value)
+    protected function setInternal($name, $value = null)
     {
-        if ('' === $name) {
-            throw new InvalidArgumentException('Expected name to be a non-empty string.');
+        foreach ($this->writers as $writers) {
+            $writers->set($name, $value);
         }
-
-        return $this->writer->write($name, $value);
     }
 
     /**
      * Clear an environment variable.
      *
-     * @param string $name
+     * @param non-empty-string $name
      *
-     * @throws \InvalidArgumentException
-     *
-     * @return bool
+     * @return void
      */
-    public function clear(string $name)
+    protected function clearInternal($name)
     {
-        if ('' === $name) {
-            throw new InvalidArgumentException('Expected name to be a non-empty string.');
+        foreach ($this->writers as $writers) {
+            $writers->clear($name);
         }
-
-        return $this->writer->delete($name);
     }
 }
