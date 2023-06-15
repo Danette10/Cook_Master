@@ -63,7 +63,21 @@ if (empty($errors)) {
 
     $eventId = $db->lastInsertId();
 
-    if($typePlace == 3){
+    if($typePlace == 2){
+        $idMeeting = uniqid();
+        $link = "https://meet.jit.si/" . $idMeeting;
+        $addPlace = $db->prepare("UPDATE events SET linkMeeting = :linkMeeting WHERE idEvent = :idEvent");
+        $addPlace->execute([
+            'linkMeeting' => $link,
+            'idEvent' => $eventId
+        ]);
+
+        if ($addPlace->rowCount() > 0) {
+            $success = "L'évènement a bien été ajouté";
+        } else {
+            $errors['add'] = "Une erreur est survenue lors de l'ajout du lieu";
+        }
+    }else if($typePlace == 3){
         $address = isset($_POST['address']) ? htmlspecialchars($_POST['address']) : null;
         $city = isset($_POST['city']) ? htmlspecialchars($_POST['city']) : null;
         $zipCode = isset($_POST['zip']) ? htmlspecialchars($_POST['zip']) : null;

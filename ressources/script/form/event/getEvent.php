@@ -42,4 +42,5 @@ echo json_encode([
     "presta" => $presta['firstname'] . ' ' . $presta['lastname'],
     "duration" => $duration,
     "place" => $place,
+    "linkMeeting" => $event['linkMeeting'],
 ]);
