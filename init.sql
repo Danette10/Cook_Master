@@ -45,57 +45,6 @@ CREATE TABLE IF NOT EXISTS place
     PRIMARY KEY (idPlace)
 );
 
-CREATE TABLE IF NOT EXISTS events
-(
-    idEvent           INT AUTO_INCREMENT,
-    type              INT          NOT NULL,
-    typePlace         INT          NOT NULL,
-    name              VARCHAR(30)  NOT NULL,
-    description       VARCHAR(150) NOT NULL,
-    maxParticipant    INT          NOT NULL,
-    startEvent        DATETIME     NOT NULL,
-    endEvent          DATETIME     NOT NULL,
-    status INT          NOT NULL,
-    linkMeeting       CHAR(33)     DEFAULT NULL,
-    idPresta          INT          NOT NULL,
-    idPlace           INT,
-    PRIMARY KEY (idEvent),
-    FOREIGN KEY (idPresta) REFERENCES users (idUser),
-    FOREIGN KEY (idPlace) REFERENCES place (idPlace)
-);
-
-CREATE TABLE IF NOT EXISTS products
-(
-    id          INT AUTO_INCREMENT,
-    idProduct   VARCHAR(50)  NOT NULL,
-    name        VARCHAR(30)  NOT NULL,
-    description VARCHAR(150) NOT NULL,
-    image       VARCHAR(100) NOT NULL,
-    type        INT          NOT NULL,
-    price       VARCHAR(15)  NOT NULL,
-    quantity    INT          NOT NULL DEFAULT 0,
-    creation    DATETIME     NOT NULL,
-    endDate     DATETIME     NOT NULL DEFAULT '1900-01-01 00:00:00',
-    PRIMARY KEY (id)
-);
-
-CREATE TABLE IF NOT EXISTS courses
-(
-    idCourse       INT AUTO_INCREMENT,
-    name           VARCHAR(30)  NOT NULL,
-    description    VARCHAR(150) NOT NULL,
-    type           INT          NOT NULL,
-    typePlace      INT          NOT NULL,
-    image          VARCHAR(100) NOT NULL,
-    maxParticipant INT          NOT NULL,
-    linkMeeting       CHAR(33)     DEFAULT NULL,
-    idPresta       INT          NOT NULL,
-    idPlace        INT,
-    PRIMARY KEY (idCourse),
-    FOREIGN KEY (idPresta) REFERENCES users (idUser),
-    FOREIGN KEY (idPlace) REFERENCES place (idPlace)
-);
-
 CREATE TABLE IF NOT EXISTS rooms
 (
     idRoom   INT AUTO_INCREMENT,
@@ -118,6 +67,57 @@ CREATE TABLE IF NOT EXISTS rooms_equipment
     PRIMARY KEY (idRoom, idProduct),
     FOREIGN KEY (idRoom) REFERENCES rooms (idRoom),
     FOREIGN KEY (idProduct) REFERENCES products (id)
+);
+
+CREATE TABLE IF NOT EXISTS events
+(
+    idEvent           INT AUTO_INCREMENT,
+    type              INT          NOT NULL,
+    typePlace         INT          NOT NULL,
+    name              VARCHAR(30)  NOT NULL,
+    description       VARCHAR(150) NOT NULL,
+    maxParticipant    INT          NOT NULL,
+    startEvent        DATETIME     NOT NULL,
+    endEvent          DATETIME     NOT NULL,
+    status INT          NOT NULL,
+    linkMeeting       CHAR(33)     DEFAULT NULL,
+    idPresta          INT          NOT NULL,
+    idRoom           INT,
+    PRIMARY KEY (idEvent),
+    FOREIGN KEY (idPresta) REFERENCES users (idUser),
+    FOREIGN KEY (idRoom) REFERENCES rooms (idRoom)
+);
+
+CREATE TABLE IF NOT EXISTS courses
+(
+    idCourse       INT AUTO_INCREMENT,
+    name           VARCHAR(30)  NOT NULL,
+    description    VARCHAR(150) NOT NULL,
+    type           INT          NOT NULL,
+    typePlace      INT          NOT NULL,
+    image          VARCHAR(100) NOT NULL,
+    maxParticipant INT          NOT NULL,
+    linkMeeting       CHAR(33)     DEFAULT NULL,
+    idPresta       INT          NOT NULL,
+    idRoom        INT,
+    PRIMARY KEY (idCourse),
+    FOREIGN KEY (idPresta) REFERENCES users (idUser),
+    FOREIGN KEY (idRoom) REFERENCES rooms (idRoom)
+);
+
+CREATE TABLE IF NOT EXISTS products
+(
+    id          INT AUTO_INCREMENT,
+    idProduct   VARCHAR(50)  NOT NULL,
+    name        VARCHAR(30)  NOT NULL,
+    description VARCHAR(150) NOT NULL,
+    image       VARCHAR(100) NOT NULL,
+    type        INT          NOT NULL,
+    price       VARCHAR(15)  NOT NULL,
+    quantity    INT          NOT NULL DEFAULT 0,
+    creation    DATETIME     NOT NULL,
+    endDate     DATETIME     NOT NULL DEFAULT '1900-01-01 00:00:00',
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS cart

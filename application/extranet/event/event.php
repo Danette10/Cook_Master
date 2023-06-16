@@ -283,78 +283,16 @@ foreach ($events as $event) {
 
         if(parseInt(select) === 3){
 
-            // Ajouter ce span (<span style="color: red;">*</span>) à la fin de chaque label
+            $.ajax({
+                url: `<?= ADDRESS_SCRIPT_EVENT ?>getPlace.php`,
+                type: 'GET',
+                success: function(data) {
 
-            /** LABELS **/
-
-            let labelAddress = $('<label>')
-                .attr('for', 'address')
-                .attr('class', 'form-label')
-                .text('Adresse :');
-
-            let labelCity = $('<label>')
-                .attr('for', 'city')
-                .attr('class', 'form-label')
-                .text('Ville :');
-
-            let labelZip = $('<label>')
-                .attr('for', 'zip')
-                .attr('class', 'form-label')
-                .text('Code postal :');
-
-            /** SPANS **/
-            labelAddress.append($('<span>').attr('style', 'color: red;').text('*'));
-            labelCity.append($('<span>').attr('style', 'color: red;').text('*'));
-            labelZip.append($('<span>').attr('style', 'color: red;').text('*'));
-
-            /** INPUTS **/
-            let inputAddress = $('<input>')
-                .attr('type', 'text')
-                .attr('name', 'address')
-                .attr('id', 'address')
-                .attr('class', 'form-control')
-                .attr('placeholder', 'Adresse')
-                .attr('required', 'required');
-
-            let inputCity = $('<input>')
-                .attr('type', 'text')
-                .attr('name', 'city')
-                .attr('id', 'city')
-                .attr('class', 'form-control')
-                .attr('placeholder', 'Ville')
-                .attr('required', 'required');
-
-            let inputZip = $('<input>')
-                .attr('type', 'text')
-                .attr('name', 'zip')
-                .attr('id', 'zip')
-                .attr('class', 'form-control')
-                .attr('placeholder', 'Code postal')
-                .attr('required', 'required');
-
-            /** DIVS **/
-            let divAddress = $('<div>')
-                .attr('class', 'mb-3');
-
-            let divCity = $('<div>')
-                .attr('class', 'mb-3');
-
-            let divZip = $('<div>')
-                .attr('class', 'mb-3');
-
-            /** APPENDS **/
-            divAddress.append(labelAddress);
-            divAddress.append(inputAddress);
-
-            divCity.append(labelCity);
-            divCity.append(inputCity);
-
-            divZip.append(labelZip);
-            divZip.append(inputZip);
-
-            $('#placeForm').append(divAddress);
-            $('#placeForm').append(divCity);
-            $('#placeForm').append(divZip);
+                    let placeForm = $('#placeForm');
+                    placeForm.empty();
+                    placeForm.append(data);
+                }
+            });
 
         } else {
 
