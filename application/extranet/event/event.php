@@ -54,7 +54,7 @@ foreach ($events as $event) {
         <h1>Calendrier des évènements</h1>
     </div>
 
-    <div class="col-md-8 m-auto pt-4">
+    <div class="col-md-9 m-auto pt-4">
         <div id="calendar"></div>
     </div>
 
@@ -102,19 +102,9 @@ foreach ($events as $event) {
                     </div>
                 </div>
 
-                <?php
-                foreach ($result as $event):
+                <div class="modal-footer" id="eventModalFooter">
+                </div>
 
-                    if (isset($_SESSION['id']) && ($_SESSION['role'] == '4' || $_SESSION['role'] == '5') && $_SESSION['id'] == $event['idPresta']): ?>
-
-                        <div class="modal-footer">
-                            <a href="<?= ADDRESS_SITE ?>évènements/modifier/<?= $event['id'] ?>" class="btn btn-primary">Modifier</a>
-                            <a href="<?= ADDRESS_SITE ?>évènements/supprimer/<?= $event['id'] ?>" class="btn btn-danger">Supprimer</a>
-                        </div>
-
-                    <?php endif; ?>
-
-                <?php endforeach; ?>
             </div>
         </div>
     </div>
@@ -165,6 +155,20 @@ foreach ($events as $event) {
                 if (day < 10) day = '0' + day;
                 if (month < 10) month = '0' + month;
                 let formattedDate = day + '-' + month + '-' + year;
+
+                // Vérifier que c'est pas une date passée
+                let today = new Date();
+                let todayDay = today.getDate();
+                let todayMonth = today.getMonth() + 1;
+                let todayYear = today.getFullYear();
+
+                if (todayDay < 10) todayDay = '0' + todayDay;
+                if (todayMonth < 10) todayMonth = '0' + todayMonth;
+                let formattedToday = todayDay + '-' + todayMonth + '-' + todayYear;
+
+                if (formattedDate < formattedToday) {
+                    return;
+                }
 
                 let addButton = $('<button>')
                     .attr('id', 'addEventButton')
@@ -223,6 +227,10 @@ foreach ($events as $event) {
                     $('#eventDuration').text(data.duration + ' jours');
                     $('#eventPresta').text(data.presta);
 
+                    if(data.linkMeeting !== null) {
+                        $('#eventDescription').append('<br>Vous pouvez rejoindre la réunion en cliquant sur le lien suivant : <a href="' + data.linkMeeting + '" target="_blank">' + data.linkMeeting + '</a>');
+                    }
+
                     $('#start').val(datetimeValue);
 
                     if(data.place !== null) {
@@ -232,6 +240,26 @@ foreach ($events as $event) {
                     }else{
                         $('#allPlaceInfo').remove();
                     }
+
+                    <?php if (isset($_SESSION['id']) && ($_SESSION['role'] == '4' || $_SESSION['role'] == '5') && $_SESSION['id'] == $event['idPresta']): ?>
+
+                        let eventModalFooter = $('#eventModalFooter');
+
+                        let modifyButton = $('<a>')
+                            .attr('href', `<?= ADDRESS_SITE ?>évènements/modifier/${id}`)
+                            .attr('class', 'btn btn-warning')
+                            .text('Modifier');
+
+                        let deleteButton = $('<a>')
+                            .attr('href', `<?= ADDRESS_SITE ?>évènements/supprimer/${id}`)
+                            .attr('class', 'btn btn-danger')
+                            .text('Supprimer');
+
+                        eventModalFooter.empty();
+                        eventModalFooter.append(modifyButton);
+                        eventModalFooter.append(deleteButton);
+
+                    <?php endif; ?>
 
                     $('#eventModal').modal('show');
 
