@@ -27,6 +27,45 @@
     });
 
     <?php
+        /* Function to autocomplete address */
+    ?>
+
+    function autoCompleteAddress(){
+        $("#adresse").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "https://api-adresse.data.gouv.fr/search/",
+                    dataType: "json",
+                    data: {
+                        q: request.term,
+                        autocomplete: 1
+                    },
+                    success: function(data) {
+                        response($.map(data.features, function(item) {
+                            return {
+                                label: item.properties.label,
+                                value: item.properties.label,
+                                city: item.properties.city,
+                                postalCode: item.properties.postcode,
+                                street: item.properties.street || item.properties.name,
+                                number: item.properties.housenumber
+                            };
+                        }));
+                    }
+                });
+            },
+            minLength: 3,
+            select: function(event, ui) {
+                const formattedAddress = ui.item.number && ui.item.street ? `${ui.item.number} ${ui.item.street}` : ui.item.street || '';
+                $("#adresse").val(formattedAddress);
+                $("#city").val(ui.item.city);
+                $("#postal_code").val(ui.item.postalCode);
+                return false;
+            }
+        });
+    }
+
+    <?php
         /*
          * TODO: Function to connect user
          */

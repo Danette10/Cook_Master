@@ -50,8 +50,17 @@ foreach ($events as $event) {
 
 <main>
 
-    <div class="text-center mt-4 pb-4">
+    <div class="text-center mt-4 pb-4 d-flex justify-content-center align-items-center">
         <h1>Calendrier des évènements</h1>
+        <?php
+        if(isset($_SESSION['role']) && ($_SESSION['role'] == 4 || $_SESSION['role'] == 5)):
+            ?>
+            <a href="<?= ADDRESS_SITE ?>évènements/déclarer-une-salle" class="ms-3">
+                <button type="button" class="btn connexionLink shadow">Déclarer une salle</button>
+            </a>
+        <?php
+        endif;
+        ?>
     </div>
 
     <div class="col-md-9 m-auto pt-4">

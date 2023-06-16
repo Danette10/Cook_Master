@@ -114,6 +114,12 @@ $routeur->get('/évènements/get/:id', function ($id){
     require PATH_SCRIPT_EVENT . 'getEvent.php';
     die();
 });
+$routeur->get('/évènements/déclarer-une-salle', function (){
+    require PATH_APPLICATION_EVENT . 'addRoom.php';
+});
+$routeur->post('/évènements/déclarer-une-salle/check', function (){
+    require PATH_SCRIPT_EVENT . 'roomForm.php';
+});
 
 
 // Routes -> Boutique
