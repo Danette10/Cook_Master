@@ -262,7 +262,7 @@ foreach ($events as $event) {
                     $('#start').val(datetimeValue);
 
                     if(data.place !== null) {
-                        $('#allPlaceInfo').classList.add('mb-3');
+                        $('#allPlaceInfo').attr('class', 'mb-3');
                         $('#labelPlaceInfo').text('Adresse de l\'événement :');
                         $('#placeInformation').text(data.place);
                     }else{

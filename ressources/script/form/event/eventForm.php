@@ -80,22 +80,16 @@ if (empty($errors)) {
     }else if($typePlace == 3){
         $idRoom = isset($_POST['room']) ? htmlspecialchars(intval($_POST['room'])) : null;
 
-        if (empty($room)) {
-            $errors['room'] = "Veuillez renseigner la salle de l'évènement";
-        }
+        $updateEvent = $db->prepare("UPDATE events SET idRoom = :idRoom WHERE idEvent = :idEvent");
+        $updateEvent->execute([
+            'idRoom' => $idRoom,
+            'idEvent' => $eventId
+        ]);
 
-        if (empty($errors)) {
-            $updateEvent = $db->prepare("UPDATE events SET idRoom = :idRoom WHERE idEvent = :idEvent");
-            $updateEvent->execute([
-                'idRoom' => $idRoom,
-                'idEvent' => $eventId
-            ]);
-
-            if ($updateEvent->rowCount() > 0) {
-                $success = "L'évènement a bien été ajouté";
-            } else {
-                $errors['add'] = "Une erreur est survenue lors de l'ajout du lieu";
-            }
+        if ($updateEvent->rowCount() > 0) {
+            $success = "L'évènement a bien été ajouté";
+        } else {
+            $errors['add'] = "Une erreur est survenue lors de l'ajout du lieu";
         }
     }
 

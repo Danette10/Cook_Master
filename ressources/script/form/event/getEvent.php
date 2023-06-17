@@ -16,18 +16,21 @@ $selectPresta->execute(array(
 
 $presta = $selectPresta->fetch(PDO::FETCH_ASSOC);
 
-$selectPlace = $db->prepare("SELECT * FROM place WHERE idPlace = :idPlace");
+$selectRoom = $db->prepare("SELECT * FROM rooms WHERE idRoom = :id");
+$selectRoom->execute(array(
+    'id' => $event['idRoom']
+));
+
+$room = $selectRoom->fetch(PDO::FETCH_ASSOC);
+
+$selectPlace = $db->prepare("SELECT * FROM place WHERE idPlace = :id");
 $selectPlace->execute(array(
-    'idPlace' => $event['idPlace']
+    'id' => $room['idPlace']
 ));
 
 $place = $selectPlace->fetch(PDO::FETCH_ASSOC);
 
-if ($place) {
-    $place = $place['address'] . ', ' . $place['postalCode'] . ' ' . $place['city'];
-}else{
-    $place = null;
-}
+$placeInfo = $room['name'] . ' - ' . $place['address'] . ', ' . $place['postalCode'] . ' ' . $place['city'];
 
 $start = new DateTime($event['startEvent']);
 $end = new DateTime($event['endEvent']);
@@ -41,6 +44,6 @@ echo json_encode([
     "description" => html_entity_decode($event['description']),
     "presta" => $presta['firstname'] . ' ' . $presta['lastname'],
     "duration" => $duration,
-    "place" => $place,
+    "place" => html_entity_decode($placeInfo),
     "linkMeeting" => $event['linkMeeting'],
 ]);
