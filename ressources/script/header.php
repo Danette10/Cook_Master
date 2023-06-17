@@ -163,11 +163,11 @@
                 </button>
 
                 <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-                    <li><a class="dropdown-item" href="<?= ADDRESS_SITE ?>profil">Profil</a></li>
+                    <li><a class="dropdown-item lang-profileHeader" href="<?= ADDRESS_SITE ?>profil"></a></li>
 
                     <hr class="dropdown-divider">
 
-                    <li><a class="dropdown-item" href="<?= ADDRESS_SCRIPT ?>logout.php">Décconnexion</a></li>
+                    <li><a class="dropdown-item lang-logout" href="<?= ADDRESS_SCRIPT ?>logout.php"></a></li>
 
                 </ul>
             </div>
@@ -222,7 +222,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="connexionModalLabel">Connexion</h1>
+                <h1 class="modal-title fs-5 lang-login" id="connexionModalLabel"></h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

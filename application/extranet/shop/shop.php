@@ -16,12 +16,12 @@ global $db;
     <?php include PATH_SCRIPT . 'messages.php'; ?>
 
     <div class="mt-4 d-flex justify-content-center align-items-center">
-        <h1>Boutique</h1>
+        <h1 class="lang-shop"></h1>
         <?php
         if(isset($_SESSION['role']) && $_SESSION['role'] == 5):
         ?>
         <a href="<?= ADDRESS_SITE ?>boutique/ajout-produit" class="ms-3">
-            <button type="button" class="btn connexionLink shadow">Ajouter un produit</button>
+            <button type="button" class="btn connexionLink shadow lang-shop-add"></button>
         </a>
         <?php
         endif;
@@ -46,15 +46,15 @@ global $db;
                         </div>
                     </div>
                     <div>
-                        <p>Quantité : <?= $product['quantity'] ?></p>
+                        <p><span class="lang-shop-quantity"></span> <?= $product['quantity'] ?></p>
                         <?php
                         if(isset($_SESSION['role']) && $_SESSION['role'] == 5):
                             ?>
                             <a href="<?= ADDRESS_SITE ?>boutique/modifier-produit/<?= $product['id'] ?>">
-                                <button type="button" class="btn connexionLink shadow">Modifier</button>
+                                <button type="button" class="btn connexionLink shadow lang-shop-modify"></button>
                             </a>
                             <a href="<?= ADDRESS_SITE ?>boutique/supprimer-produit/<?= $product['id'] ?>">
-                                <button type="button" class="btn connexionLink shadow">Supprimer</button>
+                                <button type="button" class="btn connexionLink shadow lang-shop-delete"></button>
                             </a>
                         <?php
                         endif;

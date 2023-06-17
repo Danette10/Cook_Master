@@ -51,14 +51,16 @@
             .then((response) => response.json())
             .then((data) => {
                 Object.keys(data).forEach((key) => {
-                    if (document.getElementsByClassName(key)[0] == null) {
-                        return;
-                    }
-                    element = document.getElementsByClassName(key)[0];
-                    if (key.includes('lang-placeholder')) {
-                        element.placeholder = data[key];
-                    } else if (element != null) {
-                        element.innerHTML = data[key];
+                    let elements = document.getElementsByClassName(key);
+                    if (elements.length > 0) {
+                        for (let i = 0; i < elements.length; i++) {
+                            let element = elements[i];
+                            if (key.includes('lang-placeholder')) {
+                                element.placeholder = data[key];
+                            } else {
+                                element.innerHTML = data[key];
+                            }
+                        }
                     }
                 });
             });
