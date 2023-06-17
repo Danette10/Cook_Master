@@ -7,6 +7,8 @@
 
     $(document).ready(function() {
 
+        changeLang(localStorage.getItem('language'));
+
         $(window).scroll(function() {
             if ($(this).scrollTop() > 1) {
                 $('header').css('position', 'sticky');
@@ -25,6 +27,81 @@
         <?php endif; ?>
 
     });
+
+    /**
+     * TODO: Function to change language
+     */
+
+    function changeLang(language) {
+        if (language == null) {
+            language = 'fr';
+        }
+        let languageFile;
+        if (language === 'fr') {
+            languageFile = fetch('<?= ADDRESS_LANG ?>fr.json');
+            localStorage.setItem('language', 'fr');
+            document.getElementById('languageSelecter').innerHTML = 'FR';
+        }
+        if (language === 'en') {
+            languageFile = fetch('<?= ADDRESS_LANG ?>en.json');
+            localStorage.setItem('language', 'en');
+            document.getElementById('languageSelecter').innerHTML = 'EN';
+        }
+        languageFile
+            .then((response) => response.json())
+            .then((data) => {
+                Object.keys(data).forEach((key) => {
+                    if (document.getElementsByClassName(key)[0] == null) {
+                        return;
+                    }
+                    element = document.getElementsByClassName(key)[0];
+                    if (key.includes('lang-placeholder')) {
+                        element.placeholder = data[key];
+                    } else if (element != null) {
+                        element.innerHTML = data[key];
+                    }
+                });
+            });
+    }
+
+    <?php
+        /* Function to autocomplete address */
+    ?>
+
+    function autoCompleteAddress(){
+        $("#adresse").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "https://api-adresse.data.gouv.fr/search/",
+                    dataType: "json",
+                    data: {
+                        q: request.term,
+                        autocomplete: 1
+                    },
+                    success: function(data) {
+                        response($.map(data.features, function(item) {
+                            return {
+                                label: item.properties.label,
+                                value: item.properties.label,
+                                city: item.properties.city,
+                                postalCode: item.properties.postcode,
+                                street: item.properties.street || item.properties.name,
+                                number: item.properties.housenumber
+                            };
+                        }));
+                    }
+                });
+            },
+            minLength: 3,
+            select: function(event, ui) {
+                const formattedAddress = ui.item.number && ui.item.street ? `${ui.item.number} ${ui.item.street}` : ui.item.street || '';
+                $("#adresse").val(formattedAddress);
+                $("#city").val(ui.item.city);
+                $("#postal_code").val(ui.item.postalCode);
+                return false;
+            }
+        });
+    }
 
     <?php
         /*
