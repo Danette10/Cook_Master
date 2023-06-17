@@ -58,9 +58,13 @@ ul, li{
     list-style-type: none;
     display: flex;
     align-items: center;
-    letter-spacing: 0.5px;
 }
 
+.flagPicture{
+    width: 35px;
+    height: 25px;
+    border-radius: 5px;
+}
 .calendar-months{
     display: block;
 }

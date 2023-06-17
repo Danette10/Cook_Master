@@ -40,12 +40,12 @@
         if (language === 'fr') {
             languageFile = fetch('<?= ADDRESS_LANG ?>fr.json');
             localStorage.setItem('language', 'fr');
-            document.getElementById('languageSelecter').innerHTML = '<img src="<?= ADDRESS_IMG_LANG ?>fr.png" alt="French" width="35" height="25"> FR';
+            document.getElementById('languageSelecter').innerHTML = '<img src="<?= ADDRESS_IMG_LANG ?>fr.png" alt="French" class="flagPicture"> FR';
         }
         if (language === 'en') {
             languageFile = fetch('<?= ADDRESS_LANG ?>en.json');
             localStorage.setItem('language', 'en');
-            document.getElementById('languageSelecter').innerHTML = '<img src="<?= ADDRESS_IMG_LANG ?>en.png" alt="English" width="35" height="25"> EN';
+            document.getElementById('languageSelecter').innerHTML = '<img src="<?= ADDRESS_IMG_LANG ?>en.png" alt="English" class="flagPicture"> EN';
         }
         languageFile
             .then((response) => response.json())
