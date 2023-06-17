@@ -76,10 +76,10 @@
                         </a>
                         <ul class="dropdown-menu mt-3" aria-labelledby="navbarDropdown">
                             <li>
-                                <div class="dropdown-item" onclick="changeLang('fr')">FR</div>
+                                <div class="dropdown-item" onclick="changeLang('fr')"><img src="<?= ADDRESS_IMG_LANG ?>fr.png" alt="French" width="35" height="25" id="langIcon"> FR</div>
                             </li>
                             <li>
-                                <div class="dropdown-item" onclick="changeLang('en')">EN</div>
+                                <div class="dropdown-item" onclick="changeLang('en')"><img src="<?= ADDRESS_IMG_LANG ?>en.png" alt="English" width="35" height="25" id="langIcon"> EN</div>
                             </li>
                         </ul>
                     </li>
