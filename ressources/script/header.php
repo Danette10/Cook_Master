@@ -20,31 +20,31 @@
 
                     <li>
 
-                        <a href="<?= ADDRESS_SITE ?>" class="nav-link">Accueil</a>
+                        <a href="<?= ADDRESS_SITE ?>" class="nav-link lang-home"></a>
 
                     </li>
 
                     <li>
 
-                        <a href="<?= ADDRESS_SITE ?>recettes" class="nav-link">Recettes</a>
+                        <a href="<?= ADDRESS_SITE ?>recettes" class="nav-link lang-recipe"></a>
 
                     </li>
 
                     <li>
 
-                        <a href="<?= ADDRESS_SITE ?>cours" class="nav-link">Cours</a>
+                        <a href="<?= ADDRESS_SITE ?>cours" class="nav-link lang-course"></a>
 
                     </li>
 
                     <li>
 
-                        <a href="<?= ADDRESS_SITE ?>évènements" class="nav-link">Évènements</a>
+                        <a href="<?= ADDRESS_SITE ?>évènements" class="nav-link lang-event"></a>
 
                     </li>
 
                     <li>
 
-                        <a href="<?= ADDRESS_SITE ?>boutique" class="nav-link">Boutique</a>
+                        <a href="<?= ADDRESS_SITE ?>boutique" class="nav-link lang-shop"></a>
 
                     </li>
 
@@ -52,7 +52,7 @@
                     if(isset($_SESSION['role']) && $_SESSION['role'] == 5){?>
                     <li>
 
-                        <a href="<?= ADDRESS_SITE ?>admin/dashboard" class="nav-link">Dashboard</a>
+                        <a href="<?= ADDRESS_SITE ?>admin/dashboard" class="nav-link lang-dashboard"></a>
 
                     </li>
                     <?php } ?>
@@ -61,13 +61,28 @@
                     if(isset($_SESSION['role']) && ($_SESSION['role'] == 2 || $_SESSION['role'] == 3 || $_SESSION['role'] == 4)){?>
                     <li>
 
-                        <a href="<?= ADDRESS_SITE ?>extranet/messages" class="nav-link">Messages</a>
+                        <a href="<?= ADDRESS_SITE ?>extranet/messages" class="nav-link lang-chat"></a>
 
                     </li>
                     <?php } ?>
                 </ul>
 
                 <div class="connexionInscriptionLinks">
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="languageSelecter" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            FR
+                        </a>
+                        <ul class="dropdown-menu mt-3" aria-labelledby="navbarDropdown">
+                            <li>
+                                <div class="dropdown-item" onclick="changeLang('fr')">FR</div>
+                            </li>
+                            <li>
+                                <div class="dropdown-item" onclick="changeLang('en')">EN</div>
+                            </li>
+                        </ul>
+                    </li>
 
                     <div class="me-3">
 
@@ -97,7 +112,7 @@
 
                     <button class="pricingLink btn">
 
-                        <a href="<?= ADDRESS_SITE ?>subscribe" class="nav-link">S'abonner</a>
+                        <a href="<?= ADDRESS_SITE ?>subscribe" class="nav-link lang-subscribe"></a>
 
                     </button>
 
@@ -107,15 +122,14 @@
 
                     <li>
 
-                        <button type="button" class="connexionLink btn" data-bs-toggle="modal" data-bs-target="#connexionModal">
-                            Connexion
+                        <button type="button" class="connexionLink btn lang-login" data-bs-toggle="modal" data-bs-target="#connexionModal">
                         </button>
 
                     </li>
 
                     <button class="inscriptionLink btn">
 
-                        <a href="<?= ADDRESS_SITE ?>inscription" class="nav-link">Inscription</a>
+                        <a href="<?= ADDRESS_SITE ?>inscription" class="nav-link lang-registration"></a>
 
                     </button>
 
@@ -158,7 +172,6 @@
                 </ul>
             </div>
             <?php } ?>
-
 
         </div>
 

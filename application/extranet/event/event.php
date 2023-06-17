@@ -51,12 +51,12 @@ foreach ($events as $event) {
 <main>
 
     <div class="text-center mt-4 pb-4 d-flex justify-content-center align-items-center">
-        <h1>Calendrier des évènements</h1>
+        <h1 class="lang-calendar"></h1>
         <?php
         if(isset($_SESSION['role']) && ($_SESSION['role'] == 4 || $_SESSION['role'] == 5)):
             ?>
             <a href="<?= ADDRESS_SITE ?>évènements/déclarer-une-salle" class="ms-3">
-                <button type="button" class="btn connexionLink shadow">Déclarer une salle</button>
+                <button type="button" class="btn connexionLink shadow lang-declareRoom"></button>
             </a>
         <?php
         endif;
@@ -128,12 +128,29 @@ foreach ($events as $event) {
     let calendar = $('#calendar');
 
     $(document).ready(function() {
+        let format = '';
+        let titleFormat = '';
+        let eventHeaderFormat = '';
+        let language = '';
+
+        if(localStorage.getItem('language') === 'fr') {
+            language = 'fr';
+            format = 'dd MM yyyy';
+            titleFormat = 'MM yyyy';
+            eventHeaderFormat = 'd MM yyyy';
+        } else {
+            language = 'en';
+            format = 'MM dd yyyy';
+            titleFormat = 'yyyy MM';
+            eventHeaderFormat = 'MM d yyyy';
+        }
+
         calendar.evoCalendar({
-            language: 'fr',
+            language: language,
             theme: 'Orange Coral',
-            format: 'dd MM yyyy',
-            titleFormat: 'MM yyyy',
-            eventHeaderFormat: 'd MM yyyy',
+            format: format,
+            titleFormat: titleFormat,
+            eventHeaderFormat: eventHeaderFormat,
             firstDayOfWeek: 1,
         });
 
@@ -181,7 +198,7 @@ foreach ($events as $event) {
 
                 let addButton = $('<button>')
                     .attr('id', 'addEventButton')
-                    .text('Ajouter un événement')
+                    .addClass('lang-addEvent')
                     .on('click', function() {
 
                         let formAction = `<?= ADDRESS_SITE ?>évènements/ajout/${formattedDate}/verification`;
@@ -192,7 +209,9 @@ foreach ($events as $event) {
 
                         $('#eventModalForm').modal('show');
 
-                    });
+                    })
+
+                changeLang(localStorage.getItem('language'));
 
                 let addEventButton = $('#addEventButton');
                 let calendarEvents = $('.calendar-events');

@@ -7,6 +7,8 @@
 
     $(document).ready(function() {
 
+        changeLang(localStorage.getItem('language'));
+
         $(window).scroll(function() {
             if ($(this).scrollTop() > 1) {
                 $('header').css('position', 'sticky');
@@ -25,6 +27,42 @@
         <?php endif; ?>
 
     });
+
+    /**
+     * TODO: Function to change language
+     */
+
+    function changeLang(language) {
+        if (language == null) {
+            language = 'fr';
+        }
+        let languageFile;
+        if (language === 'fr') {
+            languageFile = fetch('<?= ADDRESS_LANG ?>fr.json');
+            localStorage.setItem('language', 'fr');
+            document.getElementById('languageSelecter').innerHTML = 'FR';
+        }
+        if (language === 'en') {
+            languageFile = fetch('<?= ADDRESS_LANG ?>en.json');
+            localStorage.setItem('language', 'en');
+            document.getElementById('languageSelecter').innerHTML = 'EN';
+        }
+        languageFile
+            .then((response) => response.json())
+            .then((data) => {
+                Object.keys(data).forEach((key) => {
+                    if (document.getElementsByClassName(key)[0] == null) {
+                        return;
+                    }
+                    element = document.getElementsByClassName(key)[0];
+                    if (key.includes('lang-placeholder')) {
+                        element.placeholder = data[key];
+                    } else if (element != null) {
+                        element.innerHTML = data[key];
+                    }
+                });
+            });
+    }
 
     <?php
         /* Function to autocomplete address */
