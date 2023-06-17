@@ -46,7 +46,38 @@ if (empty($maxParticipants)) {
     $errors['max'] = "Veuillez renseigner le nombre maximum de participants";
 }
 
+if (strtotime($start) < strtotime(date('Y-m-d'))) {
+    header('Location: ' . ADDRESS_SITE . 'évènements?type=error&message=La date de début ne peut pas être dans le passé');
+    exit();
+}
+
+if (strtotime($end) < strtotime(date('Y-m-d'))) {
+    header('Location: ' . ADDRESS_SITE . 'évènements?type=error&message=La date de fin ne peut pas être dans le passé');
+    exit();
+}
+
+if (strtotime($start) > strtotime($end)) {
+    header('Location: ' . ADDRESS_SITE . 'évènements?type=error&message=La date de début ne peut pas être supérieure à la date de fin');
+    exit();
+}
+
 if (empty($errors)) {
+
+    if($typePlace == 3){
+        $idRoom = isset($_POST['room']) ? htmlspecialchars(intval($_POST['room'])) : null;
+        $selectMaxCapacity = $db->prepare("SELECT capacity FROM rooms WHERE idRoom = :id");
+
+        $selectMaxCapacity->execute([
+            'id' => $idRoom
+        ]);
+
+        $maxCapacity = $selectMaxCapacity->fetch(PDO::FETCH_ASSOC);
+
+        if($maxCapacity['capacity'] < $maxParticipants){
+            header('Location: ' . ADDRESS_SITE . 'évènements?type=error&message=Le nombre maximum de participants ne peut pas être supérieur à la capacité de la salle');
+            exit();
+        }
+    }
 
     $addEvent = $db->prepare("INSERT INTO events (name, type, typePlace, idPresta, description, startEvent, endEvent, maxParticipant, status) VALUES (:name, :type, :typePlace, :idPresta, :description, :startEvent, :endEvent, :maxParticipant, :status)");
     $addEvent->execute([

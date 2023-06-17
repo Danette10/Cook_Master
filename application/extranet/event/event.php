@@ -50,6 +50,8 @@ foreach ($events as $event) {
 
 <main>
 
+    <?php include PATH_SCRIPT . 'messages.php'; ?>
+
     <div class="text-center mt-4 pb-4 d-flex justify-content-center align-items-center">
         <h1 class="lang-calendar"></h1>
         <?php
