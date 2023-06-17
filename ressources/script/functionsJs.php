@@ -40,25 +40,27 @@
         if (language === 'fr') {
             languageFile = fetch('<?= ADDRESS_LANG ?>fr.json');
             localStorage.setItem('language', 'fr');
-            document.getElementById('languageSelecter').innerHTML = 'FR';
+            document.getElementById('languageSelecter').innerHTML = '<img src="<?= ADDRESS_IMG_LANG ?>fr.png" alt="French" class="flagPicture"> FR';
         }
         if (language === 'en') {
             languageFile = fetch('<?= ADDRESS_LANG ?>en.json');
             localStorage.setItem('language', 'en');
-            document.getElementById('languageSelecter').innerHTML = 'EN';
+            document.getElementById('languageSelecter').innerHTML = '<img src="<?= ADDRESS_IMG_LANG ?>en.png" alt="English" class="flagPicture"> EN';
         }
         languageFile
             .then((response) => response.json())
             .then((data) => {
                 Object.keys(data).forEach((key) => {
-                    if (document.getElementsByClassName(key)[0] == null) {
-                        return;
-                    }
-                    element = document.getElementsByClassName(key)[0];
-                    if (key.includes('lang-placeholder')) {
-                        element.placeholder = data[key];
-                    } else if (element != null) {
-                        element.innerHTML = data[key];
+                    let elements = document.getElementsByClassName(key);
+                    if (elements.length > 0) {
+                        for (let i = 0; i < elements.length; i++) {
+                            let element = elements[i];
+                            if (key.includes('lang-placeholder')) {
+                                element.placeholder = data[key];
+                            } else {
+                                element.innerHTML = data[key];
+                            }
+                        }
                     }
                 });
             });
