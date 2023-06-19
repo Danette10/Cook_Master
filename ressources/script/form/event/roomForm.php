@@ -10,6 +10,8 @@ $description = isset($_POST['description']) ? htmlspecialchars($_POST['descripti
 $address = isset($_POST['address']) ? htmlspecialchars($_POST['address']) : null;
 $city = isset($_POST['city']) ? htmlspecialchars($_POST['city']) : null;
 $zip_code = isset($_POST['zip_code']) ? htmlspecialchars($_POST['zip_code']) : null;
+$products = $_POST['products'] ?? null;
+$quantity = $_POST['quantity'] ?? null;
 
 $errors = [];
 
@@ -43,6 +45,25 @@ if (empty($city)) {
 
 if (empty($zip_code)) {
     $errors['zip_code'] = "Veuillez renseigner le code postal de la salle";
+}
+
+if (empty($products)) {
+    $errors['product'] = "Veuillez renseigner le produit";
+}
+
+if (empty($quantity)) {
+    $errors['quantity'] = "Veuillez renseigner la quantité";
+}
+
+
+foreach ($products as $key => $value) {
+    $selectProduct = $db->prepare("SELECT * FROM products WHERE id = :id");
+    $selectProduct->execute([
+        'id' => $value
+    ]);
+
+    $product = $selectProduct->fetch(PDO::FETCH_ASSOC);
+
 }
 
 if(empty($errors)) {
@@ -82,6 +103,24 @@ if(empty($errors)) {
                     'idPlace' => $idAddress,
                     'creation' => $date
                 ]);
+
+                $idRoom = $db->lastInsertId();
+
+                foreach ($products as $key => $value) {
+                    $addProduct = $db->prepare("INSERT INTO rooms_equipment (idRoom, idProduct, quantity) VALUES (:idRoom, :idProduct, :quantity)");
+                    $addProduct->execute([
+                        'idRoom' => $idRoom,
+                        'idProduct' => $value,
+                        'quantity' => $quantity[$key]
+                    ]);
+
+                    $updateProduct = $db->prepare("UPDATE products SET quantity = quantity - :quantity WHERE id = :id");
+                    $updateProduct->execute([
+                        'quantity' => $quantity[$key],
+                        'id' => $value
+                    ]);
+
+                }
 
                 header('Location: ' . ADDRESS_SITE . '/évènements/déclarer-une-salle/?type=success&message=La salle a bien été ajoutée');
                 exit();

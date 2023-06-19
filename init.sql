@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS products
 
 CREATE TABLE IF NOT EXISTS rooms_equipment
 (
-    idRoom     INT AUTO_INCREMENT,
+    idRoom     INT NOT NULL,
     idProduct  INT NOT NULL,
     quantity   INT NOT NULL,
     PRIMARY KEY (idRoom, idProduct),
