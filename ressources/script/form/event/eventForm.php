@@ -122,6 +122,17 @@ if (empty($errors)) {
         } else {
             $errors['add'] = "Une erreur est survenue lors de l'ajout du lieu";
         }
+
+        $updateRoom = $db->prepare("UPDATE rooms SET availability = 0 WHERE idRoom = :idRoom");
+        $updateRoom->execute([
+            'idRoom' => $idRoom
+        ]);
+
+        if ($updateRoom->rowCount() > 0) {
+            $success = "L'évènement a bien été ajouté";
+        } else {
+            $errors['add'] = "Une erreur est survenue lors de l'ajout du lieu";
+        }
     }
 
     if ($addEvent->rowCount() > 0) {
