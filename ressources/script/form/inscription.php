@@ -135,9 +135,8 @@ if($_POST['typeInscription'] == '1' || $_POST['typeInscription'] == '2'){
             }
 
             $subject = "Cookorama - Activation de votre compte";
-            $header = "Cookorama < " . MAIL . " >";
 
-            mailHtml($email, $subject, $messageMail, $header);
+            mailHtml($email, $subject, $messageMail);
 
             header("Location: " . ADDRESS_SITE . '?type=success&message=Votre inscription a bien été prise en compte, vous allez recevoir un email pour activer votre compte');
             exit();

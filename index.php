@@ -120,7 +120,10 @@ $routeur->get('/évènements/déclarer-une-salle', function (){
 $routeur->post('/évènements/déclarer-une-salle/check', function (){
     require PATH_SCRIPT_EVENT . 'roomForm.php';
 });
-
+$routeur->get('/évènements/inscription-évènement/:id', function ($id){
+    $idEvent = htmlspecialchars($id);
+    require PATH_SCRIPT_EVENT . 'inscriptionEvent.php';
+});
 
 // Routes -> Boutique
 $routeur->get('/boutique', function (){

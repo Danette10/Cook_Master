@@ -111,6 +111,17 @@ foreach ($events as $event) {
                     <div class="mb-3">
                         <label for="eventPresta" class="form-label"><strong>Prestataire :</strong> <span id="eventPresta"></span></label>
                     </div>
+                    <div class="mb-3">
+                        <span class="fs-4"><strong id="remainingPlaces"></strong> places restantes</span>
+                    </div>
+                    <?php
+                    if(isset($_SESSION['id'])):
+                    ?>
+                    <div class="mb-3" id="registerEvent">
+                    </div>
+                    <?php
+                    endif;
+                    ?>
                 </div>
 
                 <div class="modal-footer" id="eventModalFooter">
@@ -195,6 +206,7 @@ foreach ($events as $event) {
                 let formattedToday = todayDay + '-' + todayMonth + '-' + todayYear;
 
                 if (formattedDate < formattedToday) {
+                    $('#addEventButton').remove();
                     return;
                 }
 
@@ -211,7 +223,7 @@ foreach ($events as $event) {
 
                         $('#eventModalForm').modal('show');
 
-                    })
+                    });
 
                 changeLang(localStorage.getItem('language'));
 
@@ -256,6 +268,7 @@ foreach ($events as $event) {
                     $('#eventDescription').text(data.description);
                     $('#eventDuration').text(data.duration + ' jours');
                     $('#eventPresta').text(data.presta);
+                    $('#remainingPlaces').text(data.remainingPlaces);
 
                     if(data.linkMeeting !== null) {
                         $('#eventDescription').append('<br>Vous pouvez rejoindre la réunion en cliquant sur le lien suivant : <a href="' + data.linkMeeting + '" target="_blank">' + data.linkMeeting + '</a>');
@@ -263,12 +276,39 @@ foreach ($events as $event) {
 
                     $('#start').val(datetimeValue);
 
-                    if(data.place !== null) {
+                    if(data.place !== '') {
                         $('#allPlaceInfo').attr('class', 'mb-3');
                         $('#labelPlaceInfo').text('Adresse de l\'événement :');
                         $('#placeInformation').text(data.place);
                     }else{
                         $('#allPlaceInfo').remove();
+                    }
+
+                    let today = new Date();
+                    let todayDay = today.getDate();
+                    let todayMonth = today.getMonth() + 1;
+                    let todayYear = today.getFullYear();
+
+                    if (todayDay < 10) todayDay = '0' + todayDay;
+                    if (todayMonth < 10) todayMonth = '0' + todayMonth;
+                    let formattedToday = todayDay + '-' + todayMonth + '-' + todayYear;
+
+                    if (formattedDate > formattedToday) {
+
+                        if(data.isRegister === 0) {
+
+                            $('#registerEvent').html('<a href="<?= ADDRESS_SITE ?>évènements/inscription-évènement/' + id + '" class="btn btn-primary">S\'inscrire à l\'événement</a>');
+
+                        }else{
+
+                            $('#registerEvent').html('<p><span class="text-success">Vous êtes inscrit à cet événement !</span><br>Vous pouvez vous désinscrire en cliquant sur le bouton suivant : <br><a href="<?= ADDRESS_SITE ?>évènements/inscription-évènement/' + id + '" class="btn btn-danger d-flex m-auto mt-2" style="width: fit-content;">Se désinscrire de l\'événement</a></p>');
+
+                        }
+
+                    }else{
+
+                        $('#registerEvent').empty();
+
                     }
 
                     <?php if (isset($_SESSION['id']) && ($_SESSION['role'] == '4' || $_SESSION['role'] == '5') && $_SESSION['id'] == $event['idPresta']): ?>
