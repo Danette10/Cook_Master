@@ -349,11 +349,11 @@ form input[type="submit"]:hover{
     color: white !important;
 }
 
-.dark-theme #connexionModal .modal-dialog .modal-content{
+.dark-theme .modal-dialog .modal-content{
     background-color: #7C8190 !important
 }
 
-.dark-theme #connexionModal .modal-dialog .modal-content .modal-header .btn-close{
+.dark-theme .modal-dialog .modal-content .modal-header .btn-close{
     filter: invert(1) grayscale(100%) brightness(200%);
 }
 
