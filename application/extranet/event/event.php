@@ -238,7 +238,7 @@ foreach ($events as $event) {
 
                     let formattedDate = formatDateString(date);
 
-                    let datetimeValue = `${year}-${month}-${day}T08:00`;
+                    let datetimeValue = `${formattedDate}T08:00`;
 
                     // Populate the modal with event details
                     $('#eventModalLabel').text('Détails de l\'événement');
