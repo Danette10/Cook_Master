@@ -123,14 +123,16 @@ global $db;
 
                             $place = $selectPlace->fetch(PDO::FETCH_ASSOC);
 
-                            $roomImage = ADDRESS_IMG . 'roomImage/' . $room['image'];
+                            $image = $room['image'];
+                            $roomImage = '<img src="' . ADDRESS_IMG . 'roomImage/' . $image . '" class="card-img-top mt-2 rounded-3" alt="Image de la salle">';
 
                         endif;
                         ?>
 
                     <div class="card" style="width: 18rem;">
-                        <img src="<?= $roomImage ?? '' ?>" class="card-img-top mt-2 rounded-3" alt="Image de la salle">
+
                         <div class="card-body">
+                            <?= $roomImage ?? '' ?>
                             <h5 class="card-title"><?= $value['name'] ?></h5>
                             <p class="card-text"><?= $value['description'] ?></p>
                             <p class="card-text">

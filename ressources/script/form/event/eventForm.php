@@ -61,6 +61,11 @@ if (strtotime($start) > strtotime($end)) {
     exit();
 }
 
+if (strtotime($start) < strtotime(date('Y-m-d', strtotime('+7 days')))) {
+    header('Location: ' . ADDRESS_SITE . 'évènements?type=error&message=L\'évènement doit être créer au minimum 7 jours avant la date de début');
+    exit();
+}
+
 if (empty($errors)) {
 
     if($typePlace == 3){

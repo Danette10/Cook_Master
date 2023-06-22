@@ -205,7 +205,21 @@ foreach ($events as $event) {
                 if (todayMonth < 10) todayMonth = '0' + todayMonth;
                 let formattedToday = todayDay + '-' + todayMonth + '-' + todayYear;
 
-                if (formattedDate < formattedToday) {
+                if (formattedDate < formattedToday){
+                    $('#addEventButton').remove();
+                    return;
+                }
+
+                today.setDate(today.getDate() + 7);
+                day = today.getDate();
+                month = today.getMonth() + 1;
+                year = today.getFullYear();
+
+                if (day < 10) day = '0' + day;
+                if (month < 10) month = '0' + month;
+                formattedToday = day + '-' + month + '-' + year;
+
+                if (formattedDate <= formattedToday){
                     $('#addEventButton').remove();
                     return;
                 }
