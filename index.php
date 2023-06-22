@@ -1,24 +1,25 @@
-
+<?php ob_start(); ?>
 <?php
 session_start();
 include 'ressources/script/init.php';
-require 'vendor/autoload.php';
+require '/home/php/vendor/autoload.php';
 
-$url = isset($_GET['url']) ? $_GET['url'] : '/';
+$url = $_GET['url'] ?? '/';
 
 $routeur = new \App\Router\Router($url);
 
 // Route -> Accueil
 $routeur->get('/', function (){
-    require PATH_APPLICATION_EXTRANET . 'index.php';
+    require PATH_APPLICATION_EXTRANET . 'home.php';
 });
 
 // Routes -> Inscription
 $routeur->get('/inscription', function (){
     require PATH_APPLICATION_EXTRANET . 'inscriptionForm.php';
 });
-$routeur->get('/inscription/validate/:token', function ($token){
+$routeur->get('/inscription/validate/:typeInscription/:token', function ($typeInscription, $token){
     $token = htmlspecialchars($token);
+    $typeInscription = htmlspecialchars($typeInscription);
     require PATH_VALIDATE_INSCRIPTION;
 });
 
@@ -92,8 +93,105 @@ $routeur->post('/recettes/creation/check', function (){
 
 
 // Routes -> Leçons
-$routeur->get('/leçons', function (){
-    require PATH_APPLICATION_EXTRANET . 'lesson/lesson.php';
+$routeur->get('/cours', function (){
+    require PATH_APPLICATION_EXTRANET . 'course/course.php';
+});
+
+// Routes -> Evènements
+$routeur->get('/évènements', function (){
+    require PATH_APPLICATION_EVENT . 'event.php';
+});
+$routeur->get('/évènements/ajout/:date', function ($date){
+    $date = htmlspecialchars($date);
+    require PATH_APPLICATION_EVENT . 'addEvent.php';
+});
+$routeur->post('/évènements/ajout/:date/verification', function ($date){
+    $date = htmlspecialchars($date);
+    require PATH_SCRIPT_EVENT . 'eventForm.php';
+});
+$routeur->get('/évènements/get/:id', function ($id){
+    $idEvent = htmlspecialchars($id);
+    require PATH_SCRIPT_EVENT . 'getEvent.php';
+    die();
+});
+$routeur->get('/évènements/déclarer-une-salle', function (){
+    require PATH_APPLICATION_EVENT . 'addRoom.php';
+});
+$routeur->post('/évènements/déclarer-une-salle/check', function (){
+    require PATH_SCRIPT_EVENT . 'roomForm.php';
+});
+
+
+// Routes -> Boutique
+$routeur->get('/boutique', function (){
+    require PATH_APPLICATION_EXTRANET . 'shop/shop.php';
+});
+$routeur->get('/boutique/ajout-produit', function (){
+    require PATH_APPLICATION_EXTRANET . 'shop/addProduct.php';
+});
+$routeur->post('/boutique/ajout-produit/check', function (){
+    require PATH_FORM . 'shop/addProductForm.php';
+});
+$routeur->get('/boutique/produit/:id', function ($id){
+    $idProduct = htmlspecialchars($id);
+    require PATH_APPLICATION_EXTRANET . 'shop/product.php';
+});
+$routeur->get('/boutique/ajout-panier/:id', function ($id){
+    $idProduct = htmlspecialchars($id);
+    require PATH_SCRIPT_CART . 'addProduct.php';
+});
+
+// Routes -> Panier
+$routeur->get('/panier', function (){
+    require PATH_APPLICATION_EXTRANET . 'cart/cart.php';
+});
+
+
+// Routes -> Dashboard Admin
+$routeur->get('/admin/dashboard', function (){
+    require PATH_APPLICATION_EXTRANET . 'admin/dashboard.php';
+});
+
+// Routes -> Dashboard Admin -> Utilisateurs
+$routeur->get('/admin/dashboard/users', function (){
+    require PATH_APPLICATION_EXTRANET . 'admin/users.php';
+});
+$routeur->get('/admin/dashboard/users-pending', function (){
+    require PATH_APPLICATION_EXTRANET . 'admin/usersPending.php';
+});
+
+// Routes -> Dashboard Admin -> Actions Utilisateurs
+$routeur->get('/admin/dashboard/users/ban/:id', function ($id){
+    $idUser = htmlspecialchars($id);
+    require PATH_ADMIN_SCRIPT . 'ban.php';
+});
+$routeur->get('/admin/dashboard/users/unban/:id', function ($id){
+    $idUser = htmlspecialchars($id);
+    require PATH_ADMIN_SCRIPT . 'ban.php';
+});
+$routeur->get('/admin/dashboard/users/upgrade/:id', function ($id){
+    $idUser = htmlspecialchars($id);
+    require PATH_ADMIN_SCRIPT . 'upgrade.php';
+});
+$routeur->get('/admin/dashboard/users/downgrade/:id', function ($id){
+    $idUser = htmlspecialchars($id);
+    require PATH_ADMIN_SCRIPT . 'upgrade.php';
+});
+$routeur->get('/admin/dashboard/users/view/:id', function ($id){
+    $idUser = htmlspecialchars($id);
+    require PATH_APPLICATION_EXTRANET . 'profil/profil.php';
+});
+
+// Routes -> Dashboard Admin -> Users Pending
+$routeur->get('admin/dashboard/users-pending/:type/validate/:id', function ($type, $id){
+    $type = htmlspecialchars($type);
+    $idUser = htmlspecialchars($id);
+    require PATH_ADMIN_SCRIPT . 'validateUser.php';
+});
+$routeur->get('admin/dashboard/users-pending/:type/refuse/:id', function ($type, $id){
+    $type = htmlspecialchars($type);
+    $idUser = htmlspecialchars($id);
+    require PATH_ADMIN_SCRIPT . 'refuseUser.php';
 });
 
 // Execution du routeur

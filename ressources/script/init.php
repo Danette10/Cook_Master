@@ -16,8 +16,16 @@ define('STARTER_MONTHLY', 'prod_NeXPCayzYQqXgS');
 /*
  *TODO: PATH
  */
+/*
+ * TODO: Link Local
+ */
+define('PATH_SITE', $_SERVER['DOCUMENT_ROOT'] . '/');
 
-define('PATH_SITE', $_SERVER['DOCUMENT_ROOT'] . '/Cook_Master/');
+/*
+ * TODO: Link Prod
+ */
+//define('PATH_SITE', $_SERVER['DOCUMENT_ROOT'] . '/');
+
 define('PATH_LOG', PATH_SITE . 'log/');
 define('PATH_RESSOURCES', PATH_SITE . 'ressources/');
 define('PATH_CSS', PATH_RESSOURCES . 'css/');
@@ -34,7 +42,13 @@ define('PATH_RESET_PASSWORD_FORM', PATH_APPLICATION_EXTRANET . 'resetPasswordFor
 define('PATH_FILES', PATH_RESSOURCES . 'files/');
 define('PATH_PAIEMENT_FORM', PATH_APPLICATION_EXTRANET . 'paiement/');
 define('PATH_PAIEMENT_SCRIPT', PATH_SCRIPT . 'paiement/');
+define("PATH_ADMIN_SCRIPT", PATH_SCRIPT . "admin/");
 define('PATH_INVOICES', PATH_FILES . 'invoices/');
+define('PATH_SCRIPT_CART', PATH_SCRIPT . 'cart/');
+define('PATH_API', PATH_SITE . 'api/');
+define('PATH_SCRIPT_EVENT', PATH_FORM . 'event/');
+define('PATH_APPLICATION_EVENT', PATH_APPLICATION_EXTRANET . 'event/');
+
 
 define('MAIL', 'cookmasterpa.2023@gmail.com');
 
@@ -48,8 +62,15 @@ $dotenv->load();
  * TODO ADDRESS
  */
 
-define('ADDRESS_SITE', 'http://' . $_SERVER['HTTP_HOST'] . '/Cook_Master/');
+/*
+ * TODO: Link Local
+ */
+define('ADDRESS_SITE', 'http://' . $_SERVER['HTTP_HOST'] . '/');
 
+/*
+ * TODO: Link Prod
+ */
+//define('ADDRESS_SITE', 'https://' . $_SERVER['HTTP_HOST'] . '/');
 define('ADDRESS_RESSOURCES', ADDRESS_SITE . 'ressources/');
 define('ADDRESS_CSS', ADDRESS_RESSOURCES . 'css/');
 define('ADDRESS_JS', ADDRESS_RESSOURCES . 'js/');
@@ -68,6 +89,10 @@ define('ADDRESS_RESET_PASSWORD', ADDRESS_SITE . 'resetPassword.php');
 define('ADDRESS_PAIEMENT_FORM', ADDRESS_APPLICATION_EXTRANET . 'paiement/');
 define('ADDRESS_FILES', ADDRESS_RESSOURCES . 'files/');
 define('ADDRESS_INVOICES', ADDRESS_FILES . 'invoices/');
+define('ADDRESS_SCRIPT_EVENT', ADDRESS_FORM . 'event/');
+define('ADDRESS_APPLICATION_EVENT', ADDRESS_APPLICATION_EXTRANET . 'event/');
+define('ADDRESS_LANG', ADDRESS_RESSOURCES . 'lang/');
+define('ADDRESS_IMG_LANG', ADDRESS_IMG . 'lang/');
 
 
 require_once(PATH_SCRIPT . 'connectDB.php');

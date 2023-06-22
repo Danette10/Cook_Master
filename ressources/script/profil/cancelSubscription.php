@@ -3,11 +3,10 @@ ob_start();
 include "ressources/script/head.php";
 global $db;
 \Stripe\Stripe::setApiKey($_ENV['API_PRIVATE_KEY']);
-$selectSubscription = $db->prepare('SELECT * FROM stripe_consumer WHERE idUser = :id AND subscriptionStatus = :status AND subscriptionId = :subscriptionId');
+$selectSubscription = $db->prepare('SELECT * FROM stripe_consumer WHERE idUser = :id AND subscriptionStatus = :status');
 $selectSubscription->execute(array(
     'id' => $_SESSION['id'],
-    'status' => 'active',
-    'subscriptionId' => $subscriptionId
+    'status' => 'active'
 ));
 
 $subscription = $selectSubscription->fetch();
@@ -34,8 +33,8 @@ $header = "Cookorama < " . MAIL . " >";
 
 mailHtml($_SESSION['email'], $subject, $mailHTML, $header);
 
-header('Location: ' . $_SERVER['HTTP_REFERER']);
-exit();
+redirectUser('/profil');
+
 ob_end_flush();
 
 ?>

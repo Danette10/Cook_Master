@@ -3,6 +3,21 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
+
+/*
+ * TODO: Function to redirect user
+ */
+
+function redirectUser($path = '/')
+{
+    $defaultRedirect = 'https://cookorama.fr' . $path;
+    header("Location: $defaultRedirect");
+    exit();
+}
+
+
+
+
 /*
  * TODO: Function to send mail
  */
@@ -104,15 +119,21 @@ function readLog($file) {
 
 
 /*
- * TODO: Function to upload profile picture
+ * TODO: Function to upload a file to inscription
  */
 
-function uploadProfilePicture($file) {
+function uploadFileInscription($file, $type) {
 
     // Create folder with year if not exist
     $year = date('Y');
     $month = date('m');
-    $path = PATH_IMG . 'profilePicture/' . $year . '/' . $month . '/';
+
+    if($type == 'image'){
+        $pathFile = PATH_IMG . 'profilePicture/';
+    }else{
+        $pathFile = PATH_FILES . 'serviceProvider/';
+    }
+        $path = $pathFile . $year . '/' . $month . '/';
 
     // Check if the folder exists, if not, create it
     if (!file_exists($path)) {
@@ -126,19 +147,12 @@ function uploadProfilePicture($file) {
     // Set the target file path
     $target_file = $path . $unique_name;
 
-    // Check if the uploaded file is an image
-    $check = getimagesize($file["tmp_name"]);
-    if ($check === false) {
-        return 1; // Code 1: Uploaded file is not an image
-    }
-
-
-     if ($file["size"] > 500000) {
+     if ($file["size"] > 2000000) {
          return 2; // Code 2: File is too large
      }
 
     // Allow certain file formats (optional, you can set allowed formats)
-     $allowed_extensions = array("jpg", "jpeg", "png");
+     $allowed_extensions = array("jpg", "jpeg", "png", "pdf");
      if (!in_array($extension, $allowed_extensions)) {
          return 3; // Code 3: File format is not allowed
      }
@@ -155,12 +169,12 @@ function uploadProfilePicture($file) {
  * TODO: Function to upload recipe picture
  */
 
-function uploadRecipePicture($file) {
+function uploadPicture($dir,$file) {
 
     // Create folder with year if not exist
     $year = date('Y');
     $month = date('m');
-    $path = PATH_IMG . 'recipeImage/' . $year . '/' . $month . '/';
+    $path = PATH_IMG . $dir . '/' . $year . '/' . $month . '/';
 
     // Check if the folder exists, if not, create it
     if (!file_exists($path)) {
@@ -253,7 +267,7 @@ function generateInvoice($invoiceData){
     $invoiceQuantity = $invoiceData['invoice_quantity'];
     $invoiceTotal = number_format($invoiceData['invoice_total'] / 100, 2, '.', '') . ' ' . getCurrency($invoiceData['price_id']);
     $invoicePriceUnit = number_format(getPriceDetails($invoiceData['price_id'])->unit_amount / 100, 2, '.', '') . ' ' . getCurrency($invoiceData['price_id']);
-    $subscriptionEndDate = date('d/m/Y', strtotime($invoiceData['next_invoice_date']));
+    $subscriptionEndDate = $invoiceData['next_invoice_date'];
 
     $logo = ADDRESS_IMG . 'logo.png';
 
@@ -461,7 +475,7 @@ function getUserInvoicesByYear($customerId) {
 function getRecipes($offset,$perPage) {
     global $db;
 
-    $selectRecipes = $db->prepare('SELECT * FROM RECIPE ORDER BY idRecipe DESC LIMIT :offset, :perPage');
+    $selectRecipes = $db->prepare('SELECT * FROM recipe ORDER BY idRecipe DESC LIMIT :offset, :perPage');
     $selectRecipes->bindValue(':offset', $offset, PDO::PARAM_INT);
     $selectRecipes->bindValue(':perPage', $perPage, PDO::PARAM_INT);
     $selectRecipes->execute();
@@ -475,7 +489,7 @@ function getRecipes($offset,$perPage) {
 function getNbrOfPages() {
     global $db;
 
-    $selectRecipes = $db->prepare('SELECT COUNT(*) FROM RECIPE');
+    $selectRecipes = $db->prepare('SELECT COUNT(*) FROM recipe');
     $selectRecipes->execute();
     $recipes = $selectRecipes->fetch();
 
@@ -484,4 +498,20 @@ function getNbrOfPages() {
     return $nbrOfPages;
 }
 
+/**
+ * Function to cut a string and add '...' at the end
+ *
+ * @param string $string
+ * @param int $length
+ *
+ * @return string
+ */
+
+function cutString($string, $length) {
+    if (strlen($string) > $length) {
+        $string = substr($string, 0, $length) . '...';
+    }
+
+    return $string;
+}
 ?>

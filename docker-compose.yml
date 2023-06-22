@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  nginx:
+    depends_on:
+      - php
+    build:
+      context: docker/nginx
+      dockerfile: Dockerfile
+    container_name: nginx
+    tty: true
+    stdin_open: true
+    env_file: .env
+    working_dir: ${PHP_USER_HOME_DIRECTORY}
+    restart: always
+    volumes:
+      - ./docker/nginx/prod/:/etc/nginx/conf.d
+      - .:${PHP_USER_HOME_DIRECTORY}
+      - ./ssl:/etc/letsencrypt/live/cookorama.fr
+    ports:
+      - '80:80'
+      - '443:443'
+    command: [nginx, '-g', 'daemon off;']
+
+
+  php:
+    depends_on:
+      - mariadb
+    build:
+      context: docker/php
+      dockerfile: Dockerfile
+    container_name: php
+    restart: always
+    tty: true
+    env_file: .env
+    stdin_open: true
+    working_dir: ${PHP_USER_HOME_DIRECTORY}
+    user: php
+    volumes:
+      - .:${PHP_USER_HOME_DIRECTORY}
+
+  mariadb:
+    container_name: mariadb
+    restart: always
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./docker/mariadb/conf.d:/etc/mysql/conf.d
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    expose:
+      - '${DB_PORT}'
+
+  adminer:
+    container_name: adminer
+    image: adminer:latest
+    restart: always
+    environment:
+      ADMINER_DEFAULT_SERVER: mariadb
+      ADMINER_DESIGN: arcs-material
+    ports:
+      - '${ADMINER_PORT}:${ADMINER_PORT}'

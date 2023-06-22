@@ -35,7 +35,7 @@ if(isset($_POST['title']) && isset($_FILES['recipeImage']) && isset($_POST['reci
 
         $file = "";
 
-        $file = uploadRecipePicture($recipeImage);
+        $file = uploadPicture('recipeImage', $recipeImage);
 
         if(is_int($file)){
             $errors[] = "Erreur lors de l'upload de l'image";

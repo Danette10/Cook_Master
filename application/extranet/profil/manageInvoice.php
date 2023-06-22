@@ -42,7 +42,8 @@ $getInvoice = getUserInvoicesByYear($customerID['idConsumer']);
                 <div class="col-12">
                     <div class="row">
                         <div class="col-12">
-                            <h3 class="text-center">Factures</h3>
+                            <h3>Factures</h3>
+                            <hr>
                         </div>
                     </div>
                     <div class="row">
@@ -61,7 +62,7 @@ $getInvoice = getUserInvoicesByYear($customerID['idConsumer']);
                                                             <th scope="col">Numéro de facture</th>
                                                             <th scope="col">Montant</th>
                                                             <th scope="col">Date</th>
-                                                            <th scope="col">Télécharger</th>
+                                                            <th scope="col"></th>
                                                         </tr>
                                                         </thead>
                                                     <?php foreach ($invoices as $invoice):
@@ -70,10 +71,13 @@ $getInvoice = getUserInvoicesByYear($customerID['idConsumer']);
                                                         <li>
                                                                 <tbody>
                                                                     <tr>
-                                                                        <th scope="row"><?= $invoice->id ?></th>
+                                                                        <?php
+                                                                        $invoiceNumber = \Stripe\Invoice::retrieve($invoice->id)->number;
+                                                                        ?>
+                                                                        <th scope="row"><?= $invoiceNumber ?></th>
                                                                         <td><?= $invoice->amount_due / 100 ?> <?= strtoupper($invoice->currency) ?></td>
                                                                         <td><?= date('d/m/Y', $invoice->created) ?></td>
-                                                                        <td><a href="<?= ADDRESS_INVOICES . $invoice->metadata['pathInvoice'] ?>" target="_blank">Télécharger</a></td>
+                                                                        <td><a href="<?= ADDRESS_INVOICES . $invoice->metadata['pathInvoice'] ?>" target="_blank">Ouvrir</a></td>
                                                                     </tr>
                                                                 </tbody>
                                                     <?php endforeach; ?>

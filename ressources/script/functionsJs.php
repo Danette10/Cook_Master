@@ -7,6 +7,8 @@
 
     $(document).ready(function() {
 
+        changeLang(localStorage.getItem('language'));
+
         $(window).scroll(function() {
             if ($(this).scrollTop() > 1) {
                 $('header').css('position', 'sticky');
@@ -15,7 +17,93 @@
             }
 
         });
+
+        let cartLink = $("#cartLink");
+
+        <?php if (!isset($_SESSION['id'])): ?>
+
+        cartLink.removeAttr("href");
+
+        <?php endif; ?>
+
     });
+
+    /**
+     * TODO: Function to change language
+     */
+
+    function changeLang(language) {
+        if (language == null) {
+            language = 'fr';
+        }
+        let languageFile;
+        if (language === 'fr') {
+            languageFile = fetch('<?= ADDRESS_LANG ?>fr.json');
+            localStorage.setItem('language', 'fr');
+            document.getElementById('languageSelecter').innerHTML = '<img src="<?= ADDRESS_IMG_LANG ?>fr.png" alt="French" class="flagPicture"> FR';
+        }
+        if (language === 'en') {
+            languageFile = fetch('<?= ADDRESS_LANG ?>en.json');
+            localStorage.setItem('language', 'en');
+            document.getElementById('languageSelecter').innerHTML = '<img src="<?= ADDRESS_IMG_LANG ?>en.png" alt="English" class="flagPicture"> EN';
+        }
+        languageFile
+            .then((response) => response.json())
+            .then((data) => {
+                Object.keys(data).forEach((key) => {
+                    let elements = document.getElementsByClassName(key);
+                    if (elements.length > 0) {
+                        for (let i = 0; i < elements.length; i++) {
+                            let element = elements[i];
+                            if (key.includes('lang-placeholder')) {
+                                element.placeholder = data[key];
+                            } else {
+                                element.innerHTML = data[key];
+                            }
+                        }
+                    }
+                });
+            });
+    }
+
+    <?php
+        /* Function to autocomplete address */
+    ?>
+
+    function autoCompleteAddress(){
+        $("#adresse").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "https://api-adresse.data.gouv.fr/search/",
+                    dataType: "json",
+                    data: {
+                        q: request.term,
+                        autocomplete: 1
+                    },
+                    success: function(data) {
+                        response($.map(data.features, function(item) {
+                            return {
+                                label: item.properties.label,
+                                value: item.properties.label,
+                                city: item.properties.city,
+                                postalCode: item.properties.postcode,
+                                street: item.properties.street || item.properties.name,
+                                number: item.properties.housenumber
+                            };
+                        }));
+                    }
+                });
+            },
+            minLength: 3,
+            select: function(event, ui) {
+                const formattedAddress = ui.item.number && ui.item.street ? `${ui.item.number} ${ui.item.street}` : ui.item.street || '';
+                $("#adresse").val(formattedAddress);
+                $("#city").val(ui.item.city);
+                $("#postal_code").val(ui.item.postalCode);
+                return false;
+            }
+        });
+    }
 
     <?php
         /*
@@ -48,7 +136,7 @@
 
                         if (data === "success") {
 
-                            window.location.href = "<?= ADDRESS_SITE ?>";
+                            window.location.href = "<?= ADDRESS_SITE ?>?type=success&message=Connexion réussie";
 
                         } else {
 
@@ -476,10 +564,149 @@
             removeStepBtn.setAttribute("onclick", "removeStep("+lastStep+")");
             removeStepBtn.setAttribute("id", "removeStep" + lastStep);
             
-            newStepDiv2.appendChild(removeStepBtn);
-        
+        if (ingredientMainField.hasChildNodes()) {
+            while (ingredientMainField.firstChild) {
+                ingredientMainField.removeChild(ingredientMainField.firstChild);
+            }
+        }
+
+        for(var i = 0; i < nbOfIngredients; i++) {
+            const alignementRow1 = document.createElement("div");
+            alignementRow1.classList.add("col-1");
+            const alignementRow2 = document.createElement("div");
+            alignementRow2.classList.add("col-10");
+            alignementRow2.classList.add("mb-3");
+            alignementRow2.classList.add("row");
+            const alignementRow3 = document.createElement("div");
+            alignementRow3.classList.add("col-1");
+            const ingredientRow = document.createElement("div");
+            ingredientRow.classList.add("row");
+            ingredientRow.classList.add("mb-3");
+            ingredientRow.classList.add("align-items-center");
+
+            const ingredientName = document.createElement("input");
+            ingredientName.type = "text";
+            ingredientName.name = "ingredientName" + (i+1);
+            ingredientName.id = "ingredientName" + (i+1);
+            ingredientName.placeholder = "Nom de l'ingrédient " + (i+1) ;
+            ingredientName.required = true;
+            ingredientName.classList.add("form-control");
+            ingredientName.classList.add("col");
+
+            const ingredientQuantity = document.createElement("input");
+            ingredientQuantity.type = "number";
+            ingredientQuantity.name = "ingredientQuantity" + (i+1);
+            ingredientQuantity.id = "ingredientQuantity" + (i+1);
+            ingredientQuantity.placeholder = "Quantité de l'ingrédient " + (i+1) ;
+            ingredientQuantity.required = true;
+            ingredientQuantity.classList.add("form-control");
+            ingredientQuantity.classList.add("col");
+
+            const ingredientUnit = document.createElement("select");
+            ingredientUnit.name = "ingredientUnit" + (i+1);
+            ingredientUnit.id = "ingredientUnit" + (i+1);
+            ingredientUnit.required = true;
+            ingredientUnit.classList.add("form-control");
+            ingredientUnit.classList.add("col");
+            ingredientUnit.options.add( new Option("g", "g"));
+            ingredientUnit.options.add( new Option("kg", "kg"));
+            ingredientUnit.options.add( new Option("ml", "ml"));
+            ingredientUnit.options.add( new Option("cl", "cl"));
+            ingredientUnit.options.add( new Option("l", "l"));
+            ingredientUnit.options.add( new Option("cuillère à café", "cuillère à café"));
+            ingredientUnit.options.add( new Option("cuillère à soupe", "cuillère à soupe"));
+            ingredientUnit.options.add( new Option("verre", "verre"));
+            ingredientUnit.options.add( new Option("pincée", "pincée"));
+
+
+            ingredientMainField.appendChild(ingredientRow);
+            ingredientRow.appendChild(alignementRow1);
+            ingredientRow.appendChild(alignementRow2);
+            ingredientRow.appendChild(alignementRow3);
+            alignementRow2.appendChild(ingredientName);
+            alignementRow2.appendChild(ingredientQuantity);
+            alignementRow2.appendChild(ingredientUnit);
         }
     }
-        
-    
+
+    /**
+     * TODO: Function to add quantity on cart page
+     * @param productId
+     * @param cartId
+     *
+     * @return void
+     */
+    function addProductQuantity(cartId, productId) {
+
+        $.ajax({
+            url: '<?= ADDRESS_SCRIPT ?>ajaxCart.php',
+            type: 'POST',
+            data: {
+                productId: productId,
+                cartId: cartId,
+                type: 'addProductQuantity'
+            },
+            success: function (data) {
+                if (data !== 'error') {
+                    $('#productQuantity_' + productId).html(data);
+                    $('#nbProducts').html(parseInt($('#nbProducts').html()) + 1);
+                    calculateTotalPrice(productId, cartId);
+                }
+            }
+        });
+    }
+
+    /**
+     * TODO: Function to remove quantity on cart page
+     * @param productId
+     * @param cartId
+     *
+     * @return void
+     */
+    function removeProductQuantity(cartId, productId) {
+
+        $.ajax({
+            url: '<?= ADDRESS_SCRIPT ?>ajaxCart.php',
+            type: 'POST',
+            data: {
+                productId: productId,
+                cartId: cartId,
+                type: 'removeProductQuantity'
+            },
+            success: function (data) {
+                if (data !== 'error') {
+                    $('#productQuantity_' + productId).html(data);
+                    $('#nbProducts').html(parseInt($('#nbProducts').html()) - 1);
+                    calculateTotalPrice(productId, cartId);
+                }
+            }
+        });
+
+    }
+
+    /**
+     * TODO: Function to calculate total price on cart page
+     * @param productId
+     * @param cartId
+     *
+     * @return void
+     */
+    function calculateTotalPrice(productId, cartId) {
+
+        $.ajax({
+            url: '<?= ADDRESS_SCRIPT ?>ajaxCart.php',
+            type: 'POST',
+            data: {
+                type: 'calculateTotalPrice',
+                cartId: cartId,
+                productId: productId
+            },
+            success: function (data) {
+                if (data !== 'error') {
+                    $('#priceTotal').html(data);
+                    $('#priceTotalPerProduct_' + productId).html(parseFloat($('#productPrice_' + productId).html()) * parseInt($('#productQuantity_' + productId).html()));
+                }
+            }
+        });
+    }
 </script>
