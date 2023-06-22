@@ -560,4 +560,61 @@
             }
         });
     }
+
+    /**
+     * TODO: Function to format date
+     * @param number
+     * @returns {string|*}
+     */
+    function formatWithLeadingZero(number) {
+        return number < 10 ? '0' + number : number;
+    }
+
+    /**
+     * TODO: Function to format date
+     * @param date
+     * @returns {string}
+     */
+    function formatDateString(date) {
+        let day = formatWithLeadingZero(date.getDate());
+        let month = formatWithLeadingZero(date.getMonth() + 1);
+        let year = date.getFullYear();
+        return day + '-' + month + '-' + year;
+    }
+
+    /**
+     * TODO: Function to add button to calendar events
+     * @param addButton
+     */
+    function addButtonToCalendarEvents(addButton) {
+        let addEventButton = $('#addEventButton');
+        let calendarEvents = $('.calendar-events');
+
+        if(addEventButton.length === 0) {
+            calendarEvents.append(addButton);
+        } else {
+            addEventButton.remove();
+            calendarEvents.append(addButton);
+        }
+    }
+
+    /**
+     * TODO: Function to select place
+     * @param select
+     */
+    function selectedPlace(select) {
+        if(parseInt(select) === 3){
+            $.ajax({
+                url: `<?= ADDRESS_SCRIPT_EVENT ?>getPlace.php`,
+                type: 'GET',
+                success: function(data) {
+                    let placeForm = $('#placeForm');
+                    placeForm.empty();
+                    placeForm.append(data);
+                }
+            });
+        } else {
+            $('#placeForm').empty();
+        }
+    }
 </script>

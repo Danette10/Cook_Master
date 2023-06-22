@@ -182,76 +182,46 @@ foreach ($events as $event) {
 
         <?php if (isset($_SESSION['role']) && ($_SESSION['role'] == '4' || $_SESSION['role'] == '5')): ?>
 
-            calendar.on('selectDate', function(event, newDate, oldDate) {
+        calendar.on('selectDate', function(event, newDate, oldDate) {
 
+            let date = new Date(newDate);
 
-                let date = new Date(newDate);
+            let formattedDate = formatDateString(date);
 
-                let day = date.getDate();
-                let month = date.getMonth() + 1;
-                let year = date.getFullYear();
+            // Vérifier que c'est pas une date passée
+            let today = new Date();
+            let formattedToday = formatDateString(today);
 
-                if (day < 10) day = '0' + day;
-                if (month < 10) month = '0' + month;
-                let formattedDate = day + '-' + month + '-' + year;
+            if (formattedDate < formattedToday){
+                $('#addEventButton').remove();
+                return;
+            }
 
-                // Vérifier que c'est pas une date passée
-                let today = new Date();
-                let todayDay = today.getDate();
-                let todayMonth = today.getMonth() + 1;
-                let todayYear = today.getFullYear();
+            today.setDate(today.getDate() + 7);
+            formattedToday = formatDateString(today);
 
-                if (todayDay < 10) todayDay = '0' + todayDay;
-                if (todayMonth < 10) todayMonth = '0' + todayMonth;
-                let formattedToday = todayDay + '-' + todayMonth + '-' + todayYear;
+            if (formattedDate <= formattedToday){
+                $('#addEventButton').remove();
+                return;
+            }
 
-                if (formattedDate < formattedToday){
-                    $('#addEventButton').remove();
-                    return;
-                }
+            let addButton = $('<button>')
+                .attr('id', 'addEventButton')
+                .addClass('lang-addEvent')
+                .on('click', function() {
 
-                today.setDate(today.getDate() + 7);
-                day = today.getDate();
-                month = today.getMonth() + 1;
-                year = today.getFullYear();
+                    let formAction = `<?= ADDRESS_SITE ?>évènements/ajout/${formattedDate}/verification`;
+                    $('#eventForm').attr('action', formAction);
 
-                if (day < 10) day = '0' + day;
-                if (month < 10) month = '0' + month;
-                formattedToday = day + '-' + month + '-' + year;
+                    let datetimeValue = `${year}-${month}-${day}T08:00`;
+                    $('#start').val(datetimeValue);
 
-                if (formattedDate <= formattedToday){
-                    $('#addEventButton').remove();
-                    return;
-                }
+                    $('#eventModalForm').modal('show');
+                });
 
-                let addButton = $('<button>')
-                    .attr('id', 'addEventButton')
-                    .addClass('lang-addEvent')
-                    .on('click', function() {
-
-                        let formAction = `<?= ADDRESS_SITE ?>évènements/ajout/${formattedDate}/verification`;
-                        $('#eventForm').attr('action', formAction);
-
-                        let datetimeValue = `${year}-${month}-${day}T08:00`;
-                        $('#start').val(datetimeValue);
-
-                        $('#eventModalForm').modal('show');
-
-                    });
-
-                changeLang(localStorage.getItem('language'));
-
-                let addEventButton = $('#addEventButton');
-                let calendarEvents = $('.calendar-events');
-
-                if(addEventButton.length === 0) {
-                    calendarEvents.append(addButton);
-                }else {
-                    addEventButton.remove();
-                    calendarEvents.append(addButton);
-                }
-
-            });
+            changeLang(localStorage.getItem('language'));
+            addButtonToCalendarEvents(addButton);
+        });
 
         <?php endif; ?>
 
@@ -266,16 +236,11 @@ foreach ($events as $event) {
 
                     let date = new Date(data.date);
 
-                    let day = date.getDate();
-                    let month = date.getMonth() + 1;
-                    let year = date.getFullYear();
-
-                    if (day < 10) day = '0' + day;
-                    if (month < 10) month = '0' + month;
-                    let formattedDate = day + '-' + month + '-' + year;
+                    let formattedDate = formatDateString(date);
 
                     let datetimeValue = `${year}-${month}-${day}T08:00`;
 
+                    // Populate the modal with event details
                     $('#eventModalLabel').text('Détails de l\'événement');
                     $('#eventName').text(data.name);
                     $('#eventDate').text(formattedDate);
@@ -294,54 +259,40 @@ foreach ($events as $event) {
                         $('#allPlaceInfo').attr('class', 'mb-3');
                         $('#labelPlaceInfo').text('Adresse de l\'événement :');
                         $('#placeInformation').text(data.place);
-                    }else{
+                    } else {
                         $('#allPlaceInfo').remove();
                     }
 
                     let today = new Date();
-                    let todayDay = today.getDate();
-                    let todayMonth = today.getMonth() + 1;
-                    let todayYear = today.getFullYear();
-
-                    if (todayDay < 10) todayDay = '0' + todayDay;
-                    if (todayMonth < 10) todayMonth = '0' + todayMonth;
-                    let formattedToday = todayDay + '-' + todayMonth + '-' + todayYear;
+                    let formattedToday = formatDateString(today);
 
                     if (formattedDate > formattedToday) {
-
                         if(data.isRegister === 0) {
-
                             $('#registerEvent').html('<a href="<?= ADDRESS_SITE ?>évènements/inscription-évènement/' + id + '" class="btn btn-primary">S\'inscrire à l\'événement</a>');
-
-                        }else{
-
+                        } else {
                             $('#registerEvent').html('<p><span class="text-success">Vous êtes inscrit à cet événement !</span><br>Vous pouvez vous désinscrire en cliquant sur le bouton suivant : <br><a href="<?= ADDRESS_SITE ?>évènements/inscription-évènement/' + id + '" class="btn btn-danger d-flex m-auto mt-2" style="width: fit-content;">Se désinscrire de l\'événement</a></p>');
-
                         }
-
-                    }else{
-
+                    } else {
                         $('#registerEvent').empty();
-
                     }
 
                     <?php if (isset($_SESSION['id']) && ($_SESSION['role'] == '4' || $_SESSION['role'] == '5') && (isset($event) && ($_SESSION['id'] == $event['idPresta']))): ?>
 
-                        let eventModalFooter = $('#eventModalFooter');
+                    let eventModalFooter = $('#eventModalFooter');
 
-                        let modifyButton = $('<a>')
-                            .attr('href', `<?= ADDRESS_SITE ?>évènements/modifier/${id}`)
-                            .attr('class', 'btn btn-warning')
-                            .text('Modifier');
+                    let modifyButton = $('<a>')
+                        .attr('href', `<?= ADDRESS_SITE ?>évènements/modifier/${id}`)
+                        .attr('class', 'btn btn-warning')
+                        .text('Modifier');
 
-                        let deleteButton = $('<a>')
-                            .attr('href', `<?= ADDRESS_SITE ?>évènements/supprimer/${id}`)
-                            .attr('class', 'btn btn-danger')
-                            .text('Supprimer');
+                    let deleteButton = $('<a>')
+                        .attr('href', `<?= ADDRESS_SITE ?>évènements/supprimer/${id}`)
+                        .attr('class', 'btn btn-danger')
+                        .text('Supprimer');
 
-                        eventModalFooter.empty();
-                        eventModalFooter.append(modifyButton);
-                        eventModalFooter.append(deleteButton);
+                    eventModalFooter.empty();
+                    eventModalFooter.append(modifyButton);
+                    eventModalFooter.append(deleteButton);
 
                     <?php endif; ?>
 
@@ -354,29 +305,7 @@ foreach ($events as $event) {
 
     });
 
-    function selectedPlace(select) {
-
-        if(parseInt(select) === 3){
-
-            $.ajax({
-                url: `<?= ADDRESS_SCRIPT_EVENT ?>getPlace.php`,
-                type: 'GET',
-                success: function(data) {
-
-                    let placeForm = $('#placeForm');
-                    placeForm.empty();
-                    placeForm.append(data);
-                }
-            });
-
-        } else {
-
-            $('#placeForm').empty();
-
-        }
-
-    }
-
 </script>
+
 
 </body>
