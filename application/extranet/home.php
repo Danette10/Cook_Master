@@ -17,16 +17,11 @@ global $db;
     <?php
     if(isset($_SESSION['id'])):
     ?>
-
-        <div class="text-center mt-4">
-            <h1>Vos évènements</h1>
-        </div>
-
-
         <?php
-        $selectEvents = $db->prepare("SELECT * FROM register WHERE idUser = :idUser");
+        $selectEvents = $db->prepare("SELECT * FROM register INNER JOIN events ON register.idEvent = events.idEvent AND events.startEvent >= :date WHERE idUser = :idUser");
         $selectEvents->execute([
-            'idUser' => $_SESSION['id']
+            'idUser' => $_SESSION['id'],
+            'date' => date('Y-m-d')
         ]);
 
         $events = $selectEvents->fetchAll(PDO::FETCH_ASSOC);
@@ -65,6 +60,31 @@ global $db;
                             endif;
 
                         ?>
+
+                        <div id="timer">
+                            <p>Votre prochain évènement commence dans :</p>
+                            <div class="timer">
+
+                                <input type="hidden" id="date" value="<?= $event['endEvent'] ?>">
+                                <div class="days"><span id="days"></span>
+                                    <p>Jours</p>
+                                </div>
+                                <div class="hours"><span id="hours"></span>
+                                    <p>Heures</p>
+                                </div>
+                                <div class="minutes"><span id="minutes"></span>
+                                    <p>Minutes</p>
+                                </div>
+                                <div class="seconds"><span id="seconds"></span>
+                                    <p>Secondes</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    <div class="text-center mt-4">
+                        <h1>Vos évènements</h1>
+                    </div>
+
                     <div class="card" style="width: 18rem;">
                         <img src="<?= $roomImage ?? '' ?>" class="card-img-top mt-2 rounded-3" alt="Image de la salle">
                         <div class="card-body">
@@ -91,7 +111,7 @@ global $db;
 
     <?php
     else:
-        $selectAllEvents = $db->prepare("SELECT * FROM events WHERE startEvent >= :date ORDER BY startEvent ASC");
+        $selectAllEvents = $db->prepare("SELECT * FROM events WHERE startEvent <= :date ORDER BY startEvent ASC");
         $selectAllEvents->execute([
             'date' => date('Y-m-d')
         ]);
@@ -157,7 +177,7 @@ global $db;
 
 
 </main>
-
+<script src="/ressources/js/timer.js"></script>
 </body>
 
 </html>
