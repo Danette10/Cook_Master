@@ -576,12 +576,18 @@
      * @returns {string}
      */
     function formatDateString(date) {
-        let day = formatWithLeadingZero(date.getDate());
-        let month = formatWithLeadingZero(date.getMonth() + 1);
-        let year = date.getFullYear();
-        return day + '-' + month + '-' + year;
-    }
+        let d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
 
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
     /**
      * TODO: Function to add button to calendar events
      * @param addButton

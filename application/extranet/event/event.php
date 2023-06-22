@@ -188,8 +188,8 @@ foreach ($events as $event) {
 
             let formattedDate = formatDateString(date);
 
-            // Vérifier que c'est pas une date passée
             let today = new Date();
+            today.setHours(0, 0, 0, 0);
             let formattedToday = formatDateString(today);
 
             if (formattedDate < formattedToday){
@@ -213,7 +213,7 @@ foreach ($events as $event) {
                     let formAction = `<?= ADDRESS_SITE ?>évènements/ajout/${formattedDate}/verification`;
                     $('#eventForm').attr('action', formAction);
 
-                    let datetimeValue = `${year}-${month}-${day}T08:00`;
+                    let datetimeValue = `${formattedDate}T08:00`;
                     $('#start').val(datetimeValue);
 
                     $('#eventModalForm').modal('show');
