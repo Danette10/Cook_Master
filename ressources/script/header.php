@@ -61,7 +61,7 @@
                     if(isset($_SESSION['role']) && ($_SESSION['role'] == 2 || $_SESSION['role'] == 3 || $_SESSION['role'] == 4)){?>
                     <li>
 
-                        <a href="<?= ADDRESS_SITE ?>extranet/messages" class="nav-link lang-chat"></a>
+                        <a href="<?= ADDRESS_SITE ?>messages" class="nav-link lang-chat"></a>
 
                     </li>
                     <?php } ?>
