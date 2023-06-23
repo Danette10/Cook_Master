@@ -514,4 +514,7 @@ function cutString($string, $length) {
 
     return $string;
 }
+
+
+
 ?>

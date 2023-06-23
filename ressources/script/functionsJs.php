@@ -626,9 +626,9 @@
             alignementRow2.appendChild(ingredientName);
             alignementRow2.appendChild(ingredientQuantity);
             alignementRow2.appendChild(ingredientUnit);
+            }
         }
     }
-
     /**
      * TODO: Function to add quantity on cart page
      * @param productId
@@ -709,4 +709,7 @@
             }
         });
     }
+
+
+
 </script>
