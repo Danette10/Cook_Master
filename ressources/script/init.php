@@ -91,6 +91,8 @@ define('ADDRESS_FILES', ADDRESS_RESSOURCES . 'files/');
 define('ADDRESS_INVOICES', ADDRESS_FILES . 'invoices/');
 define('ADDRESS_SCRIPT_EVENT', ADDRESS_FORM . 'event/');
 define('ADDRESS_APPLICATION_EVENT', ADDRESS_APPLICATION_EXTRANET . 'event/');
+define('ADDRESS_LANG', ADDRESS_RESSOURCES . 'lang/');
+define('ADDRESS_IMG_LANG', ADDRESS_IMG . 'lang/');
 
 
 require_once(PATH_SCRIPT . 'connectDB.php');

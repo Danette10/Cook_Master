@@ -50,11 +50,22 @@ foreach ($events as $event) {
 
 <main>
 
-    <div class="text-center mt-4 pb-4">
-        <h1>Calendrier des évènements</h1>
+    <?php include PATH_SCRIPT . 'messages.php'; ?>
+
+    <div class="text-center mt-4 pb-4 d-flex justify-content-center align-items-center">
+        <h1 class="lang-calendar"></h1>
+        <?php
+        if(isset($_SESSION['role']) && ($_SESSION['role'] == 4 || $_SESSION['role'] == 5)):
+            ?>
+            <a href="<?= ADDRESS_SITE ?>évènements/déclarer-une-salle" class="ms-3">
+                <button type="button" class="btn connexionLink shadow lang-declareRoom"></button>
+            </a>
+        <?php
+        endif;
+        ?>
     </div>
 
-    <div class="col-md-8 m-auto pt-4">
+    <div class="col-md-9 m-auto pt-4">
         <div id="calendar"></div>
     </div>
 
@@ -100,21 +111,22 @@ foreach ($events as $event) {
                     <div class="mb-3">
                         <label for="eventPresta" class="form-label"><strong>Prestataire :</strong> <span id="eventPresta"></span></label>
                     </div>
+                    <div class="mb-3">
+                        <span class="fs-4"><strong id="remainingPlaces"></strong> places restantes</span>
+                    </div>
+                    <?php
+                    if(isset($_SESSION['id'])):
+                    ?>
+                    <div class="mb-3" id="registerEvent">
+                    </div>
+                    <?php
+                    endif;
+                    ?>
                 </div>
 
-                <?php
-                foreach ($result as $event):
+                <div class="modal-footer" id="eventModalFooter">
+                </div>
 
-                    if (isset($_SESSION['id']) && ($_SESSION['role'] == '4' || $_SESSION['role'] == '5') && $_SESSION['id'] == $event['idPresta']): ?>
-
-                        <div class="modal-footer">
-                            <a href="<?= ADDRESS_SITE ?>évènements/modifier/<?= $event['id'] ?>" class="btn btn-primary">Modifier</a>
-                            <a href="<?= ADDRESS_SITE ?>évènements/supprimer/<?= $event['id'] ?>" class="btn btn-danger">Supprimer</a>
-                        </div>
-
-                    <?php endif; ?>
-
-                <?php endforeach; ?>
             </div>
         </div>
     </div>
@@ -129,12 +141,29 @@ foreach ($events as $event) {
     let calendar = $('#calendar');
 
     $(document).ready(function() {
+        let format = '';
+        let titleFormat = '';
+        let eventHeaderFormat = '';
+        let language = '';
+
+        if(localStorage.getItem('language') === 'fr') {
+            language = 'fr';
+            format = 'dd MM yyyy';
+            titleFormat = 'MM yyyy';
+            eventHeaderFormat = 'd MM yyyy';
+        } else {
+            language = 'en';
+            format = 'MM dd yyyy';
+            titleFormat = 'yyyy MM';
+            eventHeaderFormat = 'MM d yyyy';
+        }
+
         calendar.evoCalendar({
-            language: 'fr',
+            language: language,
             theme: 'Orange Coral',
-            format: 'dd MM yyyy',
-            titleFormat: 'MM yyyy',
-            eventHeaderFormat: 'd MM yyyy',
+            format: format,
+            titleFormat: titleFormat,
+            eventHeaderFormat: eventHeaderFormat,
             firstDayOfWeek: 1,
         });
 
@@ -153,45 +182,46 @@ foreach ($events as $event) {
 
         <?php if (isset($_SESSION['role']) && ($_SESSION['role'] == '4' || $_SESSION['role'] == '5')): ?>
 
-            calendar.on('selectDate', function(event, newDate, oldDate) {
+        calendar.on('selectDate', function(event, newDate, oldDate) {
 
+            let date = new Date(newDate);
 
-                let date = new Date(newDate);
+            let formattedDate = formatDateString(date);
 
-                let day = date.getDate();
-                let month = date.getMonth() + 1;
-                let year = date.getFullYear();
+            let today = new Date();
+            today.setHours(0, 0, 0, 0);
+            let formattedToday = formatDateString(today);
 
-                if (day < 10) day = '0' + day;
-                if (month < 10) month = '0' + month;
-                let formattedDate = day + '-' + month + '-' + year;
+            if (formattedDate < formattedToday){
+                $('#addEventButton').remove();
+                return;
+            }
 
-                let addButton = $('<button>')
-                    .attr('id', 'addEventButton')
-                    .text('Ajouter un événement')
-                    .on('click', function() {
+            today.setDate(today.getDate() + 7);
+            formattedToday = formatDateString(today);
 
-                        let formAction = `<?= ADDRESS_SITE ?>évènements/ajout/${formattedDate}/verification`;
-                        $('#eventForm').attr('action', formAction);
+            if (formattedDate <= formattedToday){
+                $('#addEventButton').remove();
+                return;
+            }
 
-                        let datetimeValue = `${year}-${month}-${day}T08:00`;
-                        $('#start').val(datetimeValue);
+            let addButton = $('<button>')
+                .attr('id', 'addEventButton')
+                .addClass('lang-addEvent')
+                .on('click', function() {
 
-                        $('#eventModalForm').modal('show');
+                    let formAction = `<?= ADDRESS_SITE ?>évènements/ajout/${formattedDate}/verification`;
+                    $('#eventForm').attr('action', formAction);
 
-                    });
+                    let datetimeValue = `${formattedDate}T08:00`;
+                    $('#start').val(datetimeValue);
 
-                let addEventButton = $('#addEventButton');
-                let calendarEvents = $('.calendar-events');
+                    $('#eventModalForm').modal('show');
+                });
 
-                if(addEventButton.length === 0) {
-                    calendarEvents.append(addButton);
-                }else {
-                    addEventButton.remove();
-                    calendarEvents.append(addButton);
-                }
-
-            });
+            changeLang(localStorage.getItem('language'));
+            addButtonToCalendarEvents(addButton);
+        });
 
         <?php endif; ?>
 
@@ -206,32 +236,65 @@ foreach ($events as $event) {
 
                     let date = new Date(data.date);
 
-                    let day = date.getDate();
-                    let month = date.getMonth() + 1;
-                    let year = date.getFullYear();
+                    let formattedDate = formatDateString(date);
 
-                    if (day < 10) day = '0' + day;
-                    if (month < 10) month = '0' + month;
-                    let formattedDate = day + '-' + month + '-' + year;
+                    let datetimeValue = `${formattedDate}T08:00`;
 
-                    let datetimeValue = `${year}-${month}-${day}T08:00`;
-
+                    // Populate the modal with event details
                     $('#eventModalLabel').text('Détails de l\'événement');
                     $('#eventName').text(data.name);
                     $('#eventDate').text(formattedDate);
                     $('#eventDescription').text(data.description);
                     $('#eventDuration').text(data.duration + ' jours');
                     $('#eventPresta').text(data.presta);
+                    $('#remainingPlaces').text(data.remainingPlaces);
+
+                    if(data.linkMeeting !== null) {
+                        $('#eventDescription').append('<br>Vous pouvez rejoindre la réunion en cliquant sur le lien suivant : <a href="' + data.linkMeeting + '" target="_blank">' + data.linkMeeting + '</a>');
+                    }
 
                     $('#start').val(datetimeValue);
 
-                    if(data.place !== null) {
-                        $('#allPlaceInfo').classList.add('mb-3');
+                    if(data.place !== '') {
+                        $('#allPlaceInfo').attr('class', 'mb-3');
                         $('#labelPlaceInfo').text('Adresse de l\'événement :');
                         $('#placeInformation').text(data.place);
-                    }else{
+                    } else {
                         $('#allPlaceInfo').remove();
                     }
+
+                    let today = new Date();
+                    let formattedToday = formatDateString(today);
+
+                    if (formattedDate > formattedToday) {
+                        if(data.isRegister === 0) {
+                            $('#registerEvent').html('<a href="<?= ADDRESS_SITE ?>évènements/inscription-évènement/' + id + '" class="btn btn-primary">S\'inscrire à l\'événement</a>');
+                        } else {
+                            $('#registerEvent').html('<p><span class="text-success">Vous êtes inscrit à cet événement !</span><br>Vous pouvez vous désinscrire en cliquant sur le bouton suivant : <br><a href="<?= ADDRESS_SITE ?>évènements/inscription-évènement/' + id + '" class="btn btn-danger d-flex m-auto mt-2" style="width: fit-content;">Se désinscrire de l\'événement</a></p>');
+                        }
+                    } else {
+                        $('#registerEvent').empty();
+                    }
+
+                    <?php if (isset($_SESSION['id']) && ($_SESSION['role'] == '4' || $_SESSION['role'] == '5') && (isset($event) && ($_SESSION['id'] == $event['idPresta']))): ?>
+
+                    let eventModalFooter = $('#eventModalFooter');
+
+                    let modifyButton = $('<a>')
+                        .attr('href', `<?= ADDRESS_SITE ?>évènements/modifier/${id}`)
+                        .attr('class', 'btn btn-warning')
+                        .text('Modifier');
+
+                    let deleteButton = $('<a>')
+                        .attr('href', `<?= ADDRESS_SITE ?>évènements/supprimer/${id}`)
+                        .attr('class', 'btn btn-danger')
+                        .text('Supprimer');
+
+                    eventModalFooter.empty();
+                    eventModalFooter.append(modifyButton);
+                    eventModalFooter.append(deleteButton);
+
+                    <?php endif; ?>
 
                     $('#eventModal').modal('show');
 
@@ -242,91 +305,7 @@ foreach ($events as $event) {
 
     });
 
-    function selectedPlace(select) {
-
-        if(parseInt(select) === 3){
-
-            // Ajouter ce span (<span style="color: red;">*</span>) à la fin de chaque label
-
-            /** LABELS **/
-
-            let labelAddress = $('<label>')
-                .attr('for', 'address')
-                .attr('class', 'form-label')
-                .text('Adresse :');
-
-            let labelCity = $('<label>')
-                .attr('for', 'city')
-                .attr('class', 'form-label')
-                .text('Ville :');
-
-            let labelZip = $('<label>')
-                .attr('for', 'zip')
-                .attr('class', 'form-label')
-                .text('Code postal :');
-
-            /** SPANS **/
-            labelAddress.append($('<span>').attr('style', 'color: red;').text('*'));
-            labelCity.append($('<span>').attr('style', 'color: red;').text('*'));
-            labelZip.append($('<span>').attr('style', 'color: red;').text('*'));
-
-            /** INPUTS **/
-            let inputAddress = $('<input>')
-                .attr('type', 'text')
-                .attr('name', 'address')
-                .attr('id', 'address')
-                .attr('class', 'form-control')
-                .attr('placeholder', 'Adresse')
-                .attr('required', 'required');
-
-            let inputCity = $('<input>')
-                .attr('type', 'text')
-                .attr('name', 'city')
-                .attr('id', 'city')
-                .attr('class', 'form-control')
-                .attr('placeholder', 'Ville')
-                .attr('required', 'required');
-
-            let inputZip = $('<input>')
-                .attr('type', 'text')
-                .attr('name', 'zip')
-                .attr('id', 'zip')
-                .attr('class', 'form-control')
-                .attr('placeholder', 'Code postal')
-                .attr('required', 'required');
-
-            /** DIVS **/
-            let divAddress = $('<div>')
-                .attr('class', 'mb-3');
-
-            let divCity = $('<div>')
-                .attr('class', 'mb-3');
-
-            let divZip = $('<div>')
-                .attr('class', 'mb-3');
-
-            /** APPENDS **/
-            divAddress.append(labelAddress);
-            divAddress.append(inputAddress);
-
-            divCity.append(labelCity);
-            divCity.append(inputCity);
-
-            divZip.append(labelZip);
-            divZip.append(inputZip);
-
-            $('#placeForm').append(divAddress);
-            $('#placeForm').append(divCity);
-            $('#placeForm').append(divZip);
-
-        } else {
-
-            $('#placeForm').empty();
-
-        }
-
-    }
-
 </script>
+
 
 </body>

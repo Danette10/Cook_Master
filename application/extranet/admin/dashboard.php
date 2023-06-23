@@ -41,7 +41,7 @@ $totalUsers = $selectTotalUsers->fetch();
 
 <main>
 
-    <h1 class="text-center mt-3 mb-3">Dashboard</h1>
+    <h1 class="text-center mt-3 mb-3 lang-dashboard"></h1>
 
     <?php include PATH_SCRIPT . 'messages.php'; ?>
 
@@ -49,7 +49,7 @@ $totalUsers = $selectTotalUsers->fetch();
 
         <div id="usersInfos" class="col-md-4 me-3">
 
-            <h5><strong>Informations utilisateurs</strong></h5>
+            <h5><strong class="lang-dashboard-infoUsers"></strong></h5>
 
             <div id="allInfosUsers" class="d-flex flex-wrap align-items-baseline">
 
@@ -58,7 +58,7 @@ $totalUsers = $selectTotalUsers->fetch();
                     <div id="userBan" class="d-flex flex-column" style="border: 1px solid lightgray; border-radius: 5px; margin-right: 5px; margin-bottom: 5px; padding: 10px;">
 
                         <img src="<?= ADDRESS_IMG ?>dashboard/ban.png" alt="ban" width="35" height="35">
-                        <span class="ml-2 mt-3"><strong>Utilisateurs bannis</strong></span>
+                        <span class="ml-2 mt-3"><strong class="lang-dashboard-nbUserBan"></strong></span>
                         <span class="ml-2 mt-3"><?= $nbUsersBan['nbUsersBan'] ?></span>
 
                     </div>
@@ -66,7 +66,7 @@ $totalUsers = $selectTotalUsers->fetch();
                     <div class="d-flex flex-column" id="userPresta" style="border: 1px solid lightgray; border-radius: 5px; margin-right: 5px; margin-bottom: 5px; padding: 10px;">
 
                         <img src="<?= ADDRESS_IMG ?>dashboard/prestataire.png" alt="presta" width="35" height="35">
-                        <span class="ml-2 mt-3"><strong>Prestataires</strong></span>
+                        <span class="ml-2 mt-3"><strong class="lang-dashboard-nbUserPresta"></strong></span>
                         <span class="ml-2 mt-3"><?= $nbUsersPresta['nbUsersPresta'] ?></span>
 
                     </div>
@@ -78,7 +78,7 @@ $totalUsers = $selectTotalUsers->fetch();
                     <div class="d-flex flex-column" id="userSub" style="border: 1px solid lightgray; border-radius: 5px; margin-bottom: 5px; padding: 10px;">
 
                         <img src="<?= ADDRESS_IMG ?>dashboard/sabonner.png" alt="sub" width="35" height="35">
-                        <span class="ml-2 mt-3"><strong>Utilisateurs abonnés</strong></span>
+                        <span class="ml-2 mt-3"><strong class="lang-dashboard-nbUserSubscribed"></strong></span>
                         <span class="ml-2 mt-3"><?= $nbUsersSub['nbUsersSub'] ?></span>
 
                     </div>
@@ -86,7 +86,7 @@ $totalUsers = $selectTotalUsers->fetch();
                     <div class="d-flex flex-column" id="userAdmin" style="border: 1px solid lightgray; border-radius: 5px; padding: 10px;">
 
                         <img src="<?= ADDRESS_IMG ?>dashboard/admin.png" alt="admin" width="35" height="35">
-                        <span class="ml-2 mt-3"><strong>Administrateurs</strong></span>
+                        <span class="ml-2 mt-3"><strong class="lang-dashboard-nbUserAdmin"></strong></span>
                         <span class="ml-2 mt-3"><?= $nbUsersAdmin['nbUsersAdmin'] ?></span>
 
                     </div>
@@ -99,7 +99,7 @@ $totalUsers = $selectTotalUsers->fetch();
 
         <div id="totalUsers" class="col-md-4">
 
-            <h5 style="font-weight: bold;">Nombre total d'utilisateurs<span style="float: right; font-size: 1.2em;"><?= $totalUsers['totalUsers'] ?></span></h5>
+            <h5 style="font-weight: bold;"><span class="lang-dashboard-nbTotalUsers"></span><span style="float: right; font-size: 1.2em;"><?= $totalUsers['totalUsers'] ?></span></h5>
 
             <div class="d-flex" style="margin-right: 5px; margin-top: 24px; height: 85%;">
 
@@ -110,7 +110,7 @@ $totalUsers = $selectTotalUsers->fetch();
                         <div class="d-flex flex-column ms-3" style="margin-bottom: 5px;">
 
                             <img src="<?= ADDRESS_IMG ?>dashboard/user.png" alt="allUsers" width="90" height="90">
-                            <span class="ml-2 mt-3"><strong>Voir les utilisateurs</strong></span>
+                            <span class="ml-2 mt-3"><strong class="lang-dashboard-viewUsers"></strong></span>
                             <span class="ml-2 mt-3"><?= $totalUsers['totalUsers'] ?></span>
 
                         </div>
@@ -126,7 +126,7 @@ $totalUsers = $selectTotalUsers->fetch();
                         <div class="d-flex flex-column ms-3" style="margin-bottom: 5px;">
 
                             <img src="<?= ADDRESS_IMG ?>dashboard/pending.png" alt="attente" width="90" height="90">
-                            <span class="ml-2 mt-3"><strong>En attente</strong></span>
+                            <span class="ml-2 mt-3"><strong class="lang-dashboard-userPending"></strong></span>
                             <span class="ml-2 mt-3"><?= $nbUsersPending['nbUsersPending'] ?></span>
 
                         </div>

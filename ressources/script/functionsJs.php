@@ -7,6 +7,8 @@
 
     $(document).ready(function() {
 
+        changeLang(localStorage.getItem('language'));
+
         $(window).scroll(function() {
             if ($(this).scrollTop() > 1) {
                 $('header').css('position', 'sticky');
@@ -25,6 +27,83 @@
         <?php endif; ?>
 
     });
+
+    /**
+     * TODO: Function to change language
+     */
+
+    function changeLang(language) {
+        if (language == null) {
+            language = 'fr';
+        }
+        let languageFile;
+        if (language === 'fr') {
+            languageFile = fetch('<?= ADDRESS_LANG ?>fr.json');
+            localStorage.setItem('language', 'fr');
+            document.getElementById('languageSelecter').innerHTML = '<img src="<?= ADDRESS_IMG_LANG ?>fr.png" alt="French" class="flagPicture"> FR';
+        }
+        if (language === 'en') {
+            languageFile = fetch('<?= ADDRESS_LANG ?>en.json');
+            localStorage.setItem('language', 'en');
+            document.getElementById('languageSelecter').innerHTML = '<img src="<?= ADDRESS_IMG_LANG ?>en.png" alt="English" class="flagPicture"> EN';
+        }
+        languageFile
+            .then((response) => response.json())
+            .then((data) => {
+                Object.keys(data).forEach((key) => {
+                    let elements = document.getElementsByClassName(key);
+                    if (elements.length > 0) {
+                        for (let i = 0; i < elements.length; i++) {
+                            let element = elements[i];
+                            if (key.includes('lang-placeholder')) {
+                                element.placeholder = data[key];
+                            } else {
+                                element.innerHTML = data[key];
+                            }
+                        }
+                    }
+                });
+            });
+    }
+
+    <?php
+        /* Function to autocomplete address */
+    ?>
+
+    function autoCompleteAddress(){
+        $("#adresse").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "https://api-adresse.data.gouv.fr/search/",
+                    dataType: "json",
+                    data: {
+                        q: request.term,
+                        autocomplete: 1
+                    },
+                    success: function(data) {
+                        response($.map(data.features, function(item) {
+                            return {
+                                label: item.properties.label,
+                                value: item.properties.label,
+                                city: item.properties.city,
+                                postalCode: item.properties.postcode,
+                                street: item.properties.street || item.properties.name,
+                                number: item.properties.housenumber
+                            };
+                        }));
+                    }
+                });
+            },
+            minLength: 3,
+            select: function(event, ui) {
+                const formattedAddress = ui.item.number && ui.item.street ? `${ui.item.number} ${ui.item.street}` : ui.item.street || '';
+                $("#adresse").val(formattedAddress);
+                $("#city").val(ui.item.city);
+                $("#postal_code").val(ui.item.postalCode);
+                return false;
+            }
+        });
+    }
 
     <?php
         /*
@@ -480,5 +559,68 @@
                 }
             }
         });
+    }
+
+    /**
+     * TODO: Function to format date
+     * @param number
+     * @returns {string|*}
+     */
+    function formatWithLeadingZero(number) {
+        return number < 10 ? '0' + number : number;
+    }
+
+    /**
+     * TODO: Function to format date
+     * @param date
+     * @returns {string}
+     */
+    function formatDateString(date) {
+        let d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+    /**
+     * TODO: Function to add button to calendar events
+     * @param addButton
+     */
+    function addButtonToCalendarEvents(addButton) {
+        let addEventButton = $('#addEventButton');
+        let calendarEvents = $('.calendar-events');
+
+        if(addEventButton.length === 0) {
+            calendarEvents.append(addButton);
+        } else {
+            addEventButton.remove();
+            calendarEvents.append(addButton);
+        }
+    }
+
+    /**
+     * TODO: Function to select place
+     * @param select
+     */
+    function selectedPlace(select) {
+        if(parseInt(select) === 3){
+            $.ajax({
+                url: `<?= ADDRESS_SCRIPT_EVENT ?>getPlace.php`,
+                type: 'GET',
+                success: function(data) {
+                    let placeForm = $('#placeForm');
+                    placeForm.empty();
+                    placeForm.append(data);
+                }
+            });
+        } else {
+            $('#placeForm').empty();
+        }
     }
 </script>

@@ -2,7 +2,7 @@ CREATE DATABASE IF NOT EXISTS cookorama;
 ALTER DATABASE cookorama CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 SET GLOBAL time_zone = 'Europe/Paris';
 
-CREATE TABLE users
+CREATE TABLE IF NOT EXISTS users
 (
     idUser          INT AUTO_INCREMENT,
     lastname        VARCHAR(30) NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE users
     PRIMARY KEY (idUser)
 );
 
-CREATE TABLE message
+CREATE TABLE IF NOT EXISTS message
 (
     id         INT AUTO_INCREMENT,
     message    TEXT     NOT NULL,
@@ -36,25 +36,30 @@ CREATE TABLE message
     FOREIGN KEY (idReceiver) REFERENCES users (idUser)
 );
 
-CREATE TABLE events
+CREATE TABLE IF NOT EXISTS place
 (
-    idEvent           INT AUTO_INCREMENT,
-    type              INT          NOT NULL,
-    typePlace         INT          NOT NULL,
-    name              VARCHAR(30)  NOT NULL,
+    idPlace   INT AUTO_INCREMENT,
+    address           VARCHAR(50),
+    postalCode        CHAR(5),
+    city              VARCHAR(40),
+    PRIMARY KEY (idPlace)
+);
+
+CREATE TABLE IF NOT EXISTS rooms
+(
+    idRoom   INT AUTO_INCREMENT,
+    name     VARCHAR(30) NOT NULL,
+    capacity INT         NOT NULL,
+    availability BOOLEAN NOT NULL DEFAULT TRUE,
+    image          VARCHAR(100) NOT NULL,
     description       VARCHAR(150) NOT NULL,
-    maxParticipant    INT          NOT NULL,
-    startEvent        DATETIME     NOT NULL,
-    endEvent          DATETIME     NOT NULL,
-    status INT          NOT NULL,
-    idPresta          INT          NOT NULL,
-    idPlace           INT,
-    PRIMARY KEY (idEvent),
-    FOREIGN KEY (idPresta) REFERENCES users (idUser),
+    creation          DATETIME    NOT NULL,
+    idPlace  INT,
+    PRIMARY KEY (idRoom),
     FOREIGN KEY (idPlace) REFERENCES place (idPlace)
 );
 
-CREATE TABLE products
+CREATE TABLE IF NOT EXISTS products
 (
     id          INT AUTO_INCREMENT,
     idProduct   VARCHAR(50)  NOT NULL,
@@ -69,7 +74,36 @@ CREATE TABLE products
     PRIMARY KEY (id)
 );
 
-CREATE TABLE courses
+CREATE TABLE IF NOT EXISTS rooms_equipment
+(
+    idRoom     INT NOT NULL,
+    idProduct  INT NOT NULL,
+    quantity   INT NOT NULL,
+    PRIMARY KEY (idRoom, idProduct),
+    FOREIGN KEY (idRoom) REFERENCES rooms (idRoom),
+    FOREIGN KEY (idProduct) REFERENCES products (id)
+);
+
+CREATE TABLE IF NOT EXISTS events
+(
+    idEvent           INT AUTO_INCREMENT,
+    type              INT          NOT NULL,
+    typePlace         INT          NOT NULL,
+    name              VARCHAR(30)  NOT NULL,
+    description       VARCHAR(150) NOT NULL,
+    maxParticipant    INT          NOT NULL,
+    startEvent        DATETIME     NOT NULL,
+    endEvent          DATETIME     NOT NULL,
+    status INT          NOT NULL,
+    linkMeeting       CHAR(33)     DEFAULT NULL,
+    idPresta          INT          NOT NULL,
+    idRoom           INT,
+    PRIMARY KEY (idEvent),
+    FOREIGN KEY (idPresta) REFERENCES users (idUser),
+    FOREIGN KEY (idRoom) REFERENCES rooms (idRoom)
+);
+
+CREATE TABLE IF NOT EXISTS courses
 (
     idCourse       INT AUTO_INCREMENT,
     name           VARCHAR(30)  NOT NULL,
@@ -78,23 +112,15 @@ CREATE TABLE courses
     typePlace      INT          NOT NULL,
     image          VARCHAR(100) NOT NULL,
     maxParticipant INT          NOT NULL,
+    linkMeeting       CHAR(33)     DEFAULT NULL,
     idPresta       INT          NOT NULL,
-    idPlace        INT,
+    idRoom        INT,
     PRIMARY KEY (idCourse),
     FOREIGN KEY (idPresta) REFERENCES users (idUser),
-    FOREIGN KEY (idPlace) REFERENCES place (idPlace)
+    FOREIGN KEY (idRoom) REFERENCES rooms (idRoom)
 );
 
-CREATE TABLE place
-(
-    idPlace   INT AUTO_INCREMENT,
-    address           VARCHAR(50),
-    postalCode        CHAR(5),
-    city              VARCHAR(40),
-    PRIMARY KEY (idPlace)
-);
-
-CREATE TABLE cart
+CREATE TABLE IF NOT EXISTS cart
 (
     idCart INT AUTO_INCREMENT,
     idUser INT,
@@ -102,7 +128,7 @@ CREATE TABLE cart
     FOREIGN KEY (idUser) REFERENCES users (idUser)
 );
 
-CREATE TABLE cart_item
+CREATE TABLE IF NOT EXISTS cart_item
 (
     idCartItem INT AUTO_INCREMENT,
     quantity   INT NOT NULL,
@@ -113,7 +139,7 @@ CREATE TABLE cart_item
     FOREIGN KEY (idCart) REFERENCES cart (idCart)
 );
 
-CREATE TABLE review
+CREATE TABLE IF NOT EXISTS review
 (
     idReview INT AUTO_INCREMENT,
     message  VARCHAR(150) NOT NULL,
@@ -124,7 +150,7 @@ CREATE TABLE review
     FOREIGN KEY (idCourse) REFERENCES courses (idCourse)
 );
 
-CREATE TABLE notification
+CREATE TABLE IF NOT EXISTS notification
 (
     idNotif    INT AUTO_INCREMENT,
     creation   DATETIME NOT NULL,
@@ -136,7 +162,7 @@ CREATE TABLE notification
     FOREIGN KEY (idReceiver) REFERENCES users (idUser)
 );
 
-CREATE TABLE stripe_consumer
+CREATE TABLE IF NOT EXISTS stripe_consumer
 (
     id                 INT AUTO_INCREMENT,
     idConsumer         VARCHAR(50) NOT NULL,
@@ -148,7 +174,7 @@ CREATE TABLE stripe_consumer
     FOREIGN KEY (idUser) REFERENCES users (idUser)
 );
 
-CREATE TABLE training_course
+CREATE TABLE IF NOT EXISTS training_course
 (
     idTrainingCourse INT AUTO_INCREMENT,
     name             VARCHAR(30)  NOT NULL,
@@ -159,7 +185,7 @@ CREATE TABLE training_course
     PRIMARY KEY (idTrainingCourse)
 );
 
-CREATE TABLE recipe
+CREATE TABLE IF NOT EXISTS recipe
 (
     idRecipe     INT AUTO_INCREMENT,
     recipeName   VARCHAR(50)  NOT NULL,
@@ -171,7 +197,7 @@ CREATE TABLE recipe
     FOREIGN KEY (idUser) REFERENCES users (idUser)
 );
 
-CREATE TABLE recipe_ingredients
+CREATE TABLE IF NOT EXISTS recipe_ingredients
 (
     idIngredient       INT AUTO_INCREMENT,
     ingredientName     VARCHAR(50) NOT NULL,
@@ -182,7 +208,7 @@ CREATE TABLE recipe_ingredients
     FOREIGN KEY (idRecipe) REFERENCES recipe (idRecipe)
 );
 
-CREATE TABLE recipe_images
+CREATE TABLE IF NOT EXISTS recipe_images
 (
     id       INT AUTO_INCREMENT,
     imgPath  VARCHAR(100) NOT NULL,
@@ -191,7 +217,7 @@ CREATE TABLE recipe_images
     FOREIGN KEY (idRecipe) REFERENCES recipe (idRecipe)
 );
 
-CREATE TABLE recipe_steps
+CREATE TABLE IF NOT EXISTS recipe_steps
 (
     id              INT AUTO_INCREMENT,
     stepDescription TEXT NOT NULL,
@@ -200,7 +226,7 @@ CREATE TABLE recipe_steps
     FOREIGN KEY (idRecipe) REFERENCES recipe (idRecipe)
 );
 
-CREATE TABLE register
+CREATE TABLE IF NOT EXISTS register
 (
     idUser  INT,
     idEvent INT,
@@ -209,7 +235,7 @@ CREATE TABLE register
     FOREIGN KEY (idEvent) REFERENCES events (idEvent)
 );
 
-CREATE TABLE orders
+CREATE TABLE IF NOT EXISTS orders
 (
     idUser      INT,
     idCart      INT,
@@ -221,7 +247,7 @@ CREATE TABLE orders
     FOREIGN KEY (idCart) REFERENCES cart (idCart)
 );
 
-CREATE TABLE participate
+CREATE TABLE IF NOT EXISTS participate
 (
     idUser   INT,
     idCourse INT,
@@ -230,7 +256,7 @@ CREATE TABLE participate
     FOREIGN KEY (idCourse) REFERENCES courses (idCourse)
 );
 
-CREATE TABLE apart
+CREATE TABLE IF NOT EXISTS apart
 (
     idUser           INT,
     idTrainingCourse INT,

@@ -46,7 +46,43 @@ if (empty($maxParticipants)) {
     $errors['max'] = "Veuillez renseigner le nombre maximum de participants";
 }
 
+if (strtotime($start) < strtotime(date('Y-m-d'))) {
+    header('Location: ' . ADDRESS_SITE . 'évènements?type=error&message=La date de début ne peut pas être dans le passé');
+    exit();
+}
+
+if (strtotime($end) < strtotime(date('Y-m-d'))) {
+    header('Location: ' . ADDRESS_SITE . 'évènements?type=error&message=La date de fin ne peut pas être dans le passé');
+    exit();
+}
+
+if (strtotime($start) > strtotime($end)) {
+    header('Location: ' . ADDRESS_SITE . 'évènements?type=error&message=La date de début ne peut pas être supérieure à la date de fin');
+    exit();
+}
+
+if (strtotime($start) < strtotime(date('Y-m-d', strtotime('+7 days')))) {
+    header('Location: ' . ADDRESS_SITE . 'évènements?type=error&message=L\'évènement doit être créer au minimum 7 jours avant la date de début');
+    exit();
+}
+
 if (empty($errors)) {
+
+    if($typePlace == 3){
+        $idRoom = isset($_POST['room']) ? htmlspecialchars(intval($_POST['room'])) : null;
+        $selectMaxCapacity = $db->prepare("SELECT capacity FROM rooms WHERE idRoom = :id");
+
+        $selectMaxCapacity->execute([
+            'id' => $idRoom
+        ]);
+
+        $maxCapacity = $selectMaxCapacity->fetch(PDO::FETCH_ASSOC);
+
+        if($maxCapacity['capacity'] < $maxParticipants){
+            header('Location: ' . ADDRESS_SITE . 'évènements?type=error&message=Le nombre maximum de participants ne peut pas être supérieur à la capacité de la salle');
+            exit();
+        }
+    }
 
     $addEvent = $db->prepare("INSERT INTO events (name, type, typePlace, idPresta, description, startEvent, endEvent, maxParticipant, status) VALUES (:name, :type, :typePlace, :idPresta, :description, :startEvent, :endEvent, :maxParticipant, :status)");
     $addEvent->execute([
@@ -63,48 +99,44 @@ if (empty($errors)) {
 
     $eventId = $db->lastInsertId();
 
-    if($typePlace == 3){
-        $address = isset($_POST['address']) ? htmlspecialchars($_POST['address']) : null;
-        $city = isset($_POST['city']) ? htmlspecialchars($_POST['city']) : null;
-        $zipCode = isset($_POST['zip']) ? htmlspecialchars($_POST['zip']) : null;
+    if($typePlace == 2){
+        $idMeeting = uniqid();
+        $link = "https://meet.jit.si/" . $idMeeting;
+        $addPlace = $db->prepare("UPDATE events SET linkMeeting = :linkMeeting WHERE idEvent = :idEvent");
+        $addPlace->execute([
+            'linkMeeting' => $link,
+            'idEvent' => $eventId
+        ]);
 
-        if (empty($address)) {
-            $errors['address'] = "Veuillez renseigner l'adresse de l'évènement";
+        if ($addPlace->rowCount() > 0) {
+            $success = "L'évènement a bien été ajouté";
+        } else {
+            $errors['add'] = "Une erreur est survenue lors de l'ajout du lieu";
+        }
+    }else if($typePlace == 3){
+        $idRoom = isset($_POST['room']) ? htmlspecialchars(intval($_POST['room'])) : null;
+
+        $updateEvent = $db->prepare("UPDATE events SET idRoom = :idRoom WHERE idEvent = :idEvent");
+        $updateEvent->execute([
+            'idRoom' => $idRoom,
+            'idEvent' => $eventId
+        ]);
+
+        if ($updateEvent->rowCount() > 0) {
+            $success = "L'évènement a bien été ajouté";
+        } else {
+            $errors['add'] = "Une erreur est survenue lors de l'ajout du lieu";
         }
 
-        if (empty($city)) {
-            $errors['city'] = "Veuillez renseigner la ville de l'évènement";
-        }
+        $updateRoom = $db->prepare("UPDATE rooms SET availability = 0 WHERE idRoom = :idRoom");
+        $updateRoom->execute([
+            'idRoom' => $idRoom
+        ]);
 
-        if (empty($zipCode)) {
-            $errors['zip'] = "Veuillez renseigner le code postal de l'évènement";
-        }
-
-        if (empty($errors)) {
-            $addPlace = $db->prepare("INSERT INTO place (address, city, postalCode) VALUES (:address, :city, :postalCode)");
-            $addPlace->execute([
-                'address' => $address,
-                'city' => $city,
-                'postalCode' => $zipCode
-            ]);
-
-            if ($addPlace->rowCount() > 0) {
-                $idPlace = $db->lastInsertId();
-                $updateEvent = $db->prepare("UPDATE events SET idPlace = :idPlace WHERE idEvent = :idEvent");
-                $updateEvent->execute([
-                    'idPlace' => $idPlace,
-                    'idEvent' => $eventId
-                ]);
-
-                if ($updateEvent->rowCount() > 0) {
-                    $success = "L'évènement a bien été ajouté";
-                } else {
-                    $errors['add'] = "Une erreur est survenue lors de l'ajout du lieu";
-                }
-
-            } else {
-                $errors['add'] = "Une erreur est survenue lors de l'ajout du lieu";
-            }
+        if ($updateRoom->rowCount() > 0) {
+            $success = "L'évènement a bien été ajouté";
+        } else {
+            $errors['add'] = "Une erreur est survenue lors de l'ajout du lieu";
         }
     }
 

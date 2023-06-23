@@ -22,22 +22,22 @@ $recipes = getRecipes($offset,$perPage);
 
 <body>
     <div class="text-center mt-4">
-        <h1>Recettes</h1>
+        <h1 class="lang-recipe"></h1>
     </div>
 
     <div class="container mt-4">
         <div class="row">
             <div class="col-3"></div>
-            <div class="col-6 row">
+            <div class="col-7 row">
                 <div class="col-6">
-                    <input type="text" class="form-control shadow" placeholder="Rechercher une recette" id="recipeSearchBar">
+                    <input type="text" class="form-control shadow lang-placeholder-searchRecipe" placeholder="Rechercher une recette" id="recipeSearchBar">
                 </div>
                 <div class="col-3">
                     <select class="form-select shadow">
-                        <option selected>Filtres</option>
-                        <option value="1">Les plus aimés</option>
-                        <option value="2">Les moins aimés</option>
-                        <option value="3">Date de création</option>
+                        <option selected class="lang-filter">Filtres</option>
+                        <option value="1" class="lang-recipe-mostLiked"></option>
+                        <option value="2" class="lang-recipe-lessLiked"></option>
+                        <option value="3" class="lang-recipe-creationDate"></option>
                     </select>
                 </div>
                 <?php
@@ -45,7 +45,7 @@ $recipes = getRecipes($offset,$perPage);
                 ?>
                 <div class="col-3">
                     <a href="<?= ADDRESS_SITE ?>recettes/creation">
-                        <button type="button" class="btn connexionLink shadow">Créer ta recette</button>
+                        <button type="button" class="btn connexionLink shadow lang-recipe-create"></button>
                     </a>
                 </div>
                 <?php

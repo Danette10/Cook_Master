@@ -16,23 +16,44 @@ $selectPresta->execute(array(
 
 $presta = $selectPresta->fetch(PDO::FETCH_ASSOC);
 
-$selectPlace = $db->prepare("SELECT * FROM place WHERE idPlace = :idPlace");
-$selectPlace->execute(array(
-    'idPlace' => $event['idPlace']
-));
+if($event['idRoom'] != null){
+    $selectRoom = $db->prepare("SELECT * FROM rooms WHERE idRoom = :id");
+    $selectRoom->execute(array(
+        'id' => $event['idRoom']
+    ));
+    $room = $selectRoom->fetch(PDO::FETCH_ASSOC);
 
-$place = $selectPlace->fetch(PDO::FETCH_ASSOC);
+    $selectPlace = $db->prepare("SELECT * FROM place WHERE idPlace = :id");
+    $selectPlace->execute(array(
+        'id' => $room['idPlace']
+    ));
 
-if ($place) {
-    $place = $place['address'] . ', ' . $place['postalCode'] . ' ' . $place['city'];
+    $place = $selectPlace->fetch(PDO::FETCH_ASSOC);
+
+    $placeInfo = $room['name'] . ' - ' . $place['address'] . ', ' . $place['postalCode'] . ' ' . $place['city'];
 }else{
-    $place = null;
+    $placeInfo = '';
 }
 
 $start = new DateTime($event['startEvent']);
 $end = new DateTime($event['endEvent']);
 $interval = $start->diff($end);
 $duration = $interval->format('%a');
+
+$selectRegister = $db->prepare("SELECT COUNT(*) as nbRegister FROM register WHERE idEvent = :id");
+$selectRegister->execute(array(
+    'id' => $event['idEvent']
+));
+$register = $selectRegister->fetch(PDO::FETCH_ASSOC);
+
+$selectIfRegister = $db->prepare("SELECT COUNT(*) as nbRegister FROM register WHERE idEvent = :id AND idUser = :idUser");
+$selectIfRegister->execute(array(
+    'id' => $event['idEvent'],
+    'idUser' => $_SESSION['id']
+));
+$ifRegister = $selectIfRegister->fetch(PDO::FETCH_ASSOC);
+
+$remainingPlaces = $event['maxParticipant'] - $register['nbRegister'];
 
 echo json_encode([
     "id" => $event['idEvent'],
@@ -41,5 +62,8 @@ echo json_encode([
     "description" => html_entity_decode($event['description']),
     "presta" => $presta['firstname'] . ' ' . $presta['lastname'],
     "duration" => $duration,
-    "place" => $place,
+    "isRegister" => $ifRegister['nbRegister'],
+    "remainingPlaces" => $remainingPlaces,
+    "place" => html_entity_decode($placeInfo),
+    "linkMeeting" => $event['linkMeeting'],
 ]);
