@@ -103,23 +103,6 @@ CREATE TABLE IF NOT EXISTS events
     FOREIGN KEY (idRoom) REFERENCES rooms (idRoom)
 );
 
-CREATE TABLE IF NOT EXISTS courses
-(
-    idCourse       INT AUTO_INCREMENT,
-    name           VARCHAR(30)  NOT NULL,
-    description    VARCHAR(150) NOT NULL,
-    type           INT          NOT NULL,
-    typePlace      INT          NOT NULL,
-    image          VARCHAR(100) NOT NULL,
-    maxParticipant INT          NOT NULL,
-    linkMeeting       CHAR(33)     DEFAULT NULL,
-    idPresta       INT          NOT NULL,
-    idRoom        INT,
-    PRIMARY KEY (idCourse),
-    FOREIGN KEY (idPresta) REFERENCES users (idUser),
-    FOREIGN KEY (idRoom) REFERENCES rooms (idRoom)
-);
-
 CREATE TABLE IF NOT EXISTS cart
 (
     idCart INT AUTO_INCREMENT,
@@ -144,10 +127,10 @@ CREATE TABLE IF NOT EXISTS review
     idReview INT AUTO_INCREMENT,
     message  VARCHAR(150) NOT NULL,
     idUser   INT          NOT NULL,
-    idCourse INT          NOT NULL,
+    idEvent INT          NOT NULL,
     PRIMARY KEY (idReview),
     FOREIGN KEY (idUser) REFERENCES users (idUser),
-    FOREIGN KEY (idCourse) REFERENCES courses (idCourse)
+    FOREIGN KEY (idEvent) REFERENCES events (idEvent)
 );
 
 CREATE TABLE IF NOT EXISTS notification
@@ -181,7 +164,11 @@ CREATE TABLE IF NOT EXISTS training_course
     description      VARCHAR(150) NOT NULL,
     type             INT          NOT NULL,
     image            VARCHAR(100) NOT NULL,
+    linkMeeting      CHAR(33)     NOT NULL,
     pathDiploma      VARCHAR(100) NOT NULL,
+    start            DATETIME     NOT NULL,
+    nbDays           INT          NOT NULL,
+    idPresta         INT          NOT NULL,
     PRIMARY KEY (idTrainingCourse)
 );
 
@@ -247,15 +234,6 @@ CREATE TABLE IF NOT EXISTS orders
     FOREIGN KEY (idCart) REFERENCES cart (idCart)
 );
 
-CREATE TABLE IF NOT EXISTS participate
-(
-    idUser   INT,
-    idCourse INT,
-    PRIMARY KEY (idUser, idCourse),
-    FOREIGN KEY (idUser) REFERENCES users (idUser),
-    FOREIGN KEY (idCourse) REFERENCES courses (idCourse)
-);
-
 CREATE TABLE IF NOT EXISTS apart
 (
     idUser           INT,
@@ -276,3 +254,13 @@ VALUES ('prod_NeXQV8mjycAaDE', 'Starter', 'Starter yearly', '', 1, 113, NOW());
 
 INSERT INTO products (idProduct, name, description, image, type, price, creation)
 VALUES ('prod_NeXPCayzYQqXgS', 'Starter', 'Starter monthly', '', 1, 10, NOW());
+
+DROP TABLE IF EXISTS participate;
+DROP TABLE IF EXISTS courses;
+
+ALTER TABLE training_course ADD COLUMN start DATETIME NOT NULL;
+ALTER TABLE training_course ADD COLUMN nbDays INT NOT NULL;
+ALTER TABLE training_course ADD COLUMN linkMeeting CHAR(33) NOT NULL AFTER image;
+ALTER TABLE training_course ADD COLUMN idPresta INT NOT NULL;
+ALTER TABLE training_course ADD CONSTRAINT fk_training_course_presta FOREIGN KEY (idPresta) REFERENCES users(idUser);
+ALTER TABLE training_course DROP COLUMN type;

@@ -624,6 +624,59 @@
         }
     }
 
+    function chooseTypeEvent(select) {
+
+        let nbMaxParticipant = document.getElementById('nbMaxParticipant');
+        let endEvent = document.getElementById('endEvent');
+        let placeEvent = document.getElementById('placeEvent');
+
+        if(parseInt(select) === 4){
+
+            let nbDayCourse = $('#nbDayCourse');
+            let imageTraining = $('#imageTraining');
+
+            nbDayCourse.append('' +
+                '<div class="mb-3"><label for="dayCourse" class="form-label">' +
+                'Nombre de jours de formation ' +
+                '<span style="color: red;">*</span>' +
+                '</label><input type="number" class="form-control" id="dayCourse" name="dayCourse" required><' +
+                '/div>');
+
+            imageTraining.append('' +
+                '<div class="mb-3"><label for="imageTraining" class="form-label">' +
+                'Image de la formation ' +
+                '<span style="color: red;">*</span>' +
+                '</label><input type="file" class="form-control" id="imageTraining" name="imageTraining" required><' +
+                '/div>');
+
+            nbMaxParticipant.style.display = 'none';
+            $('#typePlace').removeAttribute('required');
+
+            endEvent.style.display = 'none';
+            endEvent.removeAttribute('required');
+            $('#end').removeAttr('required');
+
+            placeEvent.style.display = 'none';
+            placeEvent.removeAttribute('required');
+            $('#typePlace').removeAttr('required');
+
+        } else {
+
+            $('#nbDayCourse').empty();
+            $('#imageTraining').empty();
+
+            nbMaxParticipant.style.display = 'block';
+            $('#nbMaxParticipant').attr('required', 'required');
+
+            endEvent.style.display = 'block';
+            $('#end').attr('required', 'required');
+
+            placeEvent.style.display = 'block';
+            $('#typePlace').attr('required', 'required');
+
+        }
+    }
+
     function sendMessage() {
         let message = document.getElementById('message').value;
         let idUser = document.getElementById('idReceiver').value;
