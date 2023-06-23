@@ -629,6 +629,9 @@
         let nbMaxParticipant = document.getElementById('nbMaxParticipant');
         let endEvent = document.getElementById('endEvent');
         let placeEvent = document.getElementById('placeEvent');
+        let max = document.getElementById('max');
+        let end = document.getElementById('end');
+        let typePlace = document.getElementById('typePlace');
 
         if(parseInt(select) === 4){
 
@@ -650,15 +653,10 @@
                 '/div>');
 
             nbMaxParticipant.style.display = 'none';
-            $('#typePlace').removeAttribute('required');
 
             endEvent.style.display = 'none';
-            endEvent.removeAttribute('required');
-            $('#end').removeAttr('required');
 
             placeEvent.style.display = 'none';
-            placeEvent.removeAttribute('required');
-            $('#typePlace').removeAttr('required');
 
         } else {
 
@@ -666,13 +664,10 @@
             $('#imageTraining').empty();
 
             nbMaxParticipant.style.display = 'block';
-            $('#nbMaxParticipant').attr('required', 'required');
 
             endEvent.style.display = 'block';
-            $('#end').attr('required', 'required');
 
             placeEvent.style.display = 'block';
-            $('#typePlace').attr('required', 'required');
 
         }
     }
