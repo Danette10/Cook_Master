@@ -8,7 +8,7 @@ global $db;
 // Limiter le taux de requêtes
 $ip_address = $_SERVER['REMOTE_ADDR'];
 $attempts_limit = 5;
-$time_limit_seconds = 60; // 1 minute
+$time_limit_seconds = 300; // 5 minutes
 $error = '';
 
 $email = htmlspecialchars($_POST['email']);

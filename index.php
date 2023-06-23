@@ -144,6 +144,11 @@ $routeur->get('/boutique/ajout-panier/:id', function ($id){
     require PATH_SCRIPT_CART . 'addProduct.php';
 });
 
+// Routes -> Chat
+$routeur->get('/messages', function (){
+    require PATH_APPLICATION_EXTRANET . 'chat/chat.php';
+});
+
 // Routes -> Panier
 $routeur->get('/panier', function (){
     require PATH_APPLICATION_EXTRANET . 'cart/cart.php';

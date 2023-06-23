@@ -623,4 +623,77 @@
             $('#placeForm').empty();
         }
     }
+
+    function sendMessage() {
+        let message = document.getElementById('message').value;
+        let idUser = document.getElementById('idReceiver').value;
+        let data = {
+            action: 'sendMessage',
+            message: message,
+            idSender: <?= $_SESSION['id'] ?? 0; ?>,
+            idReceiver: parseInt(idUser),
+            dateSend: new Date(new Date().getTime() + 2 * 3600 * 1000).toISOString().slice(0, 19).replace('T', ' ')
+        };
+
+        if(socket.readyState === WebSocket.OPEN) {
+            if (message === '') {
+                alert('Vous ne pouvez pas envoyer de message vide !');
+                return;
+            }else{
+                socket.send(JSON.stringify(data));
+            }
+        } else {
+            console.error("WebSocket is not open. ReadyState is: ", socket.readyState);
+        }
+
+        let chatContentMessages = document.querySelector('.chatContentMessages');
+        chatContentMessages.innerHTML += formatSentMessage(data);
+
+        document.getElementById('message').value = '';
+    }
+
+    function formatSentMessage(data) {
+        return `<div class="messageSender">
+                <p>
+                    <strong>Vous</strong><br>
+                    ${data.message}
+                </p>
+                <p class="dateSendSender">
+                    Le ${new Date(data.dateSend).toLocaleDateString('fr-FR')} à ${new Date(data.dateSend).toLocaleTimeString('fr-FR')}
+                </p>
+            </div>`;
+    }
+
+    function openChat(idUser){
+        $('#idUser').val(idUser);
+        $('.chat').removeClass('d-none');
+
+        $.ajax({
+            url: '<?= ADDRESS_SCRIPT ?>ajaxChat.php',
+            type: 'POST',
+            data: {
+                idReceiver: idUser,
+                idSender: <?= $_SESSION['id'] ?? 0; ?>,
+                action: 'getMessages'
+            },
+            success: function (data) {
+                $('#idReceiver').val(idUser);
+                $('.chatContentMessages').html(data);
+            }
+        });
+    }
+
+    function isTyping() {
+        let data = {
+            action: 'isTyping',
+            idSender: <?= $_SESSION['id'] ?? 0; ?>,
+        };
+
+        if(socket.readyState === WebSocket.OPEN) {
+            socket.send(JSON.stringify(data));
+        } else {
+            console.error("WebSocket is not open. ReadyState is: ", socket.readyState);
+        }
+    }
+
 </script>
