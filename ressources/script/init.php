@@ -16,15 +16,8 @@ define('STARTER_MONTHLY', 'prod_NeXPCayzYQqXgS');
 /*
  *TODO: PATH
  */
-/*
- * TODO: Link Local
- */
-define('PATH_SITE', $_SERVER['DOCUMENT_ROOT'] . '/');
 
-/*
- * TODO: Link Prod
- */
-//define('PATH_SITE', $_SERVER['DOCUMENT_ROOT'] . '/');
+define('PATH_SITE', $_SERVER['DOCUMENT_ROOT'] . '/');
 
 define('PATH_LOG', PATH_SITE . 'log/');
 define('PATH_RESSOURCES', PATH_SITE . 'ressources/');
@@ -71,6 +64,7 @@ define('ADDRESS_SITE', 'http://' . $_SERVER['HTTP_HOST'] . '/');
  * TODO: Link Prod
  */
 //define('ADDRESS_SITE', 'https://' . $_SERVER['HTTP_HOST'] . '/');
+
 define('ADDRESS_RESSOURCES', ADDRESS_SITE . 'ressources/');
 define('ADDRESS_CSS', ADDRESS_RESSOURCES . 'css/');
 define('ADDRESS_JS', ADDRESS_RESSOURCES . 'js/');
