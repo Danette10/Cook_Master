@@ -13,7 +13,18 @@ require_once PATH_SCRIPT . 'header.php';
 global $db;
 
 
+echo '<div id="infoPanel">';
+if (!empty($_SESSION['errors']) && isset($_SESSION['errors'])) {
+    echo '<div class="alert alert-danger mt-4 pb-1" role="alert">';
 
+    for ($i = 0; $i < count($_SESSION['errors']); $i++) {
+       $element = $_SESSION['errors'][$i];
+       echo '<h5 class="fw-bold">- ' . $element . '</h5>';
+    }
+    echo '</div>';
+    unset($_SESSION['errors']);
+}
+echo '</div>';
 
 
 ?>
@@ -26,10 +37,10 @@ global $db;
         <div class="row">
             <div class="col-3"></div>
             <div class="col-6">
-                <form action="<?= ADDRESS_SITE ?>" method="post" id="recipeForm" enctype="multipart/form-data">
+                <form action="<?= ADDRESS_SITE ?>recettes/creation/check" method="post" id="recipeForm" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="title" class="form-label">Titre de la recette</label>
-                        <input type="text" class="form-control" id="title" name="title" required>
+                        <input type="text" class="form-control" id="recipeCreationTitle" name="title" required>
                     </div>
                     <div class="mb-3">
                         <label for="recipeImage" class="form-label">Image de la recette</label>
@@ -37,7 +48,7 @@ global $db;
                     </div>
                     <div class="mb-3">
                         <label for="recipeDescription" class="form-label">Description de la recette</label>
-                        <textarea class="form-control" id="recipeDescription" name="recipeDescription" rows="3" required></textarea>
+                        <textarea class="form-control" id="recipeCreationDescription" name="recipeDescription" rows="3" required></textarea>
                     </div>
                     <div class="mb-3">
                         <div class="row" id="recipeIngredientsRow">
@@ -66,7 +77,7 @@ global $db;
                         <div class="row pt-4">
                             <div class="col-12 text-center">
                                 <button type="button" class="btn btn-outline-warning" id="addIngredientBtn" onclick="addIngredient()">Ajouter un ingrédient</button>
-                                <input type="number" id="nbOfIngredrients" name="nbOfIngredrients" value=1 hidden>
+                                <input type="hidden" id="nbOfIngredrients" name="nbOfIngredrients" value=1 >
                             </div>
                             <div class="col-3"></div>
                         </div>
@@ -83,7 +94,7 @@ global $db;
                         <div class="row">
                             <div class="col-12 text-center">
                                 <button type="button" class="btn btn-outline-warning" id="addStepBtn" onclick="addStep()">Ajouter une étape</button>
-                                <input type="number" id="nbOfSteps" name="nbOfSteps" value=1 hidden>
+                                <input type="hidden" id="nbOfSteps" name="nbOfSteps" value=1 >
                             </div>
                         </div>
                     </div>
@@ -97,7 +108,43 @@ global $db;
         </div>
     </div>
 
+<script>
+    $('#recipeForm').submit(function (e) {
 
+        if(confirm("Voulez-vous vraiment soumettre le formulaire ?")) {
+            recipeErrors = recipeIngredientsRule();
+            ingredientsErrors = recipeStepsRule();
+            console.log(recipeErrors);
+            console.log(ingredientsErrors);
+            if (!recipeNameRule()) {
+                alert('Le nom de la recette doit contenir entre 3 et 50 caractères !');
+                return false;
+            }
+            if (!recipeDescriptionRule()) {
+                alert('La description de la recette doit contenir entre 10 et 500 caractères !');
+                return false;
+            }
+            if (recipeErrors.lenght === 0) {
+                for (const $error of recipeErrors) {
+                    alert($error);
+                }
+                return false;
+            }
+            if (ingredientsErrors.lenght === 0) {
+                for (const $error of ingredientsErrors) {
+                    alert($error);
+                }
+                return false;
+            }
+            
+        } else {
+            return false;
+        }
+
+        document.getElementById('nbOfIngredrients').removeAttribute('hidden');
+        document.getElementById('nbOfSteps').removeAttribute('hidden');
+});
+</script>
 
 </body>
 </html>

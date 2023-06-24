@@ -189,7 +189,7 @@
     <?php
 
         /*
-         * TODO: Function to check if name is valid
+         * Function to check if name is valid
          */
 
     ?>
@@ -212,7 +212,7 @@
     <?php
 
         /*
-         * TODO: Function to check if firstname is valid
+         * Function to check if firstname is valid
          */
 
     ?>
@@ -235,7 +235,7 @@
     <?php
 
         /*
-         * TODO: Function to check if pwd is valid
+         * Function to check if pwd is valid
          */
 
     ?>
@@ -295,7 +295,7 @@
     <?php
 
         /*
-         * TODO: Function to check if pwd confirmation is valid
+         * Function to check if pwd confirmation is valid
          */
 
     ?>
@@ -319,7 +319,7 @@
     <?php
 
         /*
-         * TODO: Function to check if captcha is valid
+         * Function to check if captcha is valid
          */
 
     ?>
@@ -455,7 +455,7 @@
             btnToRemove.remove();
         }
         document.getElementById("nbOfIngredrients").value = currentNbrOfIngredients;
-        console.log(currentNbrOfIngredients);
+        console.log(document.getElementById("nbOfIngredrients").value);
         
         const removeIngredientBtn = document.createElement("button");
         removeIngredientBtn.classList.add("col-2");
@@ -709,7 +709,88 @@
             }
         });
     }
+    /**
+     * TODO: Function to check if recipe name is valid on creation
+     * 
+     * @return int
+     */
+    function recipeNameRule() {
+        element = document.getElementById("recipeCreationTitle");
+        if (element.value.length < 3 || element.value.length > 50) {
+            element.classList.add("is-invalid");
+            return 0;
+        } else {
+            element.classList.remove("is-invalid");
+            return 1;
+        }
+    }
+    /**
+     * TODO: Function to check if recipe description is valid on creation
+     * 
+     * @return int
+     */
+    function recipeDescriptionRule() {
+        element = document.getElementById("recipeCreationDescription");
+        if (element.value.length < 3 || element.value.length > 255) {
+            element.classList.add("is-invalid");
+            return 0;
+        } else {
+            element.classList.remove("is-invalid");
+            return 1;
+        }   
+    }
+    /**
+     *  
+     * TODO: Function to check if recipe all ingredients fields are valid on creation
+     * 
+     * @return array
+     */
+    function recipeIngredientsRule() {
+        var errors = [];
+        var nbOfIngredients = document.getElementById("nbOfIngredients").value;
 
+        for (i = 1; i < nbOfIngredients; i++) {
+            name = document.getElementById("recipeIngredient" + i);
+            quantity = document.getElementById("recipeIngredientQuantity" + i);
 
+            if (name.value.length < 2 || name.value.length > 50) {
+                name.classList.add("is-invalid");
+                errors.push('Le nom de l\'ingrédient ' + i + ' doit contenir entre 2 et 50 caractères');
+            } else {
+                name.classList.remove("is-invalid");
+            }
+            if (quantity.value < 0 ) {
+                quantity.classList.add("is-invalid");
+                errors.push('La quantité de l\'ingrédient ' + i + ' doit être supérieure à 0');
+            } else {
+                quantity.classList.remove("is-invalid");
+            }
+            
+        }
 
+        return errors;
+    }
+    /**
+     * 
+     * TODO: Function to check if recipe all steps fields are valid on creation
+     * 
+     * @return array
+     */
+    function recipeStepsRule() {
+        var errors = [];
+        var nbOfSteps = document.getElementById("nbOfSteps").value;
+
+        for (i = 1; i < nbOfSteps; i++) {
+            step = document.getElementById("recipeStep" + i);
+
+            if (step.value.length < 10) {
+                step.classList.add("is-invalid");
+                errors.push('L\'étape ' + i + ' doit contenir au moin 10 caractères');
+            } else {
+                step.classList.remove("is-invalid");
+            }
+        }
+
+        return errors;
+    }
 </script>

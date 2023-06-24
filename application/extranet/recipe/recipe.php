@@ -11,12 +11,23 @@ if(isset($_GET['page']) && !empty($_GET['page'])){
 }else{
     $currentPage = 1;
 }
+echo '<div id="infoPanel">';
+if (!empty($_SESSION['errors']) && isset($_SESSION['errors'])) {
+    echo '<div class="alert alert-danger mt-4 pb-1" role="alert">';
+
+    for ($i = 0; $i < count($_SESSION['errors']); $i++) {
+       $element = $_SESSION['errors'][$i];
+       echo '<h5 class="fw-bold">- ' . $element . '</h5>';
+    }
+    echo '</div>';
+    unset($_SESSION['errors']);
+}
+echo '</div>';
 
 $nbOfPages = getNbrOfPages();
 $perPage = 8;
 $offset = ($currentPage * $perPage) - $perPage;
 $recipes = getRecipes($offset,$perPage);
-
 
 ?>
 
@@ -62,7 +73,7 @@ $recipes = getRecipes($offset,$perPage);
                 echo '
                 <div class="col-sm-3  mt-3">
                     <div class="card board" style="width: 18rem;">
-                        <img src="' . ADDRESS_IMG_RECIPES . $recipe['recipeImage'].'" class="card-img-top img-fluid" alt="...">
+                        <img src="'. ADDRESS_SITE . 'ressources/images/recipesImages/'.$recipe['recipeImage'].'" class="card-img-top img-fluid" alt="...">
                         <div class="card-body">
                             <h4>'.$recipe['recipeName'].'</h4>
                             <p class="card-text">'.$recipe['description'].'</p>

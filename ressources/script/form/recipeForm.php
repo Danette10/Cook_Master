@@ -3,23 +3,23 @@ include PATH_SCRIPT . "functions.php";
 
 global $db;
 
-if(isset($_POST['title']) && isset($_POST['recipeDescription']) && isset($_FILES['recipeImage']) && isset($_POST['recipeIngredient1']) && isset($_POST['recipeIngredientQuantity1']) && isset($_POST['recipeIngredientUnit1']) && isset($_POST['nbOfIngredients']) && isset($_POST['recipeStep1'])) {
+if(isset($_POST['title']) && isset($_POST['recipeDescription']) && isset($_FILES['recipeImage']) && isset($_POST['recipeIngredient1']) && isset($_POST['recipeIngredientQuantity1']) && isset($_POST['recipeIngredientUnit1']) && isset($_POST['recipeStep1'])) {
     $title = htmlspecialchars($_POST['title']);
     $recipeDescription = htmlspecialchars($_POST['recipeDescription']);
     $recipeImage = $_FILES['recipeImage'];
     $recipeIngredient1 = htmlspecialchars($_POST['recipeIngredient1']);
-    $recipeIngredientQuantity1 = htmlspecialchars($_POST['recipeIngredientQuantity1']);
+    $recipeIngredientQuantity1 = intval($_POST['recipeIngredientQuantity1']);
     $recipeIngredientUnit1 = htmlspecialchars($_POST['recipeIngredientUnit1']);
     $recipeStep1 = htmlspecialchars($_POST['recipeStep1']);
 
     $errors = [];
 
-    if (strlen($title) < 2) {
-        $errors[] = 'Le titre de la recette doit contenir au moins 2 caractères';
+    if (strlen($title) < 2 || strlen($title) > 50) {
+        $errors[] = 'Le titre de la recette doit contenir au moins 2 caractères et au maximum 50 caractères';
     }
 
-    if (strlen($recipeDescription) < 10) {
-        $errors[] = 'La description de la recette doit contenir au moins 10 caractères';
+    if (strlen($recipeDescription) < 10 || strlen($recipeDescription) > 500) {
+        $errors[] = 'La description de la recette doit contenir au moins 10 caractères et au maximum 500 caractères';
     }
 
     if ($recipeImage['size'] > 1000000) {
@@ -30,7 +30,7 @@ if(isset($_POST['title']) && isset($_POST['recipeDescription']) && isset($_FILES
         $errors[] = 'Une erreur est survenue lors de l\'upload de l\'image';
     }
 
-    if ($recipeImage['type'] != 'image/jpeg' && $recipeImage['type'] != 'image/png') {
+    if ($recipeImage['type'] != 'image/jpeg' && $recipeImage['type'] != 'image/png' && $recipeImage['type'] != 'image/jpg') {
         $errors[] = 'Le format de l\'image n\'est pas valide';
     }
 
@@ -38,16 +38,17 @@ if(isset($_POST['title']) && isset($_POST['recipeDescription']) && isset($_FILES
         $errors[] = 'L\'ingrédient doit contenir au moins 2 caractères';
     }
 
-    if ($recipeIngredientQuantity1 < 0) {
+    if ($recipeIngredientQuantity1 <= 0) {
         $errors[] = 'La quantité de l\'ingrédient 1 doit être supérieure à 0';
     }
+    echo $recipeIngredientQuantity1;
 
     if (strlen($recipeStep1) < 10) {
         $errors[] = 'La description de l\'étape 1 doit contenir au moins 10 caractères';
     }
 
 
-    $nbOfIngredients = $_POST['nbOfIngredients'];
+    $nbOfIngredients = $_POST['nbOfIngredrients'];
     $nbOfSteps = $_POST['nbOfSteps'];
 
 
@@ -67,17 +68,18 @@ if(isset($_POST['title']) && isset($_POST['recipeDescription']) && isset($_FILES
     if($nbOfIngredients > 1) {
         for($i = 2; $i <= $nbOfIngredients; $i++) {
             $recipeIngredient = htmlspecialchars($_POST['recipeIngredient' . $i]);
-            $recipeIngredientQuantity = htmlspecialchars($_POST['recipeIngredientQuantity' . $i]);
+            $recipeIngredientQuantity = intval($_POST['recipeIngredientQuantity' . $i]);
             $recipeIngredientUnit = htmlspecialchars($_POST['recipeIngredientUnit' . $i]);
 
-            if (strlen($recipeIngredient) < 2) {
-                $errors[] = 'L\'ingrédient doit contenir au moins 2 caractères';
+            if (strlen($recipeIngredient) < 2 || strlen($recipeIngredient) > 50) {
+                $errors[] = 'Le nom de l\'ingrédient doit contenir au moins 2 caractères et au maximum 50 caractères';
             }
 
-            if ($recipeIngredientQuantity < 0) {
+            if (!is_numeric($recipeIngredient) &&  $recipeIngredientQuantity <= 0) {
                 $errors[] = 'La quantité de l\'ingrédient ' . $i . ' doit être supérieure à 0';
             }
-            
+            echo $recipeIngredientQuantity;
+    
             $ingredient = array(
                 'name' => $recipeIngredient,
                 'quantity' => $recipeIngredientQuantity,
@@ -102,40 +104,49 @@ if(isset($_POST['title']) && isset($_POST['recipeDescription']) && isset($_FILES
     }
 
 
-    if (count($errors) > 0 ) {
-        $addRecipeQuery = $db->prepare(('INSERT INTO recipe (title, description, image, user_id) VALUES (:title, :description, :image, :user_id)'));
+
+    $creation = date('Y-m-d H:i:s');
+
+    if (count($errors) == 0 ) {
+        $file = uploadPicture('recipesImages',$_FILES['recipeImage']);
+        if(is_int($file)){
+            $errors[] = "Erreur lors de l'upload de l'image";
+        }else{
+            $profilePicture = $file;
+        }
+
+        $addRecipeQuery = $db->prepare(('INSERT INTO recipe (recipeName, description, recipeImage, idUser, creationDate) VALUES (:title, :description, :image, :idUser, :creationDate)'));
         $addRecipeQuery->execute(array(
             'title' => $title,
             'description' => $recipeDescription,
-            'image' => $recipeImage['name'],
-            'user_id' => $_SESSION['id']
+            'image' => $file,
+            'idUser' => $_SESSION['id'],
+            'creationDate' => $creation
         ));
 
         $recipeId = $db->lastInsertId();
 
         foreach($ingredientsArray as $ingredient) {
-            $addIngredientQuery = $db->prepare(('INSERT INTO recipe_ingredients (ingredientName, ingredientQuantity, unit, recipe_id) VALUES (:ingredientName, :ingredientQuantity, :unit, :recipe_id)'));
+            $addIngredientQuery = $db->prepare(('INSERT INTO recipe_ingredients (ingredientName, ingredientQuantity, unit, idRecipe) VALUES (:ingredientName, :ingredientQuantity, :unit, :idRecipe)'));
             $addIngredientQuery->execute(array(
                 'ingredientName' => $ingredient['name'],
                 'ingredientQuantity' => $ingredient['quantity'],
                 'unit' => $ingredient['unit'],
-                'recipe_id' => $recipeId
+                'idRecipe' => $recipeId
             ));
         }
 
         foreach($stepsArray as $step) {
-            $addStepQuery = $db->prepare(('INSERT INTO recipe_steps (stepDescription, recipe_id) VALUES (:stepDescription, :recipe_id)'));
+            $addStepQuery = $db->prepare(('INSERT INTO recipe_steps (stepDescription, idRecipe) VALUES (:stepDescription, :idRecipe)'));
             $addStepQuery->execute(array(
                 'stepDescription' => $step,
-                'recipe_id' => $recipeId
+                'idRecipe' => $recipeId
             ));
         }
 
-        $uploadDir = PATH_UPLOAD . $recipeId . '/';
-        mkdir($uploadDir);
-        move_uploaded_file($recipeImage['tmp_name'], $uploadDir . $recipeImage['name']);
+        
 
-        header("Location: " . ADDRESS_SITE . 'recettes/?type=success&message=Votre inscription a bien été prise en compte, vous allez recevoir un email pour activer votre compte');
+        header("Location: " . ADDRESS_SITE . 'recettes/?type=success&message=Votre recette a bien été ajoutée');
         exit();
         
     }else {
@@ -144,5 +155,16 @@ if(isset($_POST['title']) && isset($_POST['recipeDescription']) && isset($_FILES
     }
 
 
+}else {
+    $errors[] = 'Veuillez remplir tous les champs';
+    $errors[] = $_POST['title'];
+    $errors[] = $_POST['recipeDescription'];
+    $errors[] = $_POST['recipeIngredient1'];
+    $errors[] = $_POST['recipeIngredientQuantity1'];
+    $errors[] = $_POST['recipeIngredientUnit1'];
+    $errors[] = $_POST['recipeStep1'];
+    
+    $_SESSION['errors'] = $errors;
+    header('Location: ' . ADDRESS_SITE . 'recettes/creation');
 }
 
