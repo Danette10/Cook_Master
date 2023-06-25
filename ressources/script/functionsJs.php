@@ -652,10 +652,12 @@
                 '</label><input type="file" class="form-control" id="imageTraining" name="imageTraining" required><' +
                 '/div>');
 
+            max.removeAttribute('required');
+            end.removeAttribute('required');
+            typePlace.removeAttribute('required');
+
             nbMaxParticipant.style.display = 'none';
-
             endEvent.style.display = 'none';
-
             placeEvent.style.display = 'none';
 
         } else {
@@ -663,10 +665,12 @@
             $('#nbDayCourse').empty();
             $('#imageTraining').empty();
 
+            max.setAttribute('required', 'required');
+            end.setAttribute('required', 'required');
+            typePlace.setAttribute('required', 'required');
+
             nbMaxParticipant.style.display = 'block';
-
             endEvent.style.display = 'block';
-
             placeEvent.style.display = 'block';
 
         }

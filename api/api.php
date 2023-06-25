@@ -26,6 +26,11 @@ $routeur->post('/user/connect', function (){
     require PATH_API . 'routes/users/connectUser.php';
 });
 
+// Get all customers
+$routeur->get('/customers', function (){
+    require PATH_API . 'routes/users/getCustomers.php';
+});
+
 // Get all recipes
 $routeur->get('/recipes', function (){
     require PATH_API . 'routes/recipes/getRecipes.php';

@@ -7,7 +7,7 @@ $presta = $selectPresta->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
-<form method="post" id="eventForm">
+<form method="post" id="eventForm" enctype="multipart/form-data">
 
     <div class="mb-3">
         <label for="name" class="form-label">Nom de l'évènement <span style="color: red;">*</span></label>
