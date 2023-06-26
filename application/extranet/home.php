@@ -61,26 +61,6 @@ global $db;
 
                         ?>
 
-                        <div id="timer">
-                            <p>Votre prochain évènement commence dans :</p>
-                            <div class="timer">
-
-                                <input type="hidden" id="date" value="<?= $event['endEvent'] ?>">
-                                <div class="days"><span id="days"></span>
-                                    <p>Jours</p>
-                                </div>
-                                <div class="hours"><span id="hours"></span>
-                                    <p>Heures</p>
-                                </div>
-                                <div class="minutes"><span id="minutes"></span>
-                                    <p>Minutes</p>
-                                </div>
-                                <div class="seconds"><span id="seconds"></span>
-                                    <p>Secondes</p>
-                                </div>
-                            </div>
-                        </div>
-
                     <div class="text-center mt-4">
                         <h1>Vos évènements</h1>
                     </div>
@@ -177,7 +157,7 @@ global $db;
 
 
 </main>
-<script src="/ressources/js/timer.js"></script>
+
 </body>
 
 </html>
