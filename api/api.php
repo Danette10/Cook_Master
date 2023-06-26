@@ -48,4 +48,11 @@ $routeur->get('/recipes/:search', function ($search){
     require PATH_API . 'routes/recipes/getRecipesSearch.php';
 });
 
+// JAVA
+// Get count all future events
+$routeur->get('/events/count', function (){
+    require PATH_API . 'routes/events/getCountEvents.php';
+});
+
+
 $routeur->run();
