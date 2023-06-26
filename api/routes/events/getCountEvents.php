@@ -18,7 +18,9 @@ try {
 
         echo jsonResponse(200, [], [
             "success" => true,
-            "result" => $nbEvents
+            "data" => [
+                "nbEvents" => $nbEvents
+            ]
         ]);
 
     }
