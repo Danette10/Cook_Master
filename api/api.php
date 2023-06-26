@@ -54,5 +54,15 @@ $routeur->get('/events/count', function (){
     require PATH_API . 'routes/events/getCountEvents.php';
 });
 
+// Get count all customers
+$routeur->get('/customers/count', function (){
+    require PATH_API . 'routes/users/getCountCustomers.php';
+});
+
+// Get count all products
+$routeur->get('/products/count', function (){
+    require PATH_API . 'routes/shop/getCountProducts.php';
+});
+
 
 $routeur->run();
