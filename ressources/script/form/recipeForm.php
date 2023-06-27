@@ -35,7 +35,7 @@ if(isset($_POST['title']) && isset($_POST['recipeDescription']) && isset($_FILES
     }
 
     if (strlen($recipeIngredient1) < 2) {
-        $errors[] = 'L\'ingrédient doit contenir au moins 2 caractères';
+        $errors[] = 'Le nom de l\'ingrédient doit contenir au moins 2 caractères';
     }
 
     if ($recipeIngredientQuantity1 <= 0) {

@@ -82,7 +82,7 @@ $routeur->get('/profil/manage/invoice', function (){
 
 // Routes -> Recettes
 $routeur->get('/recettes', function (){
-    require PATH_APPLICATION_EXTRANET . 'recipe/recipe.php';
+    require PATH_APPLICATION_EXTRANET . 'recipe/recipes.php';
 });
 $routeur->get('/recettes/creation', function (){
     require PATH_APPLICATION_EXTRANET . 'recipe/recipeCreation.php';
@@ -90,7 +90,10 @@ $routeur->get('/recettes/creation', function (){
 $routeur->post('/recettes/creation/check', function (){
     require PATH_FORM . 'recipeForm.php';
 });
-
+$routeur->get('/recettes/:id', function ($id){
+    $idRecipe = htmlspecialchars($id);
+    require PATH_APPLICATION_EXTRANET . 'recipe/recipe.php';
+});
 
 // Routes -> Leçons
 $routeur->get('/cours', function (){
