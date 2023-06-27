@@ -64,5 +64,10 @@ $routeur->get('/products/count', function (){
     require PATH_API . 'routes/shop/getCountProducts.php';
 });
 
+// Get data to chart for customers
+$routeur->get('/customers/chart', function (){
+    require PATH_API . 'routes/users/getDataChartCustomers.php';
+});
+
 
 $routeur->run();
