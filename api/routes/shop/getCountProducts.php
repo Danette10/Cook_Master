@@ -1,16 +1,16 @@
 <?php
 require_once __DIR__ . "/../../libraries/response.php";
-require_once __DIR__ . "/../../entities/events/getCountEvents.php";
+require_once __DIR__ . "/../../entities/shop/getCountProducts.php";
 
 try {
 
-    $nbEvents = getCountEvent();
+    $nbProducts = getCountProducts();
 
-    if(empty($nbEvents)){
+    if(empty($nbProducts)){
 
         echo jsonResponse(404, [], [
             "success" => false,
-            "message" => "No events found"
+            "message" => "No products found"
         ]);
         exit();
 
@@ -18,13 +18,13 @@ try {
 
         echo jsonResponse(200, [], [
             "success" => true,
-            "result" => $nbEvents
+            "result" => $nbProducts
         ]);
 
     }
 } catch (PDOException $exception) {
     echo jsonResponse(500, [], [
         "success" => false,
-        "message" => "Error while getting events: " . $exception->getMessage()
+        "message" => "Error while getting products: " . $exception->getMessage()
     ]);
 }
