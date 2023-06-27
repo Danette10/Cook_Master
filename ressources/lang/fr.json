@@ -48,5 +48,6 @@
     "lang-placeholder-shop-add-description": "Description du produit",
 
     "lang-recipe-ingredient-list": "Liste des ingrédients requis : ",
-    "lang-steps": "Étapes "
+    "lang-steps": "Étapes ",
+    "lang-recipe-author": "Auteur de la recette : "
 }

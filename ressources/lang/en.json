@@ -47,5 +47,6 @@
     "lang-placeholder-shop-add-price": "Product price",
     "lang-placeholder-shop-add-description": "Product description",
     "lang-recipe-ingredient-list": "List of required ingredients :",
-    "lang-steps": "Steps "
+    "lang-steps": "Steps ",
+    "lang-recipe-author": "Recipe Author : "
 }
