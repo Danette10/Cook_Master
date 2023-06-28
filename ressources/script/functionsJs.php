@@ -560,4 +560,192 @@
             }
         });
     }
+
+    /**
+     * TODO: Function to format date
+     * @param number
+     * @returns {string|*}
+     */
+    function formatWithLeadingZero(number) {
+        return number < 10 ? '0' + number : number;
+    }
+
+    /**
+     * TODO: Function to format date
+     * @param date
+     * @returns {string}
+     */
+    function formatDateString(date) {
+        let d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+    /**
+     * TODO: Function to add button to calendar events
+     * @param addButton
+     */
+    function addButtonToCalendarEvents(addButton) {
+        let addEventButton = $('#addEventButton');
+        let calendarEvents = $('.calendar-events');
+
+        if(addEventButton.length === 0) {
+            calendarEvents.append(addButton);
+        } else {
+            addEventButton.remove();
+            calendarEvents.append(addButton);
+        }
+    }
+
+    /**
+     * TODO: Function to select place
+     * @param select
+     */
+    function selectedPlace(select) {
+        if(parseInt(select) === 3){
+            $.ajax({
+                url: `<?= ADDRESS_SCRIPT_EVENT ?>getPlace.php`,
+                type: 'GET',
+                success: function(data) {
+                    let placeForm = $('#placeForm');
+                    placeForm.empty();
+                    placeForm.append(data);
+                }
+            });
+        } else {
+            $('#placeForm').empty();
+        }
+    }
+
+    function chooseTypeEvent(select) {
+
+        let nbMaxParticipant = document.getElementById('nbMaxParticipant');
+        let endEvent = document.getElementById('endEvent');
+        let placeEvent = document.getElementById('placeEvent');
+        let max = document.getElementById('max');
+        let end = document.getElementById('end');
+        let typePlace = document.getElementById('typePlace');
+
+        if(parseInt(select) === 4){
+
+            let nbDayCourse = $('#nbDayCourse');
+            let imageTraining = $('#imageTraining');
+
+            nbDayCourse.append('' +
+                '<div class="mb-3"><label for="dayCourse" class="form-label">' +
+                'Nombre de jours de formation ' +
+                '<span style="color: red;">*</span>' +
+                '</label><input type="number" class="form-control" id="dayCourse" name="dayCourse" required><' +
+                '/div>');
+
+            imageTraining.append('' +
+                '<div class="mb-3"><label for="imageTraining" class="form-label">' +
+                'Image de la formation ' +
+                '<span style="color: red;">*</span>' +
+                '</label><input type="file" class="form-control" id="imageTraining" name="imageTraining" required><' +
+                '/div>');
+
+            max.removeAttribute('required');
+            end.removeAttribute('required');
+            typePlace.removeAttribute('required');
+
+            nbMaxParticipant.style.display = 'none';
+            endEvent.style.display = 'none';
+            placeEvent.style.display = 'none';
+
+        } else {
+
+            $('#nbDayCourse').empty();
+            $('#imageTraining').empty();
+
+            max.setAttribute('required', 'required');
+            end.setAttribute('required', 'required');
+            typePlace.setAttribute('required', 'required');
+
+            nbMaxParticipant.style.display = 'block';
+            endEvent.style.display = 'block';
+            placeEvent.style.display = 'block';
+
+        }
+    }
+
+    function sendMessage() {
+        let message = document.getElementById('message').value;
+        let idUser = document.getElementById('idReceiver').value;
+        let data = {
+            action: 'sendMessage',
+            message: message,
+            idSender: <?= $_SESSION['id'] ?? 0; ?>,
+            idReceiver: parseInt(idUser),
+            dateSend: new Date(new Date().getTime() + 2 * 3600 * 1000).toISOString().slice(0, 19).replace('T', ' ')
+        };
+
+        if(socket.readyState === WebSocket.OPEN) {
+            if (message === '') {
+                alert('Vous ne pouvez pas envoyer de message vide !');
+                return;
+            }else{
+                socket.send(JSON.stringify(data));
+            }
+        } else {
+            console.error("WebSocket is not open. ReadyState is: ", socket.readyState);
+        }
+
+        let chatContentMessages = document.querySelector('.chatContentMessages');
+        chatContentMessages.innerHTML += formatSentMessage(data);
+
+        document.getElementById('message').value = '';
+    }
+
+    function formatSentMessage(data) {
+        return `<div class="messageSender">
+                <p>
+                    <strong>Vous</strong><br>
+                    ${data.message}
+                </p>
+                <p class="dateSendSender">
+                    Le ${new Date(data.dateSend).toLocaleDateString('fr-FR')} à ${new Date(data.dateSend).toLocaleTimeString('fr-FR')}
+                </p>
+            </div>`;
+    }
+
+    function openChat(idUser){
+        $('#idUser').val(idUser);
+        $('.chat').removeClass('d-none');
+
+        $.ajax({
+            url: '<?= ADDRESS_SCRIPT ?>ajaxChat.php',
+            type: 'POST',
+            data: {
+                idReceiver: idUser,
+                idSender: <?= $_SESSION['id'] ?? 0; ?>,
+                action: 'getMessages'
+            },
+            success: function (data) {
+                $('#idReceiver').val(idUser);
+                $('.chatContentMessages').html(data);
+            }
+        });
+    }
+
+    function isTyping() {
+        let data = {
+            action: 'isTyping',
+            idSender: <?= $_SESSION['id'] ?? 0; ?>,
+        };
+
+        if(socket.readyState === WebSocket.OPEN) {
+            socket.send(JSON.stringify(data));
+        } else {
+            console.error("WebSocket is not open. ReadyState is: ", socket.readyState);
+        }
+    }
+
 </script>

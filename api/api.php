@@ -26,6 +26,11 @@ $routeur->post('/user/connect', function (){
     require PATH_API . 'routes/users/connectUser.php';
 });
 
+// Get all customers
+$routeur->get('/customers', function (){
+    require PATH_API . 'routes/users/getCustomers.php';
+});
+
 // Get all recipes
 $routeur->get('/recipes', function (){
     require PATH_API . 'routes/recipes/getRecipes.php';
@@ -42,5 +47,27 @@ $routeur->get('/recipes/:search', function ($search){
     $search = htmlspecialchars($search);
     require PATH_API . 'routes/recipes/getRecipesSearch.php';
 });
+
+// JAVA
+// Get count all future events
+$routeur->get('/events/count', function (){
+    require PATH_API . 'routes/events/getCountEvents.php';
+});
+
+// Get count all customers
+$routeur->get('/customers/count', function (){
+    require PATH_API . 'routes/users/getCountCustomers.php';
+});
+
+// Get count all products
+$routeur->get('/products/count', function (){
+    require PATH_API . 'routes/shop/getCountProducts.php';
+});
+
+// Get data to chart for customers
+$routeur->get('/customers/chart', function (){
+    require PATH_API . 'routes/users/getDataChartCustomers.php';
+});
+
 
 $routeur->run();

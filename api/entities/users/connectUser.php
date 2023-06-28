@@ -27,6 +27,19 @@ function connectUser($email, $password) {
         'email' => $email
     ]);
 
-    return $connectUserQuery->fetch(PDO::FETCH_ASSOC);
+    $user = $connectUserQuery->fetch();
+
+    $token = bin2hex(random_bytes(32));
+
+    $updateTokenQuery = $db->prepare('UPDATE users SET token = :token WHERE email = :email');
+    $updateTokenQuery->execute([
+        'token' => $token,
+        'email' => $email
+    ]);
+
+    return [
+        'token' => $token,
+        'rights' => $user['role']
+    ];
 
 }

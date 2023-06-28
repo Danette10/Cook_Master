@@ -8,14 +8,18 @@ $selectRooms->execute();
 
 $rooms = $selectRooms->fetchAll(PDO::FETCH_ASSOC);
 
+$html = '<div class="mb-3">';
+$html .= '<label for="room" class="form-label">Salle disponible <span style="color: red;">*</span></label>';
+$html .= '<select class="form-select" id="room" name="room" required>';
+$html .= '<option value="0" selected>Choisir une salle</option>';
+
 foreach ($rooms as $key => $room) {
 
-    echo '<div class="mb-3">';
-    echo '<label for="room" class="form-label">Salle disponible <span style="color: red;">*</span></label>';
-    echo '<select class="form-select" id="room" name="room" required>';
-    echo '<option value="0" selected>Choisir une salle</option>';
-    echo '<option value="' . $room['idRoom'] . '">' . $room['name'] . ' - ' . $room['capacity'] . ' personnes</option>';
-    echo '</select>';
-    echo '</div>';
+    $html .= '<option value="' . $room['idRoom'] . '">' . $room['name'] . ' - ' . $room['capacity'] . ' personnes</option>';
 
 }
+
+$html .= '</select>';
+$html .= '</div>';
+
+echo $html;
