@@ -249,10 +249,6 @@ foreach ($events as $event) {
                     $('#eventPresta').text(data.presta);
                     $('#remainingPlaces').text(data.remainingPlaces);
 
-                    if(data.linkMeeting !== null) {
-                        $('#eventDescription').append('<br>Vous pouvez rejoindre la réunion en cliquant sur le lien suivant : <a href="' + data.linkMeeting + '" target="_blank">' + data.linkMeeting + '</a>');
-                    }
-
                     $('#start').val(datetimeValue);
 
                     if(data.place !== '') {
@@ -270,15 +266,17 @@ foreach ($events as $event) {
                         if(data.isRegister === 0) {
                             $('#registerEvent').html('<a href="<?= ADDRESS_SITE ?>évènements/inscription-évènement/' + id + '" class="btn btn-primary">S\'inscrire à l\'événement</a>');
                         } else {
-                            $('#registerEvent').html('<p><span class="text-success">Vous êtes inscrit à cet événement !</span><br>Vous pouvez vous désinscrire en cliquant sur le bouton suivant : <br><a href="<?= ADDRESS_SITE ?>évènements/inscription-évènement/' + id + '" class="btn btn-danger d-flex m-auto mt-2" style="width: fit-content;">Se désinscrire de l\'événement</a></p>');
+                            $('#registerEvent').html('<p><span class="text-success">Vous êtes inscrit à cet événement !</span><br>Vous pouvez vous désinscrire en cliquant sur le bouton suivant : <br><a href="<?= ADDRESS_SITE ?>évènements/inscription-évènement/' + id + '" class="btn btn-danger mt-2" style="width: fit-content;">Se désinscrire de l\'événement</a></p>');
                         }
                     } else {
                         $('#registerEvent').empty();
                     }
 
-                    <?php if (isset($_SESSION['id']) && ($_SESSION['role'] == '4' || $_SESSION['role'] == '5') && (isset($event) && ($_SESSION['id'] == $event['idPresta']))): ?>
-
                     let eventModalFooter = $('#eventModalFooter');
+
+                    eventModalFooter.empty();
+
+                    <?php if (isset($_SESSION['id']) && ($_SESSION['role'] == '4' || $_SESSION['role'] == '5') && (isset($event) && ($_SESSION['id'] == $event['idPresta']))): ?>
 
                     let modifyButton = $('<a>')
                         .attr('href', `<?= ADDRESS_SITE ?>évènements/modifier/${id}`)
@@ -290,9 +288,18 @@ foreach ($events as $event) {
                         .attr('class', 'btn btn-danger')
                         .text('Supprimer');
 
-                    eventModalFooter.empty();
                     eventModalFooter.append(modifyButton);
                     eventModalFooter.append(deleteButton);
+
+                    <?php else: ?>
+
+                    let spanInfo = $('<span>')
+                        .attr('class', 'text-danger')
+                        .text('Vous devez etre connecté pour vous inscrire à un événement !');
+
+                    eventModalFooter.append(spanInfo);
+
+                    eventModalFooter.css('justify-content', 'start');
 
                     <?php endif; ?>
 

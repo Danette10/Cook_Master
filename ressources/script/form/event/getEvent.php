@@ -46,12 +46,17 @@ $selectRegister->execute(array(
 ));
 $register = $selectRegister->fetch(PDO::FETCH_ASSOC);
 
-$selectIfRegister = $db->prepare("SELECT COUNT(*) as nbRegister FROM register WHERE idEvent = :id AND idUser = :idUser");
-$selectIfRegister->execute(array(
-    'id' => $event['idEvent'],
-    'idUser' => $_SESSION['id']
-));
-$ifRegister = $selectIfRegister->fetch(PDO::FETCH_ASSOC);
+if(isset($_SESSION['id'])):
+    $selectIfRegister = $db->prepare("SELECT COUNT(*) as nbRegister FROM register WHERE idEvent = :id AND idUser = :idUser");
+    $selectIfRegister->execute(array(
+        'id' => $event['idEvent'],
+        'idUser' => $_SESSION['id']
+    ));
+    $ifRegister = $selectIfRegister->fetch(PDO::FETCH_ASSOC);
+    $isRegister = $ifRegister['nbRegister'];
+else:
+    $isRegister = 0;
+endif;
 
 $remainingPlaces = $event['maxParticipant'] - $register['nbRegister'];
 
@@ -62,8 +67,7 @@ echo json_encode([
     "description" => html_entity_decode($event['description']),
     "presta" => $presta['firstname'] . ' ' . $presta['lastname'],
     "duration" => $duration,
-    "isRegister" => $ifRegister['nbRegister'],
+    "isRegister" => $isRegister,
     "remainingPlaces" => $remainingPlaces,
     "place" => html_entity_decode($placeInfo),
-    "linkMeeting" => $event['linkMeeting'],
 ]);

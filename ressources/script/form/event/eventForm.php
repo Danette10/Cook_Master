@@ -74,7 +74,7 @@ if($type != 4){
     $dayCourse = isset($_POST['dayCourse']) ? htmlspecialchars($_POST['dayCourse']) : null;
     $imageTraining = $_FILES['imageTraining'] ?? null;
 
-    $linkMeeting = 'https://meet.jit.si/' . uniqid();
+    $idMeeting = uniqid();
 
     if (empty($dayCourse)) {
         $errors['dayCourse'] = "Veuillez renseigner le nombre de jours de la formation";
@@ -92,12 +92,12 @@ if($type != 4){
         }
     }
 
-    $insertTraining = $db->prepare("INSERT INTO training_course (name, description, image, linkMeeting, pathDiploma, start, nbDays, idPresta) VALUES (:name, :description, :image, :linkMeeting, :pathDiploma, :start, :nbDays, :idPresta)");
+    $insertTraining = $db->prepare("INSERT INTO training_course (name, description, image, idMeeting, pathDiploma, start, nbDays, idPresta) VALUES (:name, :description, :image, :idMeeting, :pathDiploma, :start, :nbDays, :idPresta)");
     $insertTraining->execute([
         'name' => $name,
         'description' => $description,
         'image' => $imageTraining,
-        'linkMeeting' => $linkMeeting,
+        'idMeeting' => $idMeeting,
         'pathDiploma' => '',
         'start' => $start,
         'nbDays' => $dayCourse,
@@ -144,10 +144,9 @@ if (empty($errors)) {
 
     if($typePlace == 2){
         $idMeeting = uniqid();
-        $link = "https://meet.jit.si/" . $idMeeting;
-        $addPlace = $db->prepare("UPDATE events SET linkMeeting = :linkMeeting WHERE idEvent = :idEvent");
+        $addPlace = $db->prepare("UPDATE events SET idMeeting = :idMeeting WHERE idEvent = :idEvent");
         $addPlace->execute([
-            'linkMeeting' => $link,
+            'idMeeting' => $idMeeting,
             'idEvent' => $eventId
         ]);
 
