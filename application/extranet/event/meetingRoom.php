@@ -87,9 +87,6 @@ endif;
         userInfo: {
             email: "<?= $_SESSION['email']; ?>",
             displayName: "<?= $_SESSION['firstname'] . ' ' . $_SESSION['lastname']; ?>",
-            <?php if ($profilePicture != ''): ?>
-            avatar: "<?= ADDRESS_IMG_PROFIL . $profilePicture ?>",
-            <?php endif; ?>
         },
         configOverwrite: {
             disableProfile: true,
