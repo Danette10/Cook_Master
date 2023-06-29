@@ -793,4 +793,15 @@
 
         return errors;
     }
+    /**
+     * 
+     * TODO: Function to change filter on recipe page
+     * 
+     * @return void
+     */
+    function changeFilter(filterValue) {
+        
+        window.location.href = window.location.origin +"/"+ filterValue;
+        
+    }
 </script>

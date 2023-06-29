@@ -30,14 +30,24 @@ $authorProfilePicture = $authorInfos['profilePicture'];
 <body>
     <main>
         <div class="row">
-            <div class="col-4"></div>
+            <div class="col-4 text-center"></div>
             <div class="col-4">
                 <h1 class="text-center mt-4"><?= $recipe['recipeName'] ?></h1>
             </div>
             <div class="col-4"></div>
         </div>
         <div class="row">
-            <div class="col-3"></div>
+            <div class="col-3 text-center pt-5">
+            <?php
+            if(isset($_SESSION['role']) && $_SESSION['role'] == 5):
+            ?>
+            <a href="<?= ADDRESS_SITE ?>recette/supprimer-recette/<?= $recipe['idRecipe'] ?>" class="">
+                <button type="button" class="btn btn-danger shadow lang-shop-delete"></button>
+            </a>
+            <?php
+            endif;
+            ?>
+            </div>
             <div class="col-6 mt-4 text-center">
                 <img src="<?= ADDRESS_SITE ?>ressources/images/recipesImages/<?= $recipe['recipeImage'] ?>" alt="<?= $recipe['recipeName'] ?>" class="img-fluid rounded">
             </div>

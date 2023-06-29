@@ -20,7 +20,7 @@
     "lang-logout": "Déconnexion",
     "lang-filter": "Filtres",
     "lang-recipe-mostLiked": "Les plus aimées",
-    "lang-recipe-lessLiked": "Les moins aimées",
+    "lang-recipe-leastLiked": "Les moins aimées",
     "lang-recipe-creationDate": "Date de création",
     "lang-recipe-create": "Créer ta recette",
     "lang-shop-add": "Ajouter un produit",
@@ -49,5 +49,7 @@
 
     "lang-recipe-ingredient-list": "Liste des ingrédients requis : ",
     "lang-steps": "Étapes ",
-    "lang-recipe-author": "Auteur de la recette : "
+    "lang-recipe-author": "Auteur de la recette : ",
+    "lang-recipe-newest": "Le plus récent",
+    "lang-recipe-oldest": "Le plus ancien"
 }

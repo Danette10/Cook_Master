@@ -90,9 +90,13 @@ $routeur->get('/recettes/creation', function (){
 $routeur->post('/recettes/creation/check', function (){
     require PATH_FORM . 'recipeForm.php';
 });
-$routeur->get('/recettes/:id', function ($id){
+$routeur->get('/recette/:id', function ($id){
     $idRecipe = htmlspecialchars($id);
     require PATH_APPLICATION_EXTRANET . 'recipe/recipe.php';
+});
+$routeur->get('/recettes/:filter', function ($filter){
+    $filter = htmlspecialchars($filter);
+    require PATH_APPLICATION_EXTRANET . 'recipe/recipes.php';
 });
 
 // Routes -> Leçons

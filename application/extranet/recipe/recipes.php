@@ -27,8 +27,7 @@ echo '</div>';
 $nbOfPages = getNbrOfPages();
 $perPage = 8;
 $offset = ($currentPage * $perPage) - $perPage;
-$recipes = getRecipes($offset,$perPage);
-
+$recipes = getRecipes((isset($filter) ? $filter : 0),$offset,$perPage);
 ?>
 
 <body>
@@ -44,11 +43,11 @@ $recipes = getRecipes($offset,$perPage);
                     <input type="text" class="form-control shadow lang-placeholder-searchRecipe" placeholder="Rechercher une recette" id="recipeSearchBar">
                 </div>
                 <div class="col-3">
-                    <select class="form-select shadow">
-                        <option selected class="lang-filter">Filtres</option>
-                        <option value="1" class="lang-recipe-mostLiked"></option>
-                        <option value="2" class="lang-recipe-lessLiked"></option>
-                        <option value="3" class="lang-recipe-creationDate"></option>
+                    <select class="form-select shadow" onchange="changeFilter(this.options[this.selectedIndex].value)">
+                        <option <?= (!isset($filter)|| (isset($filter) && $filter === "newest") ? "selected" : "")?> class="lang-recipe-newest" value="<? ADDRESS_SITE ?>recettes/newest"></option>
+                        <option <?= (isset($filter) && $filter === "oldest" ? "selected" : ""); ?> class="lang-recipe-oldest" value="<? ADDRESS_SITE ?>recettes/oldest"></option>
+                        <option <?= (isset($filter) && $filter === "mostLiked" ? "selected" : ""); ?> class="lang-recipe-mostLiked" value="<? ADDRESS_SITE ?>recettes/mostLiked"></option>
+                        <option <?= (isset($filter) && $filter === "leastLiked" ? "selected" : ""); ?> class="lang-recipe-leastLiked" value="<? ADDRESS_SITE ?>recettes/leastLiked"></option>
                     </select>
                 </div>
                 <?php
@@ -72,8 +71,8 @@ $recipes = getRecipes($offset,$perPage);
                 <?php 
                 foreach($recipes as $recipe){
                     echo '
-                    <a href="'.ADDRESS_SITE.'recettes/'.$recipe['idRecipe'].'">
-                        <div class="col-sm-3  mt-3">
+                    <div class="col-sm-3  mt-3">
+                        <a href="'.ADDRESS_SITE.'recette/'.$recipe['idRecipe'].'">
                             <div class="card board" style="width: 18rem;">
                                 <img src="'. ADDRESS_SITE . 'ressources/images/recipesImages/'.$recipe['recipeImage'].'" width="300" class="card-img-top" alt="...">
                                 <div class="card-body">
@@ -81,8 +80,9 @@ $recipes = getRecipes($offset,$perPage);
                                     <p class="card-text">'.cutString($recipe['description'],55).'</p>
                                 </div>
                             </div>
-                        </div>
-                    </a>';
+                        </a>
+                    </div>
+                    ';
                     
                 }
                 ?>

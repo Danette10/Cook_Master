@@ -472,18 +472,35 @@ function getUserInvoicesByYear($customerId) {
 
 }
 
-function getRecipes($offset,$perPage) {
+function getRecipes($filter,$offset,$perPage) {
     global $db;
 
+    if ($filter == "newest") { 
     $selectRecipes = $db->prepare('SELECT * FROM recipe ORDER BY idRecipe DESC LIMIT :offset, :perPage');
     $selectRecipes->bindValue(':offset', $offset, PDO::PARAM_INT);
     $selectRecipes->bindValue(':perPage', $perPage, PDO::PARAM_INT);
     $selectRecipes->execute();
-
     $recipes = $selectRecipes->fetchAll();
     
+    } else if ($filter == "oldest") {
+        $selectRecipes = $db->prepare('SELECT * FROM recipe ORDER BY idRecipe ASC LIMIT :offset, :perPage');
+        $selectRecipes->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $selectRecipes->bindValue(':perPage', $perPage, PDO::PARAM_INT);
+        $selectRecipes->execute();
+        $recipes = $selectRecipes->fetchAll();
+    } else if ($filter == "mostLiked") {
 
+    }else if ($filter == "leastLiked") { 
+
+    }else {
+        $selectRecipes = $db->prepare('SELECT * FROM recipe ORDER BY idRecipe DESC LIMIT :offset, :perPage');
+        $selectRecipes->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $selectRecipes->bindValue(':perPage', $perPage, PDO::PARAM_INT);
+        $selectRecipes->execute();
+        $recipes = $selectRecipes->fetchAll();
+    }
     return $recipes;
+
 }
 
 function getNbrOfPages() {
