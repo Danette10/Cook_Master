@@ -22,7 +22,7 @@ function redirectUser($path = '/')
  * TODO: Function to send mail
  */
 
-function mailHtml($to, $subject, $message, $headers, $attachement = null, $image = null) {
+function mailHtml($to, $subject, $message, $header = "Cookorama < " . MAIL . " >", $attachement = null, $image = null) {
 
     $mail = new PHPMailer(true);
 

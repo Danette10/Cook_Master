@@ -39,7 +39,10 @@ try {
         http_response_code(200);
         echo json_encode([
             "success" => true,
-            "message" => $user
+            "token" => $user["token"],
+            "data" => [
+                "rights" => $user["rights"],
+            ],
         ]);
     }
 } catch (PDOException $exception) {
