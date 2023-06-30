@@ -51,5 +51,7 @@
     "lang-steps": "Étapes ",
     "lang-recipe-author": "Auteur de la recette : ",
     "lang-recipe-newest": "Le plus récent",
-    "lang-recipe-oldest": "Le plus ancien"
+    "lang-recipe-oldest": "Le plus ancien",
+    "lang-why-delete-recipe": "Pourquoi supprimez-vous cette recette ?",
+    "lang-delete-recipe": "Supprimer la recette"
 }
