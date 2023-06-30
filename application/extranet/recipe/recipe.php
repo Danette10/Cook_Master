@@ -1,116 +1,106 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <?php
-$title = "Cookorama - Toutes nos recettes";
+global $db;
+$select = $db->query('SELECT * FROM recipe WHERE idRecipe = ' . $idRecipe);
+$recipe = $select->fetch(PDO::FETCH_ASSOC);
+$title = "Cookorama - " . $recipe['recipeName'];
 include 'ressources/script/head.php';
 require_once PATH_SCRIPT . 'header.php';
 
-if(isset($_GET['page']) && !empty($_GET['page'])){
-    $currentPage = (int) strip_tags($_GET['page']);
-}else{
-    $currentPage = 1;
-}
+$getRecipeIngredients = $db->prepare("SELECT * FROM recipe_ingredients WHERE idRecipe = :idRecipe");
+$getRecipeIngredients->execute([
+    'idRecipe' => $idRecipe
+]);
+$recipeIngredients = $getRecipeIngredients->fetchAll(PDO::FETCH_ASSOC);
 
-$nbOfPages = getNbrOfPages();
-$perPage = 8;
-$offset = ($currentPage * $perPage) - $perPage;
-$recipes = getRecipes($offset,$perPage);
+$getRecipeSteps = $db->prepare("SELECT * FROM recipe_steps WHERE idRecipe = :idRecipe");
+$getRecipeSteps->execute([
+    'idRecipe' => $idRecipe
+]);
+$recipeSteps = $getRecipeSteps->fetchAll(PDO::FETCH_ASSOC);
 
-
+$authorInfos = $db->prepare("SELECT * FROM users WHERE idUser = :idUser");
+$authorInfos->execute([
+    'idUser' => $recipe['idUser']
+]);
+$authorInfos = $authorInfos->fetch(PDO::FETCH_ASSOC);
+$authorProfilePicture = $authorInfos['profilePicture'];
 ?>
-
 <body>
-    <div class="text-center mt-4">
-        <h1 class="lang-recipe"></h1>
-    </div>
-
-    <div class="container mt-4">
+    <main>
         <div class="row">
-            <div class="col-3"></div>
-            <div class="col-7 row">
-                <div class="col-6">
-                    <input type="text" class="form-control shadow lang-placeholder-searchRecipe" placeholder="Rechercher une recette" id="recipeSearchBar">
-                </div>
-                <div class="col-3">
-                    <select class="form-select shadow">
-                        <option selected class="lang-filter">Filtres</option>
-                        <option value="1" class="lang-recipe-mostLiked"></option>
-                        <option value="2" class="lang-recipe-lessLiked"></option>
-                        <option value="3" class="lang-recipe-creationDate"></option>
-                    </select>
-                </div>
-                <?php
-                if(isset($_SESSION['id'])):
-                ?>
-                <div class="col-3">
-                    <a href="<?= ADDRESS_SITE ?>recettes/creation">
-                        <button type="button" class="btn connexionLink shadow lang-recipe-create"></button>
-                    </a>
-                </div>
-                <?php
-                endif;
-                ?>
-                
-                
+            <div class="col-4 text-center"></div>
+            <div class="col-4">
+                <h1 class="text-center mt-4"><?= $recipe['recipeName'] ?></h1>
             </div>
-            <div class="col-3"></div>
+            <div class="col-4"></div>
         </div>
-        <div class="row text-center mt-5 ">
-            <?php 
-            foreach($recipes as $recipe){
-                echo '
-                <div class="col-sm-3  mt-3">
-                    <div class="card board" style="width: 18rem;">
-                        <img src="' . ADDRESS_IMG_RECIPES . $recipe['recipeImage'].'" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h4>'.$recipe['recipeName'].'</h4>
-                            <p class="card-text">'.$recipe['description'].'</p>
-                        </div>
-                    </div>
-                </div>';
-                
-            }
+        <div class="row">
+            <div class="col-3 text-center pt-5">
+            <?php
+            if(isset($_SESSION['role']) && $_SESSION['role'] == 5):
             ?>
-        </div>
-        <div class="row text-center mt-4 ">
-            <div class="col"></div>
-            <div class="col">
-            <nav>
-                <ul class="pagination">
-                    <!-- Lien vers la page précédente (désactivé si on se trouve sur la 1ère page) -->
-                    <li class="page-item <?= ($currentPage == 1) ? "disabled" : "" ?>">
-                        <a href="recettes?page=<?= $currentPage - 1 ?>" class="page-link">Précédente</a>
-                    </li>
-                    <?php for($page = 1; $page <= $nbOfPages; $page++): 
-                        //<!-- Lien vers chacune des pages (activé si on se trouve sur la page correspondante) -->
-                        if ($page == $currentPage) {
-                            echo '
-                            <li class="page-item disabled">
-                                <a href="'.ADDRESS_SITE.'recettes?page='. $page .'" class="page-link">'.$page.'</a>
-                            </li>';
-                        }else {
-                            echo'
-                            <li class="page-item">
-                                <a href="'.ADDRESS_SITE.'recettes?page='. $page .'" class="page-link">'.$page.'</a>
-                            </li>';
-                        }
-                        
-                     endfor ?>
-                        <!-- Lien vers la page suivante (désactivé si on se trouve sur la dernière page) -->
-                    <li class="page-item <?= ($currentPage == $nbOfPages) ? "disabled" : "" ?>">
-                        <a href="<?= htmlspecialchars(ADDRESS_SITE . "recettes?page=" . ($currentPage + 1)) ?>" class="page-link">Suivante</a>
-                    </li>
-                </ul>
-            </nav>
+            <a href="<?= ADDRESS_SITE ?>recette/supprimer-recette/<?= $recipe['idRecipe'] ?>" class="">
+                <button type="button" class="btn btn-danger shadow lang-shop-delete"></button>
+            </a>
+            <?php
+            endif;
+            ?>
             </div>
-            <div class="col"></div>
+            <div class="col-6 mt-4 text-center">
+                <img src="<?= ADDRESS_SITE ?>ressources/images/recipesImages/<?= $recipe['recipeImage'] ?>" alt="<?= $recipe['recipeName'] ?>" class="img-fluid rounded">
+            </div>
+            <div class="col-3"></div>
         </div>
-    </div>
-
-
-
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4 text-center">
+                <div class="mt-4 text-center">
+                    <p><i><?=wordwrap($recipe['description'],60,"\n",true) ?></i></p>
+                </div>  
+            </div>
+            <div class="col-4"></div>
+        </div>
+        <div class="row mt-4 ">
+            <div class="col-4 text-center">
+                <u><h3 class="lang-recipe-ingredient-list"></h3></u>
+                <?php
+                echo '
+                <div class="row mt-5" style="padding-left: 8rem; margin-right:10px; ">';
+                foreach ($recipeIngredients as $recipeIngredient) {
+                    echo '
+                    <div class="col-6 text-center" style="background: #fe9c90; border: 1px solid #333; border-radius: 10px;">
+                        <p>' . $recipeIngredient['ingredientName'] . '</p>
+                    </div>
+                    <div class="col-2 text-center" style="background: #fe9c90; border: 1px solid #333; border-radius: 10px;">
+                        <p>' . $recipeIngredient['ingredientQuantity'] . '</p>
+                    </div>
+                    <div class="col-4 text-center" style="background: #fe9c90; border: 1px solid #333; border-radius: 10px;">
+                        <p>' . $recipeIngredient['unit'] . '</p>
+                    </div>';
+                    
+                }
+                echo '</div>';
+                ?>
+            </div>
+            <div class="col-4">
+                <u><h3 class="text-center lang-steps"></h3></u>
+                <?php
+                    foreach($recipeSteps as $step) {
+                        echo '
+                        <p class="mt-4" style="background: #fe9c90; border: 1px solid #333; border-radius: 10px;padding-left:5px; padding-right:5px;">'.wordwrap($step['stepDescription'],75,"\n",true).' </p>
+                        ';
+                    }
+                ?>
+            </div>
+            <div class="col-4 text-center">
+                <u><h3 class="lang-recipe-author"></h3></u>
+                <img src="<?= ADDRESS_IMG_PROFIL . $authorProfilePicture ?>" alt="<?= $authorInfos['firstname'].' '. $authorInfos['lastname'] ?>" class="img-fluid rounded-circle mt-4" style="width: 150px; height: 150px; border: 1px solid #333;">
+                <h4 class="mt-4"><?= $authorInfos['firstname'].' '.$authorInfos['lastname'] ?></h4>
+            </div>
+        </div>
+    </main>
 </body>
-
 
 </html>

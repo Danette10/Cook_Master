@@ -4,7 +4,7 @@ function getRecipes(){
     global $db;
     $getRecipesQuery = $db->prepare(
         "
-        SELECT * FROM recipe ORDER BY recipeName ASC
+        SELECT * FROM recipe ORDER BY idRecipe DESC
         "
     );
 
