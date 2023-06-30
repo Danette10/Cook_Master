@@ -39,20 +39,25 @@ endif;
 
     <?php include PATH_SCRIPT . 'messages.php'; ?>
 
-    <div class="text-center mt-4">
-        <h1 class="lang-meeting" id="idRoom"></h1>
-        <h5 id="nameRoom"></h5>
+    <div class="text-center mt-4 d-flex justify-content-center align-items-center">
+        <h1 class="lang-meeting me-3" id="idRoom"></h1>
+        <button type="button"
+                class="btn btn-primary lang-joinRoom"
+                data-bs-toggle="modal"
+                data-bs-target="#joinRoomModal"
+                id="joinRoom">
+        </button>
     </div>
 
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#joinRoomModal" id="joinRoom">
-        Rejoindre une salle
-    </button>
+    <div class="text-center mt-4">
+        <h5 id="nameRoom"></h5>
+    </div>
 
     <div class="modal fade" id="joinRoomModal" tabindex="-1" aria-labelledby="joinRoomModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="joinRoomModalLabel">Rejoindre une salle</h5>
+                    <h5 class="modal-title lang-joinRoom" id="joinRoomModalLabel"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -61,10 +66,10 @@ endif;
                         ?>
                         <form action="" method="post">
                             <div class="mb-3">
-                                <label for="idRoom" class="form-label">ID de la salle <span class="text-danger">*</span></label>
-                                <input type="text" name="idRoom" class="form-control" id="idRoom" placeholder="ID de la salle" required>
+                                <label for="idRoom" class="form-label"><span class="lang-spanIdRoom"></span> <span class="text-danger">*</span></label>
+                                <input type="text" name="idRoom" class="form-control lang-placeholder-IdRoom" id="idRoom" required>
                             </div>
-                            <button type="submit" class="btn btn-primary">Rejoindre la salle</button>
+                            <button type="submit" class="btn btn-primary lang-joinRoom"></button>
                         </form>
                     <?php endif; ?>
                 </div>

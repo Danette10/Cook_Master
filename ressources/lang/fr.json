@@ -41,10 +41,13 @@
   "lang-dashboard-viewUsers": "Voir les utilisateurs",
   "lang-dashboard-userPending": "En attente",
   "lang-meeting": "Salles de réunion",
+  "lang-joinRoom": "Rejoindre une réunion",
+  "lang-spanIdRoom": "ID de la salle",
 
   "lang-placeholder-searchRecipe": "Rechercher une recette",
   "lang-placeholder-shop-add-name": "Nom du produit",
   "lang-placeholder-shop-add-quantity": "Quantité du produit",
   "lang-placeholder-shop-add-price": "Prix du produit",
-  "lang-placeholder-shop-add-description": "Description du produit"
+  "lang-placeholder-shop-add-description": "Description du produit",
+  "lang-placeholder-IdRoom": "ID de la salle"
 }

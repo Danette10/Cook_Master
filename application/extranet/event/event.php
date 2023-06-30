@@ -62,6 +62,13 @@ foreach ($events as $event) {
             </a>
         <?php
         endif;
+        if(isset($_SESSION['id'])):
+        ?>
+            <a href="<?= ADDRESS_SITE ?>évènements/réunion" class="ms-3">
+                <button type="button" class="btn connexionLink shadow lang-joinRoom"></button>
+            </a>
+        <?php
+        endif;
         ?>
     </div>
 

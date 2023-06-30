@@ -41,10 +41,13 @@
   "lang-dashboard-viewUsers": "See users",
   "lang-dashboard-userPending": "Pending",
   "lang-meeting": "Meeting room",
+  "lang-joinRoom": "Join a room",
+  "lang-spanIdRoom": "Room ID",
 
   "lang-placeholder-searchRecipe": "Search a recipe",
   "lang-placeholder-shop-add-name": "Product name",
   "lang-placeholder-shop-add-quantity": "Product quantity",
   "lang-placeholder-shop-add-price": "Product price",
-  "lang-placeholder-shop-add-description": "Product description"
+  "lang-placeholder-shop-add-description": "Product description",
+  "lang-placeholder-IdRoom": "Room ID"
 }
