@@ -44,6 +44,10 @@ foreach ($events as $event) {
         "duration" => $duration
     ];
 }
+
+$selectTraining = $db->prepare("SELECT * FROM training_course WHERE start >= NOW()");
+$selectTraining->execute();
+$trainings = $selectTraining->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <body>
@@ -186,6 +190,29 @@ foreach ($events as $event) {
             },
             <?php endforeach; ?>
         ]);
+
+        calendar.evoCalendar('addCalendarEvent', [
+            <?php foreach ($trainings as $training):
+            $start = new DateTime($training['start']);
+
+            // Ajouter les événements pour chaque jour de la formation
+            for ($i = 0; $i < $training['nbDays']; $i++) {
+                ?>
+            {
+                id: '<?= $training['idTrainingCourse'] . '-' . $i ?>',
+                    name: '<?= $training['name'] ?>',
+                date: '<?= $start->format('Y-m-d') ?>',
+                description: '<?= $training['description'] ?>',
+                type: 'training',
+                color: '#397bac',
+            },
+            <?php
+            // Avancer au jour suivant
+            $start->modify('+1 day');
+        } ?>
+            <?php endforeach; ?>
+        ]);
+
 
         <?php if (isset($_SESSION['role']) && ($_SESSION['role'] == '4' || $_SESSION['role'] == '5')): ?>
 

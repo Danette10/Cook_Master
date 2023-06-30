@@ -162,7 +162,6 @@ CREATE TABLE IF NOT EXISTS training_course
     idTrainingCourse INT AUTO_INCREMENT,
     name             VARCHAR(30)  NOT NULL,
     description      VARCHAR(150) NOT NULL,
-    type             INT          NOT NULL,
     image            VARCHAR(100) NOT NULL,
     idMeeting        CHAR(13)     NOT NULL,
     pathDiploma      VARCHAR(100) NOT NULL,
