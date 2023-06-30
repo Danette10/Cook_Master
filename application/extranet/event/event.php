@@ -195,9 +195,7 @@ $trainings = $selectTraining->fetchAll(PDO::FETCH_ASSOC);
             <?php foreach ($trainings as $training):
             $start = new DateTime($training['start']);
 
-            // Ajouter les événements pour chaque jour de la formation
-            for ($i = 0; $i < $training['nbDays']; $i++) {
-                ?>
+            for ($i = 0; $i < $training['nbDays']; $i++): ?>
             {
                 id: '<?= $training['idTrainingCourse'] . '-' . $i ?>',
                     name: '<?= $training['name'] ?>',
@@ -207,10 +205,10 @@ $trainings = $selectTraining->fetchAll(PDO::FETCH_ASSOC);
                 color: '#397bac',
             },
             <?php
-            // Avancer au jour suivant
             $start->modify('+1 day');
-        } ?>
-            <?php endforeach; ?>
+            endfor;
+            endforeach;
+            ?>
         ]);
 
 
