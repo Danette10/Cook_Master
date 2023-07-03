@@ -40,6 +40,7 @@ try {
         echo json_encode([
             "success" => true,
             "token" => $user["token"],
+            "id" => $user["id"],
             "data" => [
                 "rights" => $user["rights"],
             ],

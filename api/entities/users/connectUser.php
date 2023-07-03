@@ -39,7 +39,8 @@ function connectUser($email, $password) {
 
     return [
         'token' => $token,
-        'rights' => $user['role']
+        'rights' => $user['role'],
+        'id' => $user['idUser']
     ];
 
 }

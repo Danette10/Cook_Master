@@ -14,7 +14,7 @@ function valid_token(string $token) {
         return false;
     }
 
-    $getUserMailQuery = $db->prepare('SELECT email FROM users WHERE token = :token');
+    $getUserMailQuery = $db->prepare('SELECT email,idUser FROM users WHERE token = :token');
     $getUserMailQuery->execute([
         'token' => $token
     ]);
@@ -30,7 +30,8 @@ function valid_token(string $token) {
     ]);
 
     return [
-        'token' => $token
+        'token' => $token,
+        'id' => $email['idUser']
     ];
 
 }

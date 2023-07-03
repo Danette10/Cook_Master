@@ -19,7 +19,8 @@ try {
     http_response_code(200);
     echo json_encode([
         "success" => true,
-        "token" => $newToken["token"]
+        "token" => $newToken["token"],
+        "id" => $newToken["id"]
     ]);
     die();
 }catch (Exception $e) {
