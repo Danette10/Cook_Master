@@ -30,7 +30,7 @@ try {
     $user = connectUser($email, $password);
 
     if(!$user){
-        http_response_code(404);
+        http_response_code(403);
         echo json_encode([
             "success" => false,
             "message" => "User $email not found or password incorrect"
