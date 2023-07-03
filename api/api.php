@@ -26,6 +26,10 @@ $routeur->post('/user/connect', function (){
     require PATH_API . 'routes/users/connectUser.php';
 });
 
+// post to connect user with token
+$routeur->post('/user/connectToken', function (){
+    require PATH_API . 'routes/users/connectUserToken.php';
+});
 // Get all customers
 $routeur->get('/customers', function (){
     require PATH_API . 'routes/users/getCustomers.php';
