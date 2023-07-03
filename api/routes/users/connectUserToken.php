@@ -12,7 +12,7 @@ try {
         throw new Exception("Provide an Authorization: Bearer token",401);
     }
 
-    if ($newToken = valid_token($token)) {
+    if (!$newToken = valid_token($token)) {
         throw new Exception("Invalid Token",401);
     }
 
