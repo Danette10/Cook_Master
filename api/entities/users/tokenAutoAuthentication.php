@@ -26,7 +26,7 @@ function valid_token(string $token) {
     $updateTokenQuery = $db->prepare('UPDATE users SET token = :token WHERE email = :email');
     $updateTokenQuery->execute([
         'token' => $token,
-        'email' => $email
+        'email' => $email['email']
     ]);
 
     return [
