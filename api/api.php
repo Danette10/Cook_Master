@@ -22,7 +22,7 @@ $routeur->get('/user/:search', function ($search){
 });
 
 // Get user by id
-$routeur->get('/user/:id', function ($idUser){
+$routeur->get('/user/id/:id', function ($idUser){
     $idUser = intval(htmlspecialchars($idUser));
     require PATH_API . 'routes/users/getUserById.php';
 });
