@@ -109,7 +109,8 @@ $routeur->post('/évènements/ajout/:date/verification', function ($date){
     $date = htmlspecialchars($date);
     require PATH_SCRIPT_EVENT . 'eventForm.php';
 });
-$routeur->get('/évènements/get/:id', function ($id){
+$routeur->get('/évènements/get/:type/:id', function ($type, $id){
+    $type = htmlspecialchars($type);
     $idEvent = htmlspecialchars($id);
     require PATH_SCRIPT_EVENT . 'getEvent.php';
     die();

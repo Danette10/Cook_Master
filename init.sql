@@ -216,9 +216,9 @@ CREATE TABLE IF NOT EXISTS register
 (
     idUser  INT,
     idEvent INT,
+    type    INT NOT NULL,
     PRIMARY KEY (idUser, idEvent),
-    FOREIGN KEY (idUser) REFERENCES users (idUser),
-    FOREIGN KEY (idEvent) REFERENCES events (idEvent)
+    FOREIGN KEY (idUser) REFERENCES users (idUser)
 );
 
 CREATE TABLE IF NOT EXISTS orders
