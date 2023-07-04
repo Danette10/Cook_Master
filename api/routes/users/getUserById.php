@@ -3,6 +3,7 @@
 require_once __DIR__ . "/../../libraries/response.php";
 require_once __DIR__ . "/../../libraries/header.php";
 require_once __DIR__ . "/../../entities/users/getUser.php";
+require_once __DIR__ . "/../../entities/users/tokenAutoAuthentication.php";
 
 try {
 
@@ -17,7 +18,7 @@ try {
         throw new Exception("Invalid Token",401);
     }
 
-    $user[0]["token"] = $newToken["token"];
+    $user["token"] = $newToken["token"];
 
     echo jsonResponse(200, [], [
         "success" => true,
