@@ -17,11 +17,13 @@ try {
         throw new Exception("Invalid Token",401);
     }
 
+    $user[0]["token"] = $newToken["token"];
+
     echo jsonResponse(200, [], [
         "success" => true,
-        "user" => $user,
-        "token" => $newToken["token"],
+        "user" => $user
     ]);
+
 } catch (PDOException $exception) {
     echo jsonResponse(500, [], [
         "success" => false,
