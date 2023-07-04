@@ -24,11 +24,11 @@ function getUserById($idUser){
     global $db;
     $getUserQuery = $db->prepare(
         "
-        SELECT firstname,lastname,birthdate,fidelityCounter,creation,profilePicture,token FROM users WHERE idUser = '$idUser';
+        SELECT firstname,lastname,birthdate,fidelityCounter,creation,profilePicture,token FROM users WHERE idUser = :idUser;
         "
     );
 
-    $getUserQuery->execute([ "idUser" => $idUser]);
+    $getUserQuery->execute([ ":idUser" => $idUser]);
 
     $infos = $getUserQuery->fetch(PDO::FETCH_ASSOC);
     
