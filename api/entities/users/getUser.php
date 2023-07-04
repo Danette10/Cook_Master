@@ -19,3 +19,19 @@ function getUser($search){
 
     return $getUserQuery->fetchAll(PDO::FETCH_ASSOC);
 }
+
+function getUserById($idUser){
+    global $db;
+    $getUserQuery = $db->prepare(
+        "
+        SELECT * FROM users WHERE idUser = '$idUser';
+        "
+    );
+
+    $getUserQuery->execute([ "idUser" => $idUser]);
+
+    $infos = $getUserQuery->fetch(PDO::FETCH_ASSOC);
+    
+    return $infos;
+
+}

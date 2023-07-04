@@ -21,6 +21,12 @@ $routeur->get('/user/:search', function ($search){
     require PATH_API . 'routes/users/getUser.php';
 });
 
+// Get user by id
+$routeur->get('/user/:id', function ($idUser){
+    $idUser = intval(htmlspecialchars($idUser));
+    require PATH_API . 'routes/users/getUserById.php';
+});
+
 // Post to connect user
 $routeur->post('/user/connect', function (){
     require PATH_API . 'routes/users/connectUser.php';
