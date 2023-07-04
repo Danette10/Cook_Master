@@ -24,7 +24,7 @@ function getUserById($idUser){
     global $db;
     $getUserQuery = $db->prepare(
         "
-        SELECT * FROM users WHERE idUser = '$idUser';
+        SELECT firstname,lastname,birthdate,fidelityCounter,creation,profilePicture FROM users WHERE idUser = '$idUser';
         "
     );
 
