@@ -21,6 +21,12 @@ $routeur->get('/user/:search', function ($search){
     require PATH_API . 'routes/users/getUser.php';
 });
 
+// Search products
+$routeur->get('/products/:search', function ($search){
+    $search = htmlspecialchars($search);
+    require PATH_API . 'routes/shop/searchProducts.php';
+});
+
 // Get user by id
 $routeur->get('/user/id/:id', function ($idUser){
     $idUser = intval(htmlspecialchars($idUser));
@@ -79,5 +85,9 @@ $routeur->get('/customers/chart', function (){
     require PATH_API . 'routes/users/getDataChartCustomers.php';
 });
 
+// Get secret game Images
+$routeur->get('/secret/game/images', function (){
+    require PATH_API . 'routes/game/getImages.php';
+});
 
 $routeur->run();
