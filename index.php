@@ -125,6 +125,10 @@ $routeur->get('/évènements/inscription-évènement/:id', function ($id){
     $idEvent = htmlspecialchars($id);
     require PATH_SCRIPT_EVENT . 'inscriptionEvent.php';
 });
+$routeur->get('/évènements/inscription-formation/:id', function ($id){
+    $idTraining = htmlspecialchars($id);
+    require PATH_SCRIPT_EVENT . 'inscriptionTraining.php';
+});
 $routeur->get('/évènements/réunion', function (){
     require PATH_APPLICATION_EVENT . 'meetingRoom.php';
 });
@@ -134,6 +138,12 @@ $routeur->get('/évènements/réunion/:id', function ($id){
 });
 $routeur->post('/évènements/réunion', function (){
     require PATH_APPLICATION_EVENT . 'meetingRoom.php';
+});
+$routeur->get('/évènements/présence', function (){
+    require PATH_APPLICATION_EVENT . 'presence.php';
+});
+$routeur->post('/évènements/présence/check', function (){
+    require PATH_SCRIPT_EVENT . 'presenceForm.php';
 });
 
 // Routes -> Boutique

@@ -10,7 +10,7 @@ $selectInfoEvent->execute([
 
 $event = $selectInfoEvent->fetch(PDO::FETCH_ASSOC);
 
-$checkRegistration = $db->prepare('SELECT COUNT(*) as isRegistered FROM register WHERE idUser = :idUser AND idEvent = :idEvent');
+$checkRegistration = $db->prepare('SELECT COUNT(*) as isRegistered FROM register WHERE type = 1 AND idUser = :idUser AND idEvent = :idEvent');
 $checkRegistration->execute([
     'idUser' => $_SESSION['id'],
     'idEvent' => $idEvent
@@ -19,7 +19,7 @@ $checkRegistration->execute([
 $isRegistered = $checkRegistration->fetch(PDO::FETCH_ASSOC);
 
 if ($isRegistered['isRegistered'] > 0) {
-    $deleteRegistration = $db->prepare('DELETE FROM register WHERE idUser = :idUser AND idEvent = :idEvent');
+    $deleteRegistration = $db->prepare('DELETE FROM register WHERE type = 1 AND idUser = :idUser AND idEvent = :idEvent');
     $deleteRegistration->execute([
         'idUser' => $_SESSION['id'],
         'idEvent' => $idEvent
@@ -40,7 +40,7 @@ if ($isRegistered['isRegistered'] > 0) {
         exit();
     }
 }else{
-    $addRegistration = $db->prepare('INSERT INTO register (idUser, idEvent) VALUES (:idUser, :idEvent)');
+    $addRegistration = $db->prepare('INSERT INTO register (idUser, idEvent, type) VALUES (:idUser, :idEvent, 1)');
     $addRegistration->execute([
         'idUser' => $_SESSION['id'],
         'idEvent' => $idEvent

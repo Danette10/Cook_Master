@@ -1,4 +1,5 @@
 <?php
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
@@ -514,4 +515,9 @@ function cutString($string, $length) {
 
     return $string;
 }
+
+function fillDiploma($template, $fields) {
+}
+
+
 ?>

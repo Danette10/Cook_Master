@@ -48,6 +48,12 @@ foreach ($events as $event) {
 $selectTraining = $db->prepare("SELECT * FROM training_course WHERE start >= NOW()");
 $selectTraining->execute();
 $trainings = $selectTraining->fetchAll(PDO::FETCH_ASSOC);
+
+$ifUserIsPrestaTraining = $db->prepare("SELECT * FROM training_course WHERE idPresta = :idPresta");
+$ifUserIsPrestaTraining->execute(array(
+    'idPresta' => $_SESSION['id']
+));
+$ifUserIsPrestaTraining = $ifUserIsPrestaTraining->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <body>
@@ -65,6 +71,13 @@ $trainings = $selectTraining->fetchAll(PDO::FETCH_ASSOC);
                 <button type="button" class="btn connexionLink shadow lang-declareRoom"></button>
             </a>
         <?php
+        if(!empty($ifUserIsPrestaTraining)):
+            ?>
+            <a href="<?= ADDRESS_SITE ?>évènements/présence" class="ms-3">
+                <button type="button" class="btn connexionLink shadow lang-presence"></button>
+            </a>
+        <?php
+        endif;
         endif;
         if(isset($_SESSION['id'])):
         ?>
@@ -346,26 +359,29 @@ $trainings = $selectTraining->fetchAll(PDO::FETCH_ASSOC);
 
                     eventModalFooter.empty();
 
-                    <?php if (isset($_SESSION['id']) && ($_SESSION['role'] == '4' || $_SESSION['role'] == '5') && (isset($event) && ($_SESSION['id'] == $event['idPresta']))): ?>
+                    <?php if (isset($_SESSION['id'])):
+                        if(($_SESSION['role'] == '4' || $_SESSION['role'] == '5') && (isset($event) && ($_SESSION['id'] == $event['idPresta']))): ?>
 
-                    let modifyButton = document.createElement('a');
-                    modifyButton.setAttribute('class', 'btn btn-warning');
-                    modifyButton.innerHTML = 'Modifier';
+                            let modifyButton = document.createElement('a');
+                            modifyButton.setAttribute('class', 'btn btn-warning text-light');
+                            modifyButton.innerHTML = 'Modifier';
 
-                    let deleteButton = document.createElement('a');
-                    deleteButton.setAttribute('class', 'btn btn-danger');
-                    deleteButton.innerHTML = 'Supprimer';
+                            let deleteButton = document.createElement('a');
+                            deleteButton.setAttribute('class', 'btn btn-danger');
+                            deleteButton.innerHTML = 'Supprimer';
 
-                    if(type === 'event') {
-                        modifyButton.setAttribute('href', `<?= ADDRESS_SITE ?>évènements/modifier/${id}`);
-                        deleteButton.setAttribute('href', `<?= ADDRESS_SITE ?>évènements/supprimer/${id}`);
-                    } else {
-                        modifyButton.setAttribute('href', `<?= ADDRESS_SITE ?>évènements/modifier-formation/${id}`);
-                        deleteButton.setAttribute('href', `<?= ADDRESS_SITE ?>évènements/supprimer-formation/${id}`);
-                    }
+                            if(type === 'event') {
+                                modifyButton.setAttribute('href', `<?= ADDRESS_SITE ?>évènements/modifier/${id}`);
+                                deleteButton.setAttribute('href', `<?= ADDRESS_SITE ?>évènements/supprimer/${id}`);
+                            } else {
+                                modifyButton.setAttribute('href', `<?= ADDRESS_SITE ?>évènements/modifier-formation/${id}`);
+                                deleteButton.setAttribute('href', `<?= ADDRESS_SITE ?>évènements/supprimer-formation/${id}`);
+                            }
 
-                    eventModalFooter.append(modifyButton);
-                    eventModalFooter.append(deleteButton);
+                            eventModalFooter.append(modifyButton);
+                            eventModalFooter.append(deleteButton);
+
+                            <?php endif; ?>
 
                     <?php else: ?>
 
