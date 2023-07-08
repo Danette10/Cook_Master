@@ -20,16 +20,25 @@ switch ($action):
 
         $html .= '<form action="' . ADDRESS_SITE . 'évènements/présence/check" method="post" id="formPresence">';
         foreach ($presences as $presence):
-            $selectUser = $db->prepare('SELECT * FROM users WHERE idUser = :idUser');
-            $selectUser->execute(array(
-                'idUser' => $presence['idUser']
+            $selectValidated = $db->prepare('SELECT * FROM validate_training_course WHERE idUser = :idUser AND idTrainingCourse = :idTrainingCourse');
+            $selectValidated->execute(array(
+                'idUser' => $presence['idUser'],
+                'idTrainingCourse' => $idTraining
             ));
-            $user = $selectUser->fetch(PDO::FETCH_ASSOC);
+            $validated = $selectValidated->fetch(PDO::FETCH_ASSOC);
 
-            $html .= '<div class="form-check">';
-            $html .= '<input class="form-check-input" type="checkbox" value="' . $user['idUser'] . '" name=presence[] id="user' . $user['idUser'] . '">';
-            $html .= '<label class="form-check-label" for="user' . $user['idUser'] . '">' . $user['firstname'] . ' ' . $user['lastname'] . '</label>';
-            $html .= '</div>';
+            if($validated):
+                $selectUser = $db->prepare('SELECT * FROM users WHERE idUser = :idUser');
+                $selectUser->execute(array(
+                    'idUser' => $presence['idUser']
+                ));
+                $user = $selectUser->fetch(PDO::FETCH_ASSOC);
+
+                $html .= '<div class="form-check">';
+                $html .= '<input class="form-check-input" type="checkbox" value="' . $user['idUser'] . '" name=presence[] id="user' . $user['idUser'] . '">';
+                $html .= '<label class="form-check-label" for="user' . $user['idUser'] . '">' . $user['firstname'] . ' ' . $user['lastname'] . '</label>';
+                $html .= '</div>';
+            endif;
         endforeach;
 
         $html .= '<input type="hidden" name="idTraining" value="' . $idTraining . '">';

@@ -37,7 +37,7 @@ if($updateValidatePresence->rowCount() > 0){
                 'idTrainingCourse' => $_POST['idTraining']
             ));
 
-            $selectNameFirstname = $db->prepare('SELECT lastname, firstname FROM users WHERE idUser = :idUser');
+            $selectNameFirstname = $db->prepare('SELECT lastname, firstname, email FROM users WHERE idUser = :idUser');
             $selectNameFirstname->execute(array(
                 'idUser' => $idPresence
             ));
@@ -49,14 +49,23 @@ if($updateValidatePresence->rowCount() > 0){
             ));
             $nameTraining = $selectTraining->fetch(PDO::FETCH_ASSOC);
 
-            $fields = array(
-                'id' => $idPresence,
-                'user' => $nameFirstname['lastname'] . ' ' . $nameFirstname['firstname'],
-                'training' => $nameTraining['name'],
-                'dateEnd' => date('d/m/Y')
-            );
-//            fillDiploma(PATH_RESSOURCES . 'template/certificat_de_diplome.pdf', $fields);
-            mailHtml($idPresence, 'Formation terminée', 'Votre formation est terminée, vous pouvez maintenant télécharger votre attestation de formation sur votre espace personnel.');
+            $nameUser = $nameFirstname['lastname'] . ' ' . $nameFirstname['firstname'];
+            $file = generateDiploma($nameUser, $nameTraining['name']);
+            $updateDiploma = $db->prepare('UPDATE validate_training_course SET pathDiploma = :diploma WHERE idUser = :idUser AND idTrainingCourse = :idTrainingCourse');
+            $updateDiploma->execute(array(
+                'diploma' => $file,
+                'idUser' => $idPresence,
+                'idTrainingCourse' => $_POST['idTraining']
+            ));
+            $file = PATH_DIPLOMAS . $file;
+            $message = "Bonjour " . $nameUser . ",<br><br>";
+            $message .= "🥳🥳 Félicitations, vous avez validé la formation <strong>'" . $nameTraining['name'] . "'</strong> 🥳🥳<br><br>";
+            $message .= "Vous trouverez ci-joint votre attestation de formation.<br><br>";
+            $message .= "Au plaisir de vous revoir sur une de nos autres formations 😊<br><br>";
+            $message .= "A très bientôt,<br><br>";
+            $message .= "Cordialement,<br><br>";
+            $message .= "L'équipe COOKORAMA";
+            mailHtml($nameFirstname['email'], 'Attestation de formation', $message, $file);
         }
     endforeach;
     header('Location: ' . ADDRESS_SITE . 'évènements?type=success&message=La liste de présence a bien été enregistrée');

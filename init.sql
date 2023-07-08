@@ -164,7 +164,6 @@ CREATE TABLE IF NOT EXISTS training_course
     description      VARCHAR(150) NOT NULL,
     image            VARCHAR(100) NOT NULL,
     idMeeting        CHAR(13)     NOT NULL,
-    pathDiploma      VARCHAR(100) NOT NULL,
     start            DATETIME     NOT NULL,
     nbDays           INT          NOT NULL,
     idPresta         INT          NOT NULL,
@@ -176,6 +175,7 @@ CREATE TABLE IF NOT EXISTS validate_training_course
     idTrainingCourse INT NOT NULL,
     idUser           INT NOT NULL,
     courseRemaining  INT NOT NULL,
+    pathDiploma      VARCHAR(100) NOT NULL,
     PRIMARY KEY (idTrainingCourse, idUser),
     FOREIGN KEY (idTrainingCourse) REFERENCES training_course (idTrainingCourse),
     FOREIGN KEY (idUser) REFERENCES users (idUser)
