@@ -31,11 +31,6 @@ if($updateValidatePresence->rowCount() > 0){
         $courseRemaining = $selectCourseRemaining->fetch(PDO::FETCH_ASSOC);
 
         if($courseRemaining['courseRemaining'] == 0){
-            $deletePresence = $db->prepare('DELETE FROM validate_training_course WHERE idUser = :idUser AND idTrainingCourse = :idTrainingCourse');
-            $deletePresence->execute(array(
-                'idUser' => $idPresence,
-                'idTrainingCourse' => $_POST['idTraining']
-            ));
 
             $selectNameFirstname = $db->prepare('SELECT lastname, firstname, email FROM users WHERE idUser = :idUser');
             $selectNameFirstname->execute(array(

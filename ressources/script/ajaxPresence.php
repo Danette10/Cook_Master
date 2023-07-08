@@ -20,7 +20,7 @@ switch ($action):
 
         $html .= '<form action="' . ADDRESS_SITE . 'évènements/présence/check" method="post" id="formPresence">';
         foreach ($presences as $presence):
-            $selectValidated = $db->prepare('SELECT * FROM validate_training_course WHERE idUser = :idUser AND idTrainingCourse = :idTrainingCourse');
+            $selectValidated = $db->prepare('SELECT * FROM validate_training_course WHERE idUser = :idUser AND idTrainingCourse = :idTrainingCourse AND courseRemaining > 0');
             $selectValidated->execute(array(
                 'idUser' => $presence['idUser'],
                 'idTrainingCourse' => $idTraining
