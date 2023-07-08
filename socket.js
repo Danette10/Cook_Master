@@ -22,7 +22,7 @@ db.connect(err => {
 const wss = new WebSocket.Server({ port: 8081 });
 
 wss.on('listening', function () {
-    //console.log('WebSocket Server started');
+    console.log('WebSocket Server started');
 });
 
 function saveMessageToDB(message) {
@@ -34,7 +34,7 @@ function saveMessageToDB(message) {
                 console.error('Error inserting the message into the database:', err);
                 return;
             }
-            // console.log('Message inserted into the database');
+            console.log('Message inserted into the database');
         }
     );
 }

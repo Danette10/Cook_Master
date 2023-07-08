@@ -108,7 +108,7 @@
                     </a>
 
                     <?php
-                    if(isset($_SESSION['role']) && $_SESSION['role'] != 5){?>
+                    if(isset($_SESSION['role']) && $_SESSION['role'] != 4 && $_SESSION['role'] != 5){?>
 
                     <button class="pricingLink btn">
 
