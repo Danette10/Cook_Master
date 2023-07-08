@@ -1,4 +1,5 @@
 <?php
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
@@ -22,7 +23,7 @@ function redirectUser($path = '/')
  * TODO: Function to send mail
  */
 
-function mailHtml($to, $subject, $message, $header = "Cookorama < " . MAIL . " >", $attachement = null, $image = null) {
+function mailHtml($to, $subject, $message, $attachement = null, $image = null) {
 
     $mail = new PHPMailer(true);
 
@@ -532,6 +533,108 @@ function cutString($string, $length) {
     return $string;
 }
 
+/**
+ * Function to generate diploma PDF
+ *
+ * @param string $nameUser
+ * @param string $nameTraining
+ *
+ * @return string
+ */
+
+function generateDiploma($nameUser, $nameTraining) {
+    $date = date('d/m/Y');
+    $pdf = new TCPDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+    $pdf->SetCreator(PDF_CREATOR);
+    $pdf->SetAuthor('Cookorama');
+    $pdf->SetTitle('Diplôme');
+    $pdf->SetSubject('Diplôme');
+    $pdf->SetKeywords('Diplôme, Cookorama');
+
+    $pdf->setPrintHeader(false);
+    $pdf->setPrintFooter(false);
+
+    $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+    $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+    $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+    $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+    $pdf->setFontSubsetting(true);
+
+    $pdf->SetFont('dejavusans', '', 14, '', true);
+
+    $pdf->AddPage();
+
+    $pdf->Image('https://cookorama.fr/ressources/images/logo.png', 70, 10, 150, 40, '', '', '', false, 300, '', false, false, 0);
+
+    $html = <<<EOD
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        .diploma {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            border: 10px double #ddd;
+        }
+        .diploma .name {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 50px;
+            color: #555;
+            text-align: center;
+            text-transform: uppercase;
+        }
+        .diploma .date {
+            position: absolute;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 30px;
+            color: #555;
+            text-align: center;
+            text-transform: uppercase;
+        }
+        .diploma .training {
+            position: absolute;
+            bottom: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 30px;
+            color: #555;
+            text-align: center;
+            text-transform: uppercase;
+        }
+    </style>
+
+    <div class="diploma">
+        <div class="name">$nameUser</div>
+        <div class="date">$date</div>
+        <div class="training">$nameTraining</div>
+    </div>
+EOD;
+
+    $pdf->SetY(60);
+
+    $pdf->writeHTML($html, true, false, true, false, '');
+
+    $year = date('Y');
+    $month = date('m');
+    $pdfPath = $year . '/' . $month;
+    $pdfPathSuite = $pdfPath . '/' . $_SESSION['id'] . '_' . 'diplome-' . $nameTraining . '.pdf';
+    $fullPath = PATH_DIPLOMAS . $pdfPathSuite;
+
+    if (!file_exists(PATH_DIPLOMAS . $pdfPath)) {
+        mkdir(PATH_DIPLOMAS . $pdfPath, 0777, true);
+    }
+
+    $pdf->Output($fullPath, 'F');
+
+    return $pdfPathSuite;
+}
 
 
 ?>

@@ -30,6 +30,10 @@ global $db;
             ?>
             <div class="container mt-4">
                 <div class="row">
+
+                    <div class="text-center mt-4">
+                        <h1>Vos évènements</h1>
+                    </div>
                     <?php
                     foreach ($events as $key => $event):
                         $selectEvent = $db->prepare("SELECT * FROM events WHERE idEvent = :idEvent");
@@ -38,6 +42,8 @@ global $db;
                         ]);
 
                         $event = $selectEvent->fetch(PDO::FETCH_ASSOC);
+
+                        $roomImage = '';
 
                         if($event['typePlace'] == 3):
 
@@ -55,18 +61,15 @@ global $db;
 
                             $place = $selectPlace->fetch(PDO::FETCH_ASSOC);
 
-                            $roomImage = ADDRESS_IMG . 'roomImage/' . $room['image'];
+                            $image = ADDRESS_IMG . 'roomImage/' . $room['image'];
+                            $roomImage = "<img src='$image' class='card-img-top mt-2 rounded-3' alt='Image de la salle'>";
 
                             endif;
 
                         ?>
 
-                    <div class="text-center mt-4">
-                        <h1>Vos évènements</h1>
-                    </div>
-
-                    <div class="card" style="width: 18rem;">
-                        <img src="<?= $roomImage ?? '' ?>" class="card-img-top mt-2 rounded-3" alt="Image de la salle">
+                    <div class="card me-3" style="width: 18rem;">
+                        <?= $roomImage ?>
                         <div class="card-body">
                             <h5 class="card-title"><?= $event['name'] ?></h5>
                             <p class="card-text"><?= $event['description'] ?></p>
@@ -107,6 +110,7 @@ global $db;
                 <div class="row">
                     <?php
                     foreach ($events as $key => $value):
+                        $roomImage = '';
                         if($value['typePlace'] == 3):
 
                             $selectRoom = $db->prepare("SELECT * FROM rooms WHERE idRoom = :idRoom");
@@ -129,10 +133,10 @@ global $db;
                         endif;
                         ?>
 
-                    <div class="card" style="width: 18rem;">
+                    <div class="card me-3" style="width: 18rem;">
 
                         <div class="card-body">
-                            <?= $roomImage ?? '' ?>
+                            <?= $roomImage ?>
                             <h5 class="card-title"><?= $value['name'] ?></h5>
                             <p class="card-text"><?= $value['description'] ?></p>
                             <p class="card-text">

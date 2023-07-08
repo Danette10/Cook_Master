@@ -11,3 +11,11 @@
 /ressources/files/serviceProvider/
 /log/
 >>>>>>> recipePage
+
+.DS_Store
+/ressources/images/shopImage/
+/.ash_history
+/ssl/
+/ressources/images/roomImage/
+/ressources/images/imageTraining/
+/ressources/files/diplomas/

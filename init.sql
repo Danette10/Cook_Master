@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS events
     startEvent        DATETIME     NOT NULL,
     endEvent          DATETIME     NOT NULL,
     status INT          NOT NULL,
-    linkMeeting       CHAR(33)     DEFAULT NULL,
+    idMeeting           CHAR(13)     DEFAULT NULL,
     idPresta          INT          NOT NULL,
     idRoom           INT,
     PRIMARY KEY (idEvent),
@@ -162,14 +162,23 @@ CREATE TABLE IF NOT EXISTS training_course
     idTrainingCourse INT AUTO_INCREMENT,
     name             VARCHAR(30)  NOT NULL,
     description      VARCHAR(150) NOT NULL,
-    type             INT          NOT NULL,
     image            VARCHAR(100) NOT NULL,
-    linkMeeting      CHAR(33)     NOT NULL,
-    pathDiploma      VARCHAR(100) NOT NULL,
+    idMeeting        CHAR(13)     NOT NULL,
     start            DATETIME     NOT NULL,
     nbDays           INT          NOT NULL,
     idPresta         INT          NOT NULL,
     PRIMARY KEY (idTrainingCourse)
+);
+
+CREATE TABLE IF NOT EXISTS validate_training_course
+(
+    idTrainingCourse INT NOT NULL,
+    idUser           INT NOT NULL,
+    courseRemaining  INT NOT NULL,
+    pathDiploma      VARCHAR(100) NOT NULL,
+    PRIMARY KEY (idTrainingCourse, idUser),
+    FOREIGN KEY (idTrainingCourse) REFERENCES training_course (idTrainingCourse),
+    FOREIGN KEY (idUser) REFERENCES users (idUser)
 );
 
 CREATE TABLE IF NOT EXISTS recipe
@@ -215,11 +224,12 @@ CREATE TABLE IF NOT EXISTS recipe_steps
 
 CREATE TABLE IF NOT EXISTS register
 (
+    idRegister INT AUTO_INCREMENT,
     idUser  INT,
     idEvent INT,
-    PRIMARY KEY (idUser, idEvent),
-    FOREIGN KEY (idUser) REFERENCES users (idUser),
-    FOREIGN KEY (idEvent) REFERENCES events (idEvent)
+    type    INT NOT NULL,
+    PRIMARY KEY (idRegister),
+    FOREIGN KEY (idUser) REFERENCES users (idUser)
 );
 
 CREATE TABLE IF NOT EXISTS orders
@@ -234,15 +244,6 @@ CREATE TABLE IF NOT EXISTS orders
     FOREIGN KEY (idCart) REFERENCES cart (idCart)
 );
 
-CREATE TABLE IF NOT EXISTS apart
-(
-    idUser           INT,
-    idTrainingCourse INT,
-    PRIMARY KEY (idUser, idTrainingCourse),
-    FOREIGN KEY (idUser) REFERENCES users (idUser),
-    FOREIGN KEY (idTrainingCourse) REFERENCES training_course (idTrainingCourse)
-);
-
 INSERT INTO products (idProduct, name, description, image, type, price, creation)
 VALUES ('prod_NeXRwi2aT28FXA', 'Master', 'Master yearly', '', 1, 220, NOW());
 
@@ -254,13 +255,3 @@ VALUES ('prod_NeXQV8mjycAaDE', 'Starter', 'Starter yearly', '', 1, 113, NOW());
 
 INSERT INTO products (idProduct, name, description, image, type, price, creation)
 VALUES ('prod_NeXPCayzYQqXgS', 'Starter', 'Starter monthly', '', 1, 10, NOW());
-
-DROP TABLE IF EXISTS participate;
-DROP TABLE IF EXISTS courses;
-
-ALTER TABLE training_course ADD COLUMN start DATETIME NOT NULL;
-ALTER TABLE training_course ADD COLUMN nbDays INT NOT NULL;
-ALTER TABLE training_course ADD COLUMN linkMeeting CHAR(33) NOT NULL AFTER image;
-ALTER TABLE training_course ADD COLUMN idPresta INT NOT NULL;
-ALTER TABLE training_course ADD CONSTRAINT fk_training_course_presta FOREIGN KEY (idPresta) REFERENCES users(idUser);
-ALTER TABLE training_course DROP COLUMN type;

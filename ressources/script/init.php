@@ -41,6 +41,7 @@ define('PATH_SCRIPT_CART', PATH_SCRIPT . 'cart/');
 define('PATH_API', PATH_SITE . 'api/');
 define('PATH_SCRIPT_EVENT', PATH_FORM . 'event/');
 define('PATH_APPLICATION_EVENT', PATH_APPLICATION_EXTRANET . 'event/');
+define('PATH_DIPLOMAS', PATH_FILES . 'diplomas/');
 
 
 define('MAIL', 'cookmasterpa.2023@gmail.com');

@@ -992,4 +992,22 @@
         }
     }
 
+    function getPresence(idTraining) {
+        $.ajax({
+            url: '<?= ADDRESS_SCRIPT ?>ajaxPresence.php',
+            type: 'POST',
+            data: {
+                idTraining: idTraining,
+                action: 'getPresence'
+            },
+            beforeSend: function () {
+                $('#presence').html('<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden">Chargement...</span></div></div>');
+            },
+            success: function (data) {
+                $('#presence').addClass('presence');
+                $('#presence').html(data);
+            }
+        });
+    }
+
 </script>

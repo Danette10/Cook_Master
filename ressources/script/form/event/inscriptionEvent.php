@@ -10,7 +10,7 @@ $selectInfoEvent->execute([
 
 $event = $selectInfoEvent->fetch(PDO::FETCH_ASSOC);
 
-$checkRegistration = $db->prepare('SELECT COUNT(*) as isRegistered FROM register WHERE idUser = :idUser AND idEvent = :idEvent');
+$checkRegistration = $db->prepare('SELECT COUNT(*) as isRegistered FROM register WHERE type = 1 AND idUser = :idUser AND idEvent = :idEvent');
 $checkRegistration->execute([
     'idUser' => $_SESSION['id'],
     'idEvent' => $idEvent
@@ -19,7 +19,7 @@ $checkRegistration->execute([
 $isRegistered = $checkRegistration->fetch(PDO::FETCH_ASSOC);
 
 if ($isRegistered['isRegistered'] > 0) {
-    $deleteRegistration = $db->prepare('DELETE FROM register WHERE idUser = :idUser AND idEvent = :idEvent');
+    $deleteRegistration = $db->prepare('DELETE FROM register WHERE type = 1 AND idUser = :idUser AND idEvent = :idEvent');
     $deleteRegistration->execute([
         'idUser' => $_SESSION['id'],
         'idEvent' => $idEvent
@@ -40,7 +40,7 @@ if ($isRegistered['isRegistered'] > 0) {
         exit();
     }
 }else{
-    $addRegistration = $db->prepare('INSERT INTO register (idUser, idEvent) VALUES (:idUser, :idEvent)');
+    $addRegistration = $db->prepare('INSERT INTO register (idUser, idEvent, type) VALUES (:idUser, :idEvent, 1)');
     $addRegistration->execute([
         'idUser' => $_SESSION['id'],
         'idEvent' => $idEvent
@@ -54,6 +54,9 @@ if ($isRegistered['isRegistered'] > 0) {
     }else{
         header('Location: ' . ADDRESS_SITE . 'évènements?type=success&message=Vous êtes bien inscrit à l\'évènement. Vous allez recevoir un mail de confirmation');
         $message = "Vôtre inscription à l'évènement <strong style='font-size: 1.3em;'>" . $event['name'] . "</strong> a bien été prise en compte 🥳";
+        if($event['typePlace'] == 2):
+            $message .= "<br>Le jour de l'évènement, vous devrez saisir le code suivant : <strong style='font-size: 1.3em;'>" . $event['idMeeting'] . "</strong> pour accéder à la salle.";
+        endif;
         $message .= "<br><p>Nous espérons vous voir le <strong style='font-size: 1.3em;'>" . date('d/m/Y', strtotime($event['startEvent'])) . " à " . date('H:i', strtotime($event['startEvent'])) . "</strong> lors de cet évènement 🎉🎉<br>A bientôt ! 😊</p>";
         $message .= "<br><p>L'équipe <em>Cookorama</em></p>";
         $message .= "<br><br><a href='" . ADDRESS_SITE . "évènements'>Retourner sur le site</a>";
