@@ -3,16 +3,10 @@
 .env
 /ressources/images/profilePicture/
 /ressources/files/invoices/*/*/*.pdf
-<<<<<<< HEAD
-/log/*.txt
 .DS_Store
-=======
 /ressources/images/recipeImage/
 /ressources/files/serviceProvider/
-/log/
->>>>>>> recipePage
 
-.DS_Store
 /ressources/images/shopImage/
 /.ash_history
 /ssl/
@@ -20,3 +14,4 @@
 /ressources/images/imageTraining/
 /ressources/files/diplomas/
 /ressources/images/recipesImages/
+/log/

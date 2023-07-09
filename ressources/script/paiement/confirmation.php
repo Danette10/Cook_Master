@@ -107,10 +107,9 @@ if($confirm == '0'){
     $messageMail .= "<p>Vous trouverez ci-joint votre facture</p>";
 
     $subject = "Cookorama - Confirmation de paiement - " . ucfirst($subscriptionType);
-    $header = "Cookorama < " . MAIL . " >";
     $attachement = PATH_INVOICES . $pdfSuite;
 
-    mailHtml($_SESSION['email'], $subject, $messageMail, $header, $attachement, PATH_IMG . 'logo.png');
+    mailHtml($_SESSION['email'], $subject, $messageMail, $attachement, PATH_IMG . 'logo.png');
 
 }
 
