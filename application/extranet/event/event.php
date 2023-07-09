@@ -45,15 +45,18 @@ foreach ($events as $event) {
     ];
 }
 
-$selectTraining = $db->prepare("SELECT * FROM training_course WHERE start >= NOW()");
-$selectTraining->execute();
-$trainings = $selectTraining->fetchAll(PDO::FETCH_ASSOC);
 
-$ifUserIsPrestaTraining = $db->prepare("SELECT * FROM training_course WHERE idPresta = :idPresta");
-$ifUserIsPrestaTraining->execute(array(
-    'idPresta' => $_SESSION['id']
-));
-$ifUserIsPrestaTraining = $ifUserIsPrestaTraining->fetchAll(PDO::FETCH_ASSOC);
+    $selectTraining = $db->prepare("SELECT * FROM training_course WHERE start >= NOW()");
+    $selectTraining->execute();
+    $trainings = $selectTraining->fetchAll(PDO::FETCH_ASSOC);
+
+if(isset($_SESSION['id'])):
+    $ifUserIsPrestaTraining = $db->prepare("SELECT * FROM training_course WHERE idPresta = :idPresta");
+    $ifUserIsPrestaTraining->execute(array(
+        'idPresta' => $_SESSION['id']
+    ));
+    $ifUserIsPrestaTraining = $ifUserIsPrestaTraining->fetchAll(PDO::FETCH_ASSOC);
+    endif;
 ?>
 
 <body>
@@ -71,7 +74,7 @@ $ifUserIsPrestaTraining = $ifUserIsPrestaTraining->fetchAll(PDO::FETCH_ASSOC);
                 <button type="button" class="btn connexionLink shadow lang-declareRoom"></button>
             </a>
         <?php
-        if(!empty($ifUserIsPrestaTraining)):
+        if(!empty($ifUserIsPrestaTraining) && isset($_SESSION['id'])):
             ?>
             <a href="<?= ADDRESS_SITE ?>évènements/présence" class="ms-3">
                 <button type="button" class="btn connexionLink shadow lang-presence"></button>
@@ -205,7 +208,8 @@ $ifUserIsPrestaTraining = $ifUserIsPrestaTraining->fetchAll(PDO::FETCH_ASSOC);
             },
             <?php endforeach; ?>
 
-            <?php foreach ($trainings as $training):
+            <?php
+            foreach ($trainings as $training):
             $start = new DateTime($training['start']);
 
             for ($i = 0; $i < $training['nbDays']; $i++): ?>
