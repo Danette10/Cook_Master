@@ -6,6 +6,7 @@ $name = $_POST['cardholderName'];
 $priceId = $_POST['priceId'];
 global $db;
 
+$fidelity = 0;
 switch ($subscriptionType) {
 
     case 'free':
@@ -17,12 +18,14 @@ switch ($subscriptionType) {
     case 'starter':
 
         $role = 2;
+        $fidelity = 30;
 
         break;
 
     case 'master':
 
         $role = 3;
+        $fidelity = 60;
 
         break;
 
@@ -195,6 +198,12 @@ $insertStripeCustomer->execute([
     'idUser' => $userId,
     'subscriptionId' => $subscriptionId,
     'subscriptionStatus' => 'active'
+]);
+
+$updateUser = $db->prepare("UPDATE users SET fidelityCounter = fidelityCounter + :fidelity WHERE idUser = :idUser");
+$updateUser->execute([
+    'fidelity' => $fidelity,
+    'idUser' => $_SESSION['id']
 ]);
 
 if($subscription->status == 'active') {

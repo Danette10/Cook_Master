@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS cart_item
     idCart     INT NOT NULL,
     PRIMARY KEY (idCartItem),
     FOREIGN KEY (id) REFERENCES products (id),
-    FOREIGN KEY (idCart) REFERENCES cart (idCart)
+    FOREIGN KEY (idCart) REFERENCES cart (idCart) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS review
@@ -240,8 +240,8 @@ CREATE TABLE IF NOT EXISTS orders
     pathInvoice VARCHAR(100) NOT NULL,
     status      INT          NOT NULL DEFAULT 0,
     PRIMARY KEY (idUser, idCart),
-    FOREIGN KEY (idUser) REFERENCES users (idUser),
-    FOREIGN KEY (idCart) REFERENCES cart (idCart)
+    FOREIGN KEY (idUser) REFERENCES users (idUser) ON DELETE CASCADE,
+    FOREIGN KEY (idCart) REFERENCES cart (idCart) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS likes

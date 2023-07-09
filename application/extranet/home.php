@@ -198,7 +198,7 @@ global $db;
                                 <?php
                                 if(isset($like)):
                                 ?>
-                                <span id="likes_<?= $recipe['idRecipe'] ?>" class="likes" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="<?= isset($like) ?? $like ?> <?= (isset($like) && $like > 1) ? 'likes' : 'like' ?>">
+                                <span id="likes_<?= $recipe['idRecipe'] ?>" class="likes" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="<?= $like ?> <?= ($like > 1) ? 'likes' : 'like' ?>">
                                 <?php
                                     if($like == 0):
                                     ?>
