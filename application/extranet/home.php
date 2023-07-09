@@ -155,10 +155,45 @@ global $db;
                         </div>
                     <?php
                     endif;
-
                     endif;
                     ?>
 
+                        </div>
+                    </div>
+
+            <div class="text-center mt-4">
+                <h1>Les dernières recettes</h1>
+            </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="card-group">
+                <?php
+                $selectRecipes = $db->prepare("SELECT * FROM recipe ORDER BY creationDate DESC LIMIT 5");
+                $selectRecipes->execute();
+
+                $recipes = $selectRecipes->fetchAll(PDO::FETCH_ASSOC);
+
+                foreach($recipes as $recipe): ?>
+                    <div class="me-3 mt-3">
+                        <a href="<?= ADDRESS_SITE ?>recette/<?= $recipe['idRecipe'] ?>">
+                            <div class="card board" style="width: 18rem; height: 100%;">
+                                <img src="<?= ADDRESS_SITE . 'ressources/images/recipesImages/' . $recipe['recipeImage'] ?>" width="300" height="300" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h4><?= cutString($recipe['recipeName'],20) ?></h4>
+                                    <p class="card-text"><?= cutString($recipe['description'],55) ?></p>
+                                </div>
+                                <div class="m-2">
+                                    <p class="card-text"><small class="text-muted">Publié le <?= date('d/m/Y', strtotime($recipe['creationDate'])) ?></small></p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+            <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
 
 </main>
 

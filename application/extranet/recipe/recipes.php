@@ -69,12 +69,12 @@ $recipes = getRecipes((isset($filter) ? $filter : 0),$offset,$perPage);
             </div>
             <div class="col-3"></div>
         </div>
-        <div class="row text-center mt-5 ">
+        <div class="row text-center mt-5">
             <div class="card-group">
                 <?php 
                 foreach($recipes as $recipe){
                     echo '
-                    <div class="col-sm-3  mt-3">
+                    <div class="col-sm-3 mt-3">
                         <a href="'.ADDRESS_SITE.'recette/'.$recipe['idRecipe'].'">
                             <div class="card board" style="width: 18rem;">
                                 <img src="'. ADDRESS_SITE . 'ressources/images/recipesImages/'.$recipe['recipeImage'].'" width="300" height="300" class="card-img-top" alt="...">
