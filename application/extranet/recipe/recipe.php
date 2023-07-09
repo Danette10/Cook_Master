@@ -78,9 +78,10 @@ $authorProfilePicture = $authorInfos['profilePicture'];
             </div>
             <div class="col-4">
                 <h2 class="lang-steps"></h2>
-                <?php foreach($recipeSteps as $step):
+                <?php
+                $count = 1;
+                foreach($recipeSteps as $step):
                         $stepDescription = $step['stepDescription'];
-                        $count = 1;
                         ?>
                         <div class="d-flex">
                             <div class="col-4 d-flex align-items-center">
