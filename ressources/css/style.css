@@ -464,6 +464,10 @@ form:not([id="formPresence"]) input[type="submit"]:hover{
     color: white;
 }
 
+header .active {
+    color: #FF9B90 !important;
+}
+
 .dark-theme {
     background-color: #7C8190 !important;
     color: white !important;

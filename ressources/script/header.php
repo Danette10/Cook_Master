@@ -20,31 +20,31 @@
 
                     <li>
 
-                        <a href="<?= ADDRESS_SITE ?>" class="nav-link lang-home"></a>
+                        <a href="<?= ADDRESS_SITE ?>" class="nav-link lang-home <?= $title == 'Cookorama - Home' ? 'active' : '' ?>"></a>
 
                     </li>
 
                     <li>
 
-                        <a href="<?= ADDRESS_SITE ?>recettes" class="nav-link lang-recipe"></a>
+                        <a href="<?= ADDRESS_SITE ?>recettes" class="nav-link lang-recipe <?= $title == 'Cookorama - Toutes nos recettes' ? 'active' : '' ?>"></a>
 
                     </li>
 
                     <li>
 
-                        <a href="<?= ADDRESS_SITE ?>cours" class="nav-link lang-course"></a>
+                        <a href="<?= ADDRESS_SITE ?>cours" class="nav-link lang-course <?= $title == 'Cookorama - Toutes nos leçons' ? 'active' : '' ?>"></a>
 
                     </li>
 
                     <li>
 
-                        <a href="<?= ADDRESS_SITE ?>évènements" class="nav-link lang-event"></a>
+                        <a href="<?= ADDRESS_SITE ?>évènements" class="nav-link lang-event <?= $title == 'Cookorama - Tout nos évènements' ? 'active' : '' ?>"></a>
 
                     </li>
 
                     <li>
 
-                        <a href="<?= ADDRESS_SITE ?>boutique" class="nav-link lang-shop"></a>
+                        <a href="<?= ADDRESS_SITE ?>boutique" class="nav-link lang-shop <?= $title == 'Cookorama - Boutique' ? 'active' : '' ?>"></a>
 
                     </li>
 
@@ -52,7 +52,7 @@
                     if(isset($_SESSION['role']) && $_SESSION['role'] == 5){?>
                     <li>
 
-                        <a href="<?= ADDRESS_SITE ?>admin/dashboard" class="nav-link lang-dashboard"></a>
+                        <a href="<?= ADDRESS_SITE ?>admin/dashboard" class="nav-link lang-dashboard <?= $title == 'Cookorama - Dashboard' ? 'active' : '' ?>"></a>
 
                     </li>
                     <?php } ?>
@@ -61,7 +61,7 @@
                     if(isset($_SESSION['role']) && ($_SESSION['role'] == 2 || $_SESSION['role'] == 3 || $_SESSION['role'] == 4)){?>
                     <li>
 
-                        <a href="<?= ADDRESS_SITE ?>messages" class="nav-link lang-chat"></a>
+                        <a href="<?= ADDRESS_SITE ?>messages" class="nav-link lang-chat <?= $title == 'Cookorama - Chat' ? 'active' : '' ?>"></a>
 
                     </li>
                     <?php } ?>
@@ -129,7 +129,7 @@
 
                     <button class="inscriptionLink btn">
 
-                        <a href="<?= ADDRESS_SITE ?>inscription" class="nav-link lang-registration"></a>
+                        <a href="<?= ADDRESS_SITE ?>inscription" class="nav-link lang-registration <?= $title == 'Cookorama - Inscription' ? 'active' : '' ?>"></a>
 
                     </button>
 
