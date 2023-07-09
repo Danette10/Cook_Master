@@ -244,6 +244,15 @@ CREATE TABLE IF NOT EXISTS orders
     FOREIGN KEY (idCart) REFERENCES cart (idCart)
 );
 
+CREATE TABLE IF NOT EXISTS likes
+(
+    idUser   INT,
+    idRecipe INT,
+    PRIMARY KEY (idUser, idRecipe),
+    FOREIGN KEY (idUser) REFERENCES users (idUser),
+    FOREIGN KEY (idRecipe) REFERENCES recipe (idRecipe)
+);
+
 INSERT INTO products (idProduct, name, description, image, type, price, creation)
 VALUES ('prod_NeXRwi2aT28FXA', 'Master', 'Master yearly', '', 1, 220, NOW());
 
