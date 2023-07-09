@@ -175,14 +175,16 @@ global $db;
                 $recipes = $selectRecipes->fetchAll(PDO::FETCH_ASSOC);
 
                 foreach($recipes as $recipe):
-                    $selectIfLike = $db->prepare("SELECT count(*) as isLikes FROM likes WHERE idRecipe = :idRecipe AND idUser = :idUser");
-                    $selectIfLike->execute([
-                        'idRecipe' => $recipe['idRecipe'],
-                        'idUser' => $_SESSION['id']
-                    ]);
+                    if(isset($_SESSION['id'])):
+                        $selectIfLike = $db->prepare("SELECT count(*) as isLikes FROM likes WHERE idRecipe = :idRecipe AND idUser = :idUser");
+                        $selectIfLike->execute([
+                            'idRecipe' => $recipe['idRecipe'],
+                            'idUser' => $_SESSION['id']
+                        ]);
 
-                    $like = $selectIfLike->fetch(PDO::FETCH_ASSOC);
-                    $like = $like['isLikes'];
+                        $like = $selectIfLike->fetch(PDO::FETCH_ASSOC);
+                        $like = $like['isLikes'];
+                    endif;
                     ?>
                     <div class="me-3 mt-3">
                         <div class="card board" style="width: 18rem; height: 100%;">
@@ -193,17 +195,21 @@ global $db;
                             </div>
                             <div class="m-2 d-flex justify-content-between align-items-start">
                                 <p class="card-text"><small class="text-muted">Publié le <?= date('d/m/Y', strtotime($recipe['creationDate'])) ?></small></p>
-                                <span id="likes_<?= $recipe['idRecipe'] ?>" class="likes" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="<?= $like ?> <?= ($like > 1) ? 'likes' : 'like' ?>">
                                 <?php
-                                if($like == 0):
+                                if(isset($like)):
+                                ?>
+                                <span id="likes_<?= $recipe['idRecipe'] ?>" class="likes" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="<?= isset($like) ?? $like ?> <?= (isset($like) && $like > 1) ? 'likes' : 'like' ?>">
+                                <?php
+                                    if($like == 0):
                                     ?>
                                     <img src="<?= ADDRESS_IMG ?>unlike.png" width="30" height="30" alt="like" onclick="likes('recipes',<?= $recipe['idRecipe'] ?>)" style="cursor: pointer;">
-                                <?php
-                                else:
-                                    ?>
-                                    <img src="<?= ADDRESS_IMG ?>like.png" width="30" height="30" alt="like" onclick="likes('recipes',<?= $recipe['idRecipe'] ?>)" style="cursor: pointer;">
-                                <?php
-                                endif;
+                                    <?php
+                                    else:
+                                        ?>
+                                        <img src="<?= ADDRESS_IMG ?>like.png" width="30" height="30" alt="like" onclick="likes('recipes',<?= $recipe['idRecipe'] ?>)" style="cursor: pointer;">
+                                    <?php
+                                    endif;
+                                    endif;
                                 ?>
                                 </span>
                             </div>
