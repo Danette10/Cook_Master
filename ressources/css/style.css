@@ -157,6 +157,9 @@ nav ul li a:hover {
     font-weight: bold;
 }
 
+.linkRecipe:hover {
+    color: #c96d62 !important;
+}
 
 /* Form */
 

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once ('init.php');
+require_once('../init.php');
 $action = htmlspecialchars($_POST['action']);
 
 global $db;

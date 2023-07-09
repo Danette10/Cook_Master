@@ -76,6 +76,8 @@ define('ADDRESS_IMG_RECIPES', ADDRESS_IMG . 'recipeImage/');
 define('ADDRESS_DEFAULT_PROFIL', ADDRESS_IMG . 'defaultPicture.svg');
 
 define('ADDRESS_SCRIPT', ADDRESS_RESSOURCES . 'script/');
+define('ADDRESS_AJAX_SCRIPT', ADDRESS_SCRIPT . 'ajaxScript/');
+
 define('ADDRESS_APPLICATION', ADDRESS_SITE . 'application/');
 define('ADDRESS_APPLICATION_EXTRANET', ADDRESS_APPLICATION . 'extranet/');
 define('ADDRESS_FORM', ADDRESS_SCRIPT . 'form/');

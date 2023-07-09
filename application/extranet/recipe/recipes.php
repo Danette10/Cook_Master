@@ -40,14 +40,17 @@ $recipes = getRecipes((isset($filter) ? $filter : 0),$offset,$perPage);
             <div class="col-3"></div>
             <div class="col-7 row">
                 <div class="col-6">
-                    <input type="text" class="form-control shadow lang-placeholder-searchRecipe" placeholder="Rechercher une recette" id="recipeSearchBar">
+                    <div style="position: relative;">
+                        <input type="search" class="form-control shadow lang-placeholder-searchRecipe" placeholder="" id="recipeSearchBar" oninput="searchBar('recipes',this.value)">
+                        <div id="searchResult" style="width: 100%; background: lightgray; position: absolute;"></div>
+                    </div>
                 </div>
                 <div class="col-3">
                     <select class="form-select shadow" onchange="changeFilter(this.options[this.selectedIndex].value)">
-                        <option <?= (!isset($filter)|| (isset($filter) && $filter === "newest") ? "selected" : "")?> class="lang-recipe-newest" value="<? ADDRESS_SITE ?>recettes/newest"></option>
-                        <option <?= (isset($filter) && $filter === "oldest" ? "selected" : ""); ?> class="lang-recipe-oldest" value="<? ADDRESS_SITE ?>recettes/oldest"></option>
-                        <option <?= (isset($filter) && $filter === "mostLiked" ? "selected" : ""); ?> class="lang-recipe-mostLiked" value="<? ADDRESS_SITE ?>recettes/mostLiked"></option>
-                        <option <?= (isset($filter) && $filter === "leastLiked" ? "selected" : ""); ?> class="lang-recipe-leastLiked" value="<? ADDRESS_SITE ?>recettes/leastLiked"></option>
+                        <option <?= (!isset($filter)|| (isset($filter) && $filter === "newest") ? "selected" : "")?> class="lang-recipe-newest" value="<?= ADDRESS_SITE ?>recettes/newest"></option>
+                        <option <?= (isset($filter) && $filter === "oldest" ? "selected" : ""); ?> class="lang-recipe-oldest" value="<?= ADDRESS_SITE ?>recettes/oldest"></option>
+                        <option <?= (isset($filter) && $filter === "mostLiked" ? "selected" : ""); ?> class="lang-recipe-mostLiked" value="<?= ADDRESS_SITE ?>recettes/mostLiked"></option>
+                        <option <?= (isset($filter) && $filter === "leastLiked" ? "selected" : ""); ?> class="lang-recipe-leastLiked" value="<?= ADDRESS_SITE ?>recettes/leastLiked"></option>
                     </select>
                 </div>
                 <?php
@@ -74,7 +77,7 @@ $recipes = getRecipes((isset($filter) ? $filter : 0),$offset,$perPage);
                     <div class="col-sm-3  mt-3">
                         <a href="'.ADDRESS_SITE.'recette/'.$recipe['idRecipe'].'">
                             <div class="card board" style="width: 18rem;">
-                                <img src="'. ADDRESS_SITE . 'ressources/images/recipesImages/'.$recipe['recipeImage'].'" width="300" class="card-img-top" alt="...">
+                                <img src="'. ADDRESS_SITE . 'ressources/images/recipesImages/'.$recipe['recipeImage'].'" width="300" height="300" class="card-img-top" alt="...">
                                 <div class="card-body">
                                     <h4>'.cutString($recipe['recipeName'],20).'</h4>
                                     <p class="card-text">'.cutString($recipe['description'],55).'</p>

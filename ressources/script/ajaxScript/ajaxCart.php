@@ -1,5 +1,5 @@
 <?php
-require_once ('init.php');
+require_once('../init.php');
 $type = htmlspecialchars($_POST['type']);
 $idCart = htmlspecialchars($_POST['cartId']);
 $idProduct = htmlspecialchars($_POST['productId']);

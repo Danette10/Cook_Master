@@ -370,7 +370,7 @@
     function deleteProfilPicture(id) {
 
         $.ajax({
-            url: '<?= ADDRESS_SCRIPT ?>ajaxProfil.php',
+            url: '<?= ADDRESS_AJAX_SCRIPT ?>ajaxProfil.php',
             type: 'POST',
             data: {
                 id: id,
@@ -639,7 +639,7 @@
     function addProductQuantity(cartId, productId) {
 
         $.ajax({
-            url: '<?= ADDRESS_SCRIPT ?>ajaxCart.php',
+            url: '<?= ADDRESS_AJAX_SCRIPT ?>ajaxCart.php',
             type: 'POST',
             data: {
                 productId: productId,
@@ -666,7 +666,7 @@
     function removeProductQuantity(cartId, productId) {
 
         $.ajax({
-            url: '<?= ADDRESS_SCRIPT ?>ajaxCart.php',
+            url: '<?= ADDRESS_AJAX_SCRIPT ?>ajaxCart.php',
             type: 'POST',
             data: {
                 productId: productId,
@@ -694,7 +694,7 @@
     function calculateTotalPrice(productId, cartId) {
 
         $.ajax({
-            url: '<?= ADDRESS_SCRIPT ?>ajaxCart.php',
+            url: '<?= ADDRESS_AJAX_SCRIPT ?>ajaxCart.php',
             type: 'POST',
             data: {
                 type: 'calculateTotalPrice',
@@ -965,12 +965,15 @@
         $('.chat').removeClass('d-none');
 
         $.ajax({
-            url: '<?= ADDRESS_SCRIPT ?>ajaxChat.php',
+            url: '<?= ADDRESS_AJAX_SCRIPT ?>ajaxChat.php',
             type: 'POST',
             data: {
                 idReceiver: idUser,
                 idSender: <?= $_SESSION['id'] ?? 0; ?>,
                 action: 'getMessages'
+            },
+            beforeSend: function () {
+                $('.chatContentMessages').html('<div class="d-flex justify-content-center mt-4"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>');
             },
             success: function (data) {
                 $('#idReceiver').val(idUser);
@@ -994,7 +997,7 @@
 
     function getPresence(idTraining) {
         $.ajax({
-            url: '<?= ADDRESS_SCRIPT ?>ajaxPresence.php',
+            url: '<?= ADDRESS_AJAX_SCRIPT ?>ajaxPresence.php',
             type: 'POST',
             data: {
                 idTraining: idTraining,
@@ -1008,6 +1011,30 @@
                 $('#presence').html(data);
             }
         });
+    }
+
+    function searchBar(type, search){
+        if(search !== '' && search.length >= 3){
+            $.ajax({
+                url: '<?= ADDRESS_AJAX_SCRIPT ?>ajaxSearch.php',
+                type: 'POST',
+                data: {
+                    type: type,
+                    search: search
+                },
+                beforeSend: function () {
+                    $('#searchResult').html('<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden">Chargement...</span></div></div>');
+                },
+                success: function (data) {
+                    if(data === '')
+                        $('#searchResult').html('<div class="d-flex justify-content-center"><p>Aucun résultat</p></div>');
+                    else
+                        $('#searchResult').html(data);
+                }
+            });
+        } else {
+            $('#searchResult').html('');
+        }
     }
 
 </script>

@@ -37,7 +37,7 @@ global $db;
             <a href="<?= ADDRESS_SITE ?>boutique/produit/<?= $product['id'] ?>" class="productLink">
                 <div class="product col-md-4 col-sm-12 p-3 d-flex flex-column justify-content-between">
                     <div class="productImage">
-                        <img src="<?= ADDRESS_SITE ?>ressources/images/shopImage/<?= $product['image'] ?>" alt="<?= $product['name'] ?>" width="300" class="img-responsive rounded">
+                        <img src="<?= ADDRESS_SITE ?>ressources/images/shopImage/<?= $product['image'] ?>" alt="<?= $product['name'] ?>" width="300" height="300" class="img-responsive rounded">
                     </div>
                     <div class="productInfos mt-2">
                         <div>

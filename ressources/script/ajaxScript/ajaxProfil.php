@@ -1,5 +1,5 @@
 <?php
-require_once ('init.php');
+require_once('../init.php');
 $type = htmlspecialchars($_POST['type']);
 
 global $db;
