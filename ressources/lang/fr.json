@@ -44,6 +44,9 @@
   "lang-joinRoom": "Rejoindre une réunion",
   "lang-spanIdRoom": "ID de la salle",
   "lang-presence": "Présence",
+  "lang-recipe-ingredient-list": "Liste des ingrédients",
+  "lang-steps": "Étapes",
+  "lang-step": "Étape",
 
   "lang-placeholder-searchRecipe": "Rechercher une recette (3 caractères minimum)",
   "lang-placeholder-shop-add-name": "Nom du produit",

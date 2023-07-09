@@ -29,14 +29,14 @@ $authorProfilePicture = $authorInfos['profilePicture'];
 ?>
 <body>
     <main>
-        <div class="row">
+        <div class="d-flex">
             <div class="col-4 text-center"></div>
             <div class="col-4">
                 <h1 class="text-center mt-4"><?= $recipe['recipeName'] ?></h1>
             </div>
             <div class="col-4"></div>
         </div>
-        <div class="row">
+        <div class="d-flex">
             <div class="col-3 text-center pt-5">
             <?php
             if(isset($_SESSION['role']) && $_SESSION['role'] == 5):
@@ -53,52 +53,58 @@ $authorProfilePicture = $authorInfos['profilePicture'];
             </div>
             <div class="col-3"></div>
         </div>
-        <div class="row">
+        <div class="d-flex">
             <div class="col-4"></div>
             <div class="col-4 text-center">
                 <div class="mt-4 text-center">
                     <p><i><?=wordwrap($recipe['description'],60,"\n",true) ?></i></p>
-                </div>  
+                </div>
             </div>
             <div class="col-4"></div>
         </div>
-        <div class="row mt-4 ">
-            <div class="col-4 text-center">
-                <u><h3 class="lang-recipe-ingredient-list"></h3></u>
-                <?php
-                echo '
-                <div class="row mt-5" style="padding-left: 8rem; margin-right:10px; ">';
-                foreach ($recipeIngredients as $recipeIngredient) {
-                    echo '
-                    <div class="col-6 text-center" style="background: #fe9c90; border: 1px solid #333; border-radius: 10px;">
-                        <p>' . $recipeIngredient['ingredientName'] . '</p>
+        <div class="d-flex mt-4 justify-content-center">
+            <div class="col-5 ms-4">
+                <h2 class="lang-recipe-ingredient-list"></h2>
+                <?php foreach($recipeIngredients as $ingredient):
+                    $ingredientName = $ingredient['ingredientName'];
+
+                    ?>
+                    <div class="d-flex">
+                        <div class="col-4 d-flex align-items-center">
+                            <p><?= $ingredient['ingredientName'] . '<strong> ' . $ingredient['ingredientQuantity'] . ' ' . $ingredient['unit'] . '</strong>' ?></p>
+                        </div>
                     </div>
-                    <div class="col-2 text-center" style="background: #fe9c90; border: 1px solid #333; border-radius: 10px;">
-                        <p>' . $recipeIngredient['ingredientQuantity'] . '</p>
-                    </div>
-                    <div class="col-4 text-center" style="background: #fe9c90; border: 1px solid #333; border-radius: 10px;">
-                        <p>' . $recipeIngredient['unit'] . '</p>
-                    </div>';
-                    
-                }
-                echo '</div>';
-                ?>
+                <?php endforeach; ?>
             </div>
             <div class="col-4">
-                <u><h3 class="text-center lang-steps"></h3></u>
-                <?php
-                    foreach($recipeSteps as $step) {
-                        echo '
-                        <p class="mt-4" style="background: #fe9c90; border: 1px solid #333; border-radius: 10px;padding-left:5px; padding-right:5px;">'.wordwrap($step['stepDescription'],75,"\n",true).' </p>
-                        ';
-                    }
-                ?>
+                <h2 class="lang-steps"></h2>
+                <?php foreach($recipeSteps as $step):
+                        $stepDescription = $step['stepDescription'];
+                        $count = 1;
+                        ?>
+                        <div class="d-flex">
+                            <div class="col-4 d-flex align-items-center">
+                                <p>
+                                    <strong class="fs-5">
+                                        <span class="lang-step"></span>
+                                        <?= $count++ ?> :
+                                    </strong>
+                                    <?= $step['stepDescription'] ?>
+                                </p>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
             </div>
-            <div class="col-4 text-center">
-                <u><h3 class="lang-recipe-author"></h3></u>
-                <img src="<?= ADDRESS_IMG_PROFIL . $authorProfilePicture ?>" alt="<?= $authorInfos['firstname'].' '. $authorInfos['lastname'] ?>" class="img-fluid rounded-circle mt-4" style="width: 150px; height: 150px; border: 1px solid #333;">
-                <h4 class="mt-4"><?= $authorInfos['firstname'].' '.$authorInfos['lastname'] ?></h4>
-            </div>
+        </div>
+        <div class="text-end me-3 mt-3">
+            <?php
+            $select = $db->query('SELECT idUser FROM recipe WHERE idRecipe = ' . $idRecipe);
+            $idUser = $select->fetch(PDO::FETCH_ASSOC);
+            $idUser = $idUser['idUser'];
+            $select = $db->query('SELECT firstName, lastName FROM users WHERE idUser = ' . $idUser);
+            $authorInfos = $select->fetch(PDO::FETCH_ASSOC);
+            ?>
+            <p>Publié par <strong><?= $authorInfos['firstName'] . ' ' . $authorInfos['lastName'] ?></strong> le <strong><?= date('d/m/Y à H:i', strtotime($recipe['creationDate'])) ?></strong></p>
         </div>
     </main>
 </body>

@@ -9,6 +9,7 @@
         "vlucas/phpdotenv": "*",
         "phpmailer/phpmailer": "*",
         "tecnickcom/tcpdf": "*",
-      "ext-pdo": "*"
+      "ext-pdo": "*",
+      "ext-curl": "*"
     }
 }

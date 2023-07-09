@@ -69,26 +69,49 @@ $recipes = getRecipes((isset($filter) ? $filter : 0),$offset,$perPage);
             </div>
             <div class="col-3"></div>
         </div>
-        <div class="row text-center mt-5">
+        <div class="row mt-5">
             <div class="card-group">
-                <?php 
-                foreach($recipes as $recipe){
-                    echo '
-                    <div class="col-sm-3 mt-3">
-                        <a href="'.ADDRESS_SITE.'recette/'.$recipe['idRecipe'].'">
-                            <div class="card board" style="width: 18rem;">
-                                <img src="'. ADDRESS_SITE . 'ressources/images/recipesImages/'.$recipe['recipeImage'].'" width="300" height="300" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h4>'.cutString($recipe['recipeName'],20).'</h4>
-                                    <p class="card-text">'.cutString($recipe['description'],55).'</p>
-                                </div>
+                <?php
+                foreach($recipes as $recipe):
+                    $selectIfLike = $db->prepare("SELECT count(*) as isLikes FROM likes WHERE idRecipe = :idRecipe AND idUser = :idUser");
+                    $selectIfLike->execute([
+                        'idRecipe' => $recipe['idRecipe'],
+                        'idUser' => $_SESSION['id']
+                    ]);
+
+                    $like = $selectIfLike->fetch(PDO::FETCH_ASSOC);
+                    $like = $like['isLikes'];
+                    ?>
+                    <div class="me-3 mt-3">
+                        <div class="card board" style="width: 18rem; height: 100%;">
+                            <img src="<?= ADDRESS_SITE . 'ressources/images/recipesImages/' . $recipe['recipeImage'] ?>" width="300" height="300" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h4><?= cutString($recipe['recipeName'],20) ?></h4>
+                                <p class="card-text"><?= cutString($recipe['description'],55) ?></p>
                             </div>
-                        </a>
+                            <div class="m-2 d-flex justify-content-between align-items-start">
+                                <p class="card-text"><small class="text-muted">Publié le <?= date('d/m/Y', strtotime($recipe['creationDate'])) ?></small></p>
+                                <span id="likes_<?= $recipe['idRecipe'] ?>" class="likes" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="<?= $like ?> <?= ($like > 1) ? 'likes' : 'like' ?>">
+                                <?php
+                                if($like == 0):
+                                    ?>
+                                    <img src="<?= ADDRESS_IMG ?>unlike.png" width="30" height="30" alt="like" onclick="likes('recipes',<?= $recipe['idRecipe'] ?>)" style="cursor: pointer;">
+                                <?php
+                                else:
+                                    ?>
+                                    <img src="<?= ADDRESS_IMG ?>like.png" width="30" height="30" alt="like" onclick="likes('recipes',<?= $recipe['idRecipe'] ?>)" style="cursor: pointer;">
+                                <?php
+                                endif;
+                                ?>
+                                </span>
+                            </div>
+                            <div class="card-footer">
+                                <a href="<?= ADDRESS_SITE ?>recette/<?= $recipe['idRecipe'] ?>" class="btn btn-primary">Voir la recette</a>
+                            </div>
+                        </div>
                     </div>
-                    ';
-                    
-                }
-                ?>
+
+                <?php endforeach; ?>
             </div>
         </div>
         <div class="row text-center mt-4 ">
