@@ -1037,4 +1037,22 @@
         }
     }
 
+    function likes(type, id){
+        $.ajax({
+            url: '<?= ADDRESS_AJAX_SCRIPT ?>ajaxLikes.php',
+            type: 'POST',
+            data: {
+                type: type,
+                idUser: <?= $_SESSION['id'] ?? 0; ?>,
+                id: id
+            },
+            beforeSend: function () {
+                $('#likes_' + id).html('<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden">Chargement...</span></div></div>');
+            },
+            success: function (data) {
+                $('#likes_' + id).html(data);
+            }
+        });
+    }
+
 </script>
