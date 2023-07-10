@@ -7,14 +7,16 @@ try {
     $products = searchProducts($search);
 
     if (empty($products)) {
-        echo jsonResponse(404, [], [
+        http_response_code(404);
+        echo json_encode([
             "success" => false,
             "message" => "No products found"
         ]);
         exit();
     }
 
-    echo jsonResponse(200, [], [
+    http_response_code(200);
+    echo json_encode([
         "success" => true,
         "products" => $products
     ]);

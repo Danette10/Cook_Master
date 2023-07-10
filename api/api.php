@@ -42,6 +42,22 @@ $routeur->post('/user/connect', function (){
 $routeur->post('/user/connectToken', function (){
     require PATH_API . 'routes/users/connectUserToken.php';
 });
+
+//post update user
+$routeur->post('/user/update', function (){
+    require PATH_API . 'routes/users/updateUser.php';
+});
+
+//post update password
+$routeur->post('/user/updatePassword', function (){
+    require PATH_API . 'routes/users/updatePassword.php';
+});
+
+//post check password
+$routeur->post('/user/checkPassword', function (){
+    require PATH_API . 'routes/users/checkPassword.php';
+});
+
 // Get all customers
 $routeur->get('/customers', function (){
     require PATH_API . 'routes/users/getCustomers.php';

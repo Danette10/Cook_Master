@@ -3,6 +3,7 @@ require_once __DIR__ . "/../../libraries/body.php";
 require_once __DIR__ . "/../../libraries/header.php";
 require_once __DIR__ . "/../../entities/users/tokenAutoAuthentication.php";
 
+
 header("Content-Type: application/json");
 
 try {
