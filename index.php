@@ -190,6 +190,12 @@ $routeur->get('/panier', function (){
     require PATH_APPLICATION_EXTRANET . 'cart/cart.php';
 });
 
+$routeur->get('/admin/partenaires', function (){
+    require PATH_APPLICATION_EXTRANET . 'admin/partners.php';
+});
+$routeur->get('/admin/partenaires/ajout', function (){
+    require PATH_APPLICATION_EXTRANET . 'admin/addPartner.php';
+});
 
 // Routes -> Dashboard Admin
 $routeur->get('/admin/dashboard', function (){
