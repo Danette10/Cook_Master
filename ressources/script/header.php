@@ -32,12 +32,6 @@
 
                     <li>
 
-                        <a href="<?= ADDRESS_SITE ?>cours" class="nav-link lang-course <?= $title == 'Cookorama - Toutes nos leçons' ? 'active' : '' ?>"></a>
-
-                    </li>
-
-                    <li>
-
                         <a href="<?= ADDRESS_SITE ?>évènements" class="nav-link lang-event <?= $title == 'Cookorama - Tout nos évènements' ? 'active' : '' ?>"></a>
 
                     </li>
