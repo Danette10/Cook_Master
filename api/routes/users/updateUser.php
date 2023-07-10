@@ -96,9 +96,8 @@ try {
     // Réorganiser la date au format YYYY-mm-dd
     $birthDate = $year . '-' . $month . '-' . $day;
 
-    if (!updateUser($token ,$firstName, $lastName, $email, $birthDate)) {
-        throw new Exception("Error when updating user",500);
-    }
+    updateUser($token ,$firstName, $lastName, $email, $birthDate);
+    
 
     http_response_code(200);
     echo json_encode([
