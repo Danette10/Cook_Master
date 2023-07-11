@@ -26,11 +26,11 @@ try {
         throw new Exception("Invalid Token",401);
     }
 
-    if (!isset($body["fidelity"])) {
-        throw new Exception("Missing fidelity",400);
-    }
+    if (!array_key_exists("fidelity", $body)) {
+        throw new Exception("Missing fidelity", 400);
+    }    
 
-    $fidelity = intval(htmlspecialchars($body["fidelity"]));
+    $fidelity = intval($body["fidelity"]);
  
     if (!updateFidelity($newToken['token'],$fidelity)){
         throw new Exception("Fidelity not updated",403);
@@ -46,7 +46,7 @@ try {
     die();
 
 }catch (Exception $e) {
-    $responseCode = intval($e->getCode());
+    $responseCode = $e->getCode();
     http_response_code($responseCode);
     echo json_encode([
         "success" => false,
