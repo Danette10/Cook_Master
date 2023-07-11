@@ -253,6 +253,7 @@ CREATE TABLE IF NOT EXISTS likes
     FOREIGN KEY (idRecipe) REFERENCES recipe (idRecipe)
 );
 
+/* INSERTS PRODUCTS */
 INSERT INTO products (idProduct, name, description, image, type, price, creation)
 VALUES ('prod_NeXRwi2aT28FXA', 'Master', 'Master yearly', '', 1, 220, NOW());
 
@@ -264,3 +265,40 @@ VALUES ('prod_NeXQV8mjycAaDE', 'Starter', 'Starter yearly', '', 1, 113, NOW());
 
 INSERT INTO products (idProduct, name, description, image, type, price, creation)
 VALUES ('prod_NeXPCayzYQqXgS', 'Starter', 'Starter monthly', '', 1, 10, NOW());
+
+/* INSERTS USERS */
+INSERT INTO users (idUser, lastname, firstname, profilePicture, email, password, birthdate, address, postalCode, city, role, token, fidelityCounter, cardIdentity, diploma, creation)
+VALUES (1,
+        'SEBAG',
+        'Dan',
+        '2023/06/649c2bc422fdd.png',
+        'dan.sebag1007@gmail.com',
+        'fd852e7aa60baa7ad874ae223e31d1f19c522aee907f0d855795047c0714a70b9be7f15fa22859ded03947b456959ee946fa4449a758303a16ba6dca3e02ec00',
+        '2002-07-10',
+        '1 rue de la paix',
+        '75000',
+        'Paris',
+        1,
+        '',
+        0,
+        '',
+        '',
+        NOW());
+
+INSERT INTO users (idUser, lastname, firstname, profilePicture, email, password, birthdate, address, postalCode, city, role, token, fidelityCounter, cardIdentity, diploma, creation)
+VALUES (2,
+        'ADMIN1',
+        'Admin1',
+        '2023/06/649c2bc422fdd.png',
+        'admin1.admin1@gmail.com',
+        'fd852e7aa60baa7ad874ae223e31d1f19c522aee907f0d855795047c0714a70b9be7f15fa22859ded03947b456959ee946fa4449a758303a16ba6dca3e02ec00',
+        '2002-07-10',
+        '1 rue de la paix',
+        '75000',
+        'Paris',
+        5,
+        '',
+        0,
+        '',
+        '',
+        NOW());
