@@ -58,6 +58,11 @@ $routeur->post('/user/checkPassword', function (){
     require PATH_API . 'routes/users/checkPassword.php';
 });
 
+//post update fidelity
+$routeur->post('/user/updateFidelity', function (){
+    require PATH_API . 'routes/users/updateFidelity.php';
+});
+
 // Get all customers
 $routeur->get('/customers', function (){
     require PATH_API . 'routes/users/getCustomers.php';

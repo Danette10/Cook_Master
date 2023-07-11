@@ -35,3 +35,31 @@ function updateUserPassword($password, $token) {
 
     return true;
 }
+
+function updateFidelity($token,$points) {
+    global $db;
+
+    $getPoints = $db->prepare("SELECT fidelity FROM users WHERE token = :token");
+    $getPoints->execute([
+        "token" => $token
+    ]);
+    
+
+    $points = $getPoints->fetch();
+
+    $points = $points['fidelity'] + $points;
+
+     
+    $query = $db->prepare("UPDATE users SET fidelity = :fidelity WHERE token = :token");
+    $query->execute([
+        "fidelity" => $points,
+        "token" => $token
+    ]);
+
+    if ($query->rowCount() === 0) {
+        return false;
+    }
+
+    return true;
+
+}
