@@ -253,15 +253,6 @@ CREATE TABLE IF NOT EXISTS likes
     FOREIGN KEY (idRecipe) REFERENCES recipe (idRecipe)
 );
 
-CREATE TABLE IF NOT EXISTS advertising
-(
-    idAdvertising INT AUTO_INCREMENT,
-    name          VARCHAR(50)  NOT NULL,
-    path          VARCHAR(100) NOT NULL,
-    link          VARCHAR(100) NOT NULL,
-    PRIMARY KEY (idAdvertising)
-);
-
 INSERT INTO products (idProduct, name, description, image, type, price, creation)
 VALUES ('prod_NeXRwi2aT28FXA', 'Master', 'Master yearly', '', 1, 220, NOW());
 

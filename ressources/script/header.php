@@ -49,10 +49,6 @@
                         <a href="<?= ADDRESS_SITE ?>admin/dashboard" class="nav-link lang-dashboard <?= $title == 'Cookorama - Dashboard' ? 'active' : '' ?>"></a>
 
                     </li>
-
-                    <li>
-                        <a href="<?= ADDRESS_SITE ?>admin/partenaires" class="nav-link lang-partner <?= $title == 'Cookorama - Partenaires' ? 'active' : '' ?>"></a>
-                    </li>
                     <?php } ?>
 
                     <?php
