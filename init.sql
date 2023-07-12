@@ -286,6 +286,61 @@ VALUES (1,
         NOW());
 
 INSERT INTO users (idUser, lastname, firstname, profilePicture, email, password, birthdate, address, postalCode, city, role, token, fidelityCounter, cardIdentity, diploma, creation)
+VALUES (1,
+        'USER1',
+        'User1',
+        '2023/06/649c2bc422fdd.png',
+        'user1.user1@gmail.com',
+        'fd852e7aa60baa7ad874ae223e31d1f19c522aee907f0d855795047c0714a70b9be7f15fa22859ded03947b456959ee946fa4449a758303a16ba6dca3e02ec00',
+        '2002-07-10',
+        '1 rue de la paix',
+        '75000',
+        'Paris',
+        1,
+        '',
+        0,
+        '',
+        '',
+        NOW());
+
+INSERT INTO users (idUser, lastname, firstname, profilePicture, email, password, birthdate, address, postalCode, city, role, token, fidelityCounter, cardIdentity, diploma, creation)
+VALUES (1,
+        'USER2',
+        'User2',
+        '2023/06/649c2bc422fdd.png',
+        'user2.user2@gmail.com',
+        'fd852e7aa60baa7ad874ae223e31d1f19c522aee907f0d855795047c0714a70b9be7f15fa22859ded03947b456959ee946fa4449a758303a16ba6dca3e02ec00',
+        '2002-07-10',
+        '1 rue de la paix',
+        '75000',
+        'Paris',
+        1,
+        '',
+        0,
+        '',
+        '',
+        NOW());
+
+INSERT INTO users (idUser, lastname, firstname, profilePicture, email, password, birthdate, address, postalCode, city, role, token, fidelityCounter, cardIdentity, diploma, creation)
+VALUES (1,
+        'USER3',
+        'User3',
+        '2023/06/649c2bc422fdd.png',
+        'user3.user3@gmail.com',
+        'fd852e7aa60baa7ad874ae223e31d1f19c522aee907f0d855795047c0714a70b9be7f15fa22859ded03947b456959ee946fa4449a758303a16ba6dca3e02ec00',
+        '2002-07-10',
+        '1 rue de la paix',
+        '75000',
+        'Paris',
+        1,
+        '',
+        0,
+        '',
+        '',
+        NOW());
+
+/* INSERTS ADMIN */
+INSERT INTO users (idUser, lastname, firstname, profilePicture, email, password, birthdate, address, postalCode, city, role, token, fidelityCounter, cardIdentity, diploma, creation)
 VALUES (2,
         'ADMIN1',
         'Admin1',
@@ -302,3 +357,95 @@ VALUES (2,
         '',
         '',
         NOW());
+
+INSERT INTO users (idUser, lastname, firstname, profilePicture, email, password, birthdate, address, postalCode, city, role, token, fidelityCounter, cardIdentity, diploma, creation)
+VALUES (3,
+        'ADMIN2',
+        'Admin2',
+        '2023/06/649c2bc422fdd.png',
+        'admin2.admin2@gmail.com',
+        'fd852e7aa60baa7ad874ae223e31d1f19c522aee907f0d855795047c0714a70b9be7f15fa22859ded03947b456959ee946fa4449a758303a16ba6dca3e02ec00',
+        '2002-07-10',
+        '1 rue de la paix',
+        '75000',
+        'Paris',
+        5,
+        '',
+        0,
+        '',
+        '',
+        NOW());
+
+INSERT INTO users (idUser, lastname, firstname, profilePicture, email, password, birthdate, address, postalCode, city, role, token, fidelityCounter, cardIdentity, diploma, creation)
+VALUES (4,
+        'ADMIN3',
+        'Admin3',
+        '2023/06/649c2bc422fdd.png',
+        'admin3.admin3@gmail.com',
+        'fd852e7aa60baa7ad874ae223e31d1f19c522aee907f0d855795047c0714a70b9be7f15fa22859ded03947b456959ee946fa4449a758303a16ba6dca3e02ec00',
+        '2002-07-10',
+        '1 rue de la paix',
+        '75000',
+        'Paris',
+        5,
+        '',
+        0,
+        '',
+        '',
+        NOW());
+
+/* INSERTS PRESTA*/
+INSERT INTO users (idUser, lastname, firstname, profilePicture, email, password, birthdate, address, postalCode, city, role, token, fidelityCounter, cardIdentity, diploma, creation)
+VALUES (5,
+        'PRESTA1',
+        'Presta1',
+        '2023/06/649c2bc422fdd.png',
+        'presta1.presta1@gmail.com',
+        'fd852e7aa60baa7ad874ae223e31d1f19c522aee907f0d855795047c0714a70b9be7f15fa22859ded03947b456959ee946fa4449a758303a16ba6dca3e02ec00',
+        '2002-07-10',
+        '1 rue de la paix',
+        '75000',
+        'Paris',
+        4,
+        '',
+        0,
+        '',
+        '',
+        NOW());
+
+INSERT INTO users (idUser, lastname, firstname, profilePicture, email, password, birthdate, address, postalCode, city, role, token, fidelityCounter, cardIdentity, diploma, creation)
+VALUES (5,
+        'PRESTA2',
+        'Presta2',
+        '2023/06/649c2bc422fdd.png',
+        'presta2.presta2@gmail.com',
+        'fd852e7aa60baa7ad874ae223e31d1f19c522aee907f0d855795047c0714a70b9be7f15fa22859ded03947b456959ee946fa4449a758303a16ba6dca3e02ec00',
+        '2002-07-10',
+        '1 rue de la paix',
+        '75000',
+        'Paris',
+        4,
+        '',
+        0,
+        '',
+        '',
+        NOW());
+
+INSERT INTO users (idUser, lastname, firstname, profilePicture, email, password, birthdate, address, postalCode, city, role, token, fidelityCounter, cardIdentity, diploma, creation)
+VALUES (5,
+        'PRESTA3',
+        'Presta3',
+        '2023/06/649c2bc422fdd.png',
+        'presta3.presta3@gmail.com',
+        'fd852e7aa60baa7ad874ae223e31d1f19c522aee907f0d855795047c0714a70b9be7f15fa22859ded03947b456959ee946fa4449a758303a16ba6dca3e02ec00',
+        '2002-07-10',
+        '1 rue de la paix',
+        '75000',
+        'Paris',
+        4,
+        '',
+        0,
+        '',
+        '',
+        NOW());
+
