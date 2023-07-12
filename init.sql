@@ -287,6 +287,42 @@ VALUES (1,
 
 INSERT INTO users (idUser, lastname, firstname, profilePicture, email, password, birthdate, address, postalCode, city, role, token, fidelityCounter, cardIdentity, diploma, creation)
 VALUES (2,
+        'MAKADJI',
+        'Mamadou',
+        '',
+        'makadjimamadou01@gmail.com',
+        'd404559f602eab6fd602ac7680dacbfaadd13630335e951f097af3900e9de176b6db28512f2e000b9d04fba5133e8b1c6e8df59db3a8ab9d60be4b97cc9e81db',
+        '2002-07-10',
+        '1 rue de la paix',
+        '75000',
+        'Paris',
+        1,
+        '',
+        0,
+        '',
+        '',
+        NOW());
+
+INSERT INTO users (idUser, lastname, firstname, profilePicture, email, password, birthdate, address, postalCode, city, role, token, fidelityCounter, cardIdentity, diploma, creation)
+VALUES (3,
+        'LINHARES',
+        'Gil',
+        '',
+        'linharesrodrigues.gil@gmail.com',
+        'd404559f602eab6fd602ac7680dacbfaadd13630335e951f097af3900e9de176b6db28512f2e000b9d04fba5133e8b1c6e8df59db3a8ab9d60be4b97cc9e81db',
+        '2002-07-10',
+        '1 rue de la paix',
+        '75000',
+        'Paris',
+        1,
+        '',
+        0,
+        '',
+        '',
+        NOW());
+
+INSERT INTO users (idUser, lastname, firstname, profilePicture, email, password, birthdate, address, postalCode, city, role, token, fidelityCounter, cardIdentity, diploma, creation)
+VALUES (4,
         'USER1',
         'User1',
         '2023/06/649c2bc422fdd.png',
@@ -304,7 +340,7 @@ VALUES (2,
         NOW());
 
 INSERT INTO users (idUser, lastname, firstname, profilePicture, email, password, birthdate, address, postalCode, city, role, token, fidelityCounter, cardIdentity, diploma, creation)
-VALUES (3,
+VALUES (5,
         'USER2',
         'User2',
         '',
@@ -322,7 +358,7 @@ VALUES (3,
         NOW());
 
 INSERT INTO users (idUser, lastname, firstname, profilePicture, email, password, birthdate, address, postalCode, city, role, token, fidelityCounter, cardIdentity, diploma, creation)
-VALUES (4,
+VALUES (6,
         'USER3',
         'User3',
         '',
@@ -341,7 +377,7 @@ VALUES (4,
 
 /* INSERTS ADMIN */
 INSERT INTO users (idUser, lastname, firstname, profilePicture, email, password, birthdate, address, postalCode, city, role, token, fidelityCounter, cardIdentity, diploma, creation)
-VALUES (5,
+VALUES (7,
         'ADMIN1',
         'Admin1',
         '',
@@ -359,7 +395,7 @@ VALUES (5,
         NOW());
 
 INSERT INTO users (idUser, lastname, firstname, profilePicture, email, password, birthdate, address, postalCode, city, role, token, fidelityCounter, cardIdentity, diploma, creation)
-VALUES (6,
+VALUES (8,
         'ADMIN2',
         'Admin2',
         '',
@@ -377,7 +413,7 @@ VALUES (6,
         NOW());
 
 INSERT INTO users (idUser, lastname, firstname, profilePicture, email, password, birthdate, address, postalCode, city, role, token, fidelityCounter, cardIdentity, diploma, creation)
-VALUES (7,
+VALUES (9,
         'ADMIN3',
         'Admin3',
         '',
@@ -396,7 +432,7 @@ VALUES (7,
 
 /* INSERTS PRESTA*/
 INSERT INTO users (idUser, lastname, firstname, profilePicture, email, password, birthdate, address, postalCode, city, role, token, fidelityCounter, cardIdentity, diploma, creation)
-VALUES (8,
+VALUES (10,
         'PRESTA1',
         'Presta1',
         '',
@@ -414,7 +450,7 @@ VALUES (8,
         NOW());
 
 INSERT INTO users (idUser, lastname, firstname, profilePicture, email, password, birthdate, address, postalCode, city, role, token, fidelityCounter, cardIdentity, diploma, creation)
-VALUES (9,
+VALUES (11,
         'PRESTA2',
         'Presta2',
         '',
@@ -432,7 +468,7 @@ VALUES (9,
         NOW());
 
 INSERT INTO users (idUser, lastname, firstname, profilePicture, email, password, birthdate, address, postalCode, city, role, token, fidelityCounter, cardIdentity, diploma, creation)
-VALUES (10,
+VALUES (12,
         'PRESTA3',
         'Presta3',
         '',
@@ -448,4 +484,3 @@ VALUES (10,
         '',
         '',
         NOW());
-
