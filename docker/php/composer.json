@@ -10,6 +10,6 @@
         "phpmailer/phpmailer": "*",
         "tecnickcom/tcpdf": "*",
       "ext-pdo": "*",
-        "mikehaertl/php-pdftk": "^0.13.0"
+      "ext-curl": "*"
     }
 }
